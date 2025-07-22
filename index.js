@@ -1,18 +1,20 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import convertDayjsPlugin from './convertDayjs';
+import { zoneConfig } from './config.js';
 
 // 启用插件
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.extend(convertDayjsPlugin);
 
-const node = { timezone: "Asia/Shanghai", systemZone: "Asia/Shanghai" };
 /**
  * 设置全局默认时区
  * @param {string} timezone - 时区名称（如 "Asia/Shanghai"）
  */
 export function setDefaultTimezone(timezone) {
-    node.timezone = timezone;
+    zoneConfig.timezone = timezone;
     dayjs.tz.setDefault(timezone);
 }
 
@@ -21,7 +23,7 @@ export function setDefaultTimezone(timezone) {
  * @param {string} timezone - 时区名称（如 "Asia/Shanghai"）
  */
 export function setSystemTimezone(timezone) {
-    node.systemZone = timezone;
+    zoneConfig.systemZone = timezone;
 }
 
 /**
@@ -37,11 +39,11 @@ export function getTime(isDate = false) {
         const currentOffset = now.utcOffset();
         const systemOffset = dayjs().tz(node.systemZone).utcOffset();
         const offsetDiff = systemOffset - currentOffset;
-        
+
         // 调整时间戳
         return now.valueOf() + offsetDiff * 60 * 1000;
     }
-    
+
     return now.valueOf();
 }
 
@@ -52,8 +54,8 @@ export function getTime(isDate = false) {
  * @returns {string} 格式化后的时间字符串
  */
 export function toString(timestamp, format = 'YYYY-MM-DD HH:mm:ss') {
-  const time = timestamp !== undefined ? dayjs(timestamp) : dayjs();
-  return time.tz(node.timezone).format(format);
+    const time = timestamp !== undefined ? dayjs(timestamp) : dayjs();
+    return time.tz(zoneConfig.timezone).format(format);
 }
 
 
@@ -64,10 +66,10 @@ export function toString(timestamp, format = 'YYYY-MM-DD HH:mm:ss') {
 export function getTodayStartTimestamp(timestamp) {
   // 1. 获取当前时区的当前日期
   const today = dayjs(timestamp).tz(node.timezone).format('YYYY-MM-DD');
-  
+
   // 2. 创建当天0点的dayjs对象（在当前时区）
   const startOfDay = dayjs.tz(today, 'YYYY-MM-DD', node.timezone);
-  
+
   // 3. 返回时间戳
   return startOfDay.valueOf();
 }

@@ -3,6 +3,7 @@ import * as dayjs from "dayjs";
 declare module "dayjs" {
   interface Dayjs {
     tz(timezone?: string): dayjs.Dayjs;
+    convertDayjs(isDate: boolean): Dayjs
   }
 }
 
