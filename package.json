@@ -11,7 +11,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "dayjs": "1.11.13"
+    "dayjs": "^1.11.13"
   },
   "devDependencies": {
     "jest": "^30.0.4"
