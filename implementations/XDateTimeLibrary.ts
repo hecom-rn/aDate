@@ -166,10 +166,10 @@ export class XDateTimeLibrary extends ITimeLibrary {
   }
 
   /**
-   * 获取月份（1-12）
+   * 获取月份（0-11）
    */
   month(timeObj: TimeObject): number {
-    return timeObj.getMonth() + 1; // Date 月份是 0-11，需要转换为 1-12
+    return timeObj.getMonth(); // Date 月份是 0-11，直接返回
   }
 
   /**
@@ -225,11 +225,11 @@ export class XDateTimeLibrary extends ITimeLibrary {
   }
 
   /**
-   * 设置月份（1-12）
+   * 设置月份（0-11）
    */
   setMonth(timeObj: TimeObject, value: number): TimeObject {
     const newDate: Date = new Date(timeObj.getTime());
-    newDate.setMonth(value - 1); // Date 月份是 0-11，需要转换
+    newDate.setMonth(value); // Date 月份是 0-11，直接设置
     (newDate as any)._timezone = timeObj._timezone;
     return newDate;
   }

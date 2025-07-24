@@ -85,7 +85,7 @@ console.log('原始时间:', formatTime(modifiableTime, 'YYYY-MM-DD HH:mm:ss'));
 modifiableTime = setYear(modifiableTime, 2026);
 console.log('设置年份为2026:', formatTime(modifiableTime, 'YYYY-MM-DD HH:mm:ss'));
 
-modifiableTime = setMonth(modifiableTime, 6);
+modifiableTime = setMonth(modifiableTime, 5);
 console.log('设置月份为6月:', formatTime(modifiableTime, 'YYYY-MM-DD HH:mm:ss'));
 
 modifiableTime = setDate(modifiableTime, 25);
@@ -180,7 +180,7 @@ console.log('时间戳:', timeInstance.valueOf());
 // 测试11: 复杂的链式操作组合
 console.log('\n🎨 11. 复杂链式操作组合测试');
 const christmasEve = TimeUtils.create('2025-06-15 10:30:00')
-  .month(12)        // 设置为12月
+  .month(11)        // 设置为12月（0-11，所以11表示12月）
   .date(24)         // 设置为24日（平安夜）
   .hour(18)         // 设置为晚上6点
   .minute(0)        // 设置为整点

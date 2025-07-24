@@ -159,7 +159,7 @@ export function getYear(timeObj: TimeObject): number {
 }
 
 /**
- * 获取月份（1-12）
+ * 获取月份（0-11）
  * @param timeObj - 时间对象
  * @returns 月份
  */
@@ -232,7 +232,7 @@ export function setYear(timeObj: TimeObject, value: number): TimeObject {
 }
 
 /**
- * 设置月份（1-12）
+ * 设置月份（0-11）
  * @param timeObj - 时间对象
  * @param value - 月份值
  * @returns 新的时间对象
@@ -461,7 +461,7 @@ export class TimeInstance {
   }
 
   /**
-   * 获取月份（1-12）
+   * 获取月份（0-11）
    */
   getMonth(): number {
     return getMonth(this.timeObj);
@@ -518,7 +518,7 @@ export class TimeInstance {
   }
 
   /**
-   * 设置月份（1-12）
+   * 设置月份（0-11）
    */
   month(value: number): TimeInstance {
     this.timeObj = setMonth(this.timeObj, value);

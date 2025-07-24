@@ -27,14 +27,14 @@ describe('TimeInstance 链式调用深度测试', () => {
   test('应该支持复杂的时间设置链式调用', () => {
     const result = TimeUtils.create('2025-01-01 00:00:00')
       .year(2026)
-      .month(6)
+      .month(5)   // 6月对应索引5（0-11）
       .date(15)
       .hour(14)
       .minute(30)
       .second(45)
       .format('YYYY-MM-DD HH:mm:ss');
 
-    expect(result).toBe('2026-06-15 14:30:45');
+    expect(result).toBe('2026-06-15 14:30:45');  // 期望6月
   });
 
   test('应该支持时间边界操作', () => {
@@ -64,7 +64,7 @@ describe('TimeInstance 链式调用深度测试', () => {
     const timeInstance = TimeUtils.create('2025-07-24 15:30:45');
 
     expect(timeInstance.getYear()).toBe(2025);
-    expect(timeInstance.getMonth()).toBe(7);
+    expect(timeInstance.getMonth()).toBe(6);  // 7月对应索引6（0-11）
     expect(timeInstance.getDate()).toBe(24);
     expect(timeInstance.getHour()).toBe(15);
     expect(timeInstance.getMinute()).toBe(30);
@@ -83,7 +83,7 @@ describe('边界条件和异常情况测试', () => {
     // 测试闰年2月29日
     const leapDay = createTime('2024-02-29');
     expect(getYear(leapDay)).toBe(2024);
-    expect(getMonth(leapDay)).toBe(2);
+    expect(getMonth(leapDay)).toBe(1);  // 2月对应索引1（0-11）
     expect(getDate(leapDay)).toBe(29);
   });
 

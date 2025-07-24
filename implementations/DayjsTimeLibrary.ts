@@ -151,10 +151,10 @@ export class DayjsTimeLibrary extends ITimeLibrary {
   }
 
   /**
-   * 获取月份（1-12）
+   * 获取月份（0-11）
    */
   month(timeObj: TimeObject): number {
-    return timeObj.month() + 1; // dayjs 月份是 0-11，需要转换为 1-12
+    return timeObj.month(); // dayjs 月份是 0-11，直接返回
   }
 
   /**
@@ -207,10 +207,10 @@ export class DayjsTimeLibrary extends ITimeLibrary {
   }
 
   /**
-   * 设置月份（1-12）
+   * 设置月份（0-11）
    */
   setMonth(timeObj: TimeObject, value: number): TimeObject {
-    return timeObj.month(value - 1); // dayjs 月份是 0-11，需要转换
+    return timeObj.month(value); // dayjs 月份是 0-11，直接设置
   }
 
   /**

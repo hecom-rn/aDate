@@ -13,7 +13,7 @@ describe('DayjsTimeLibrary 实现测试', () => {
     const time = library.create('2025-07-24 15:30:45');
     expect(time).toBeDefined();
     expect(library.year(time)).toBe(2025);
-    expect(library.month(time)).toBe(7);
+    expect(library.month(time)).toBe(6);  // 7月对应索引6（0-11）
     expect(library.date(time)).toBe(24);
   });
 
@@ -93,7 +93,7 @@ describe('XDateTimeLibrary 实现测试', () => {
     const time = library.create('2025-07-24 15:30:45');
     expect(time).toBeDefined();
     expect(library.year(time)).toBe(2025);
-    expect(library.month(time)).toBe(7);
+    expect(library.month(time)).toBe(6);  // 7月对应索引6（0-11）
     expect(library.date(time)).toBe(24);
   });
 

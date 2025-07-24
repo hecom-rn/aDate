@@ -115,7 +115,7 @@ export abstract class ITimeLibrary {
   abstract year(timeObj: TimeObject): number;
 
   /**
-   * 获取月份（1-12）
+   * 获取月份（0-11）
    * @param timeObj - 时间对象
    * @returns 月份
    */
@@ -172,7 +172,7 @@ export abstract class ITimeLibrary {
   abstract setYear(timeObj: TimeObject, value: number): TimeObject;
 
   /**
-   * 设置月份（1-12）
+   * 设置月份（0-11）
    * @param timeObj - 时间对象
    * @param value - 月份值
    * @returns 新的时间对象

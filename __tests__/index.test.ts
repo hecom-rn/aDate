@@ -143,7 +143,7 @@ describe('时间库抽象层基础功能测试', () => {
       const nextHour = addTime(time, 1, 'hour');
 
       expect(getYear(nextYear)).toBe(2026);
-      expect(getMonth(nextMonth)).toBe(8); // 7月 + 1 = 8月
+      expect(getMonth(nextMonth)).toBe(7); // 7月(索引6) + 1 = 8月(索引7)
       expect(getHour(nextHour)).toBe(16);   // 15时 + 1 = 16时
     });
   });
@@ -158,7 +158,7 @@ describe('时间获取方法测试', () => {
     const time = createTime('2025-07-24 15:30:45');
 
     expect(getYear(time)).toBe(2025);
-    expect(getMonth(time)).toBe(7);   // 7月
+    expect(getMonth(time)).toBe(6);   // 7月对应月份索引6（0-11）
     expect(getDate(time)).toBe(24);   // 24日
     expect(getHour(time)).toBe(15);   // 15时
     expect(getMinute(time)).toBe(30); // 30分
@@ -224,7 +224,7 @@ describe('TimeUtils 链式调用测试', () => {
   test('应该支持复杂的链式操作', () => {
     const result = TimeUtils.now()
       .year(2025)
-      .month(12)
+      .month(11)  // 12月对应索引11（0-11）
       .date(25)
       .hour(0)
       .minute(0)
@@ -238,7 +238,7 @@ describe('TimeUtils 链式调用测试', () => {
     const timeInstance = TimeUtils.create('2025-07-24 15:30:45');
 
     expect(timeInstance.getYear()).toBe(2025);
-    expect(timeInstance.getMonth()).toBe(7);
+    expect(timeInstance.getMonth()).toBe(6);  // 7月对应索引6（0-11）
     expect(timeInstance.getDate()).toBe(24);
     expect(timeInstance.getHour()).toBe(15);
     expect(timeInstance.getMinute()).toBe(30);
@@ -278,8 +278,8 @@ describe('时间库切换测试', () => {
 
   test('不同时间库的基础功能应该一致', () => {
     const testCases = [
-      { input: '2025-07-24 15:30:45', expected: { year: 2025, month: 7, date: 24 } },
-      { input: '2024-02-29 12:00:00', expected: { year: 2024, month: 2, date: 29 } }
+      { input: '2025-07-24 15:30:45', expected: { year: 2025, month: 6, date: 24 } },  // 7月对应索引6
+      { input: '2024-02-29 12:00:00', expected: { year: 2024, month: 1, date: 29 } }   // 2月对应索引1
     ];
 
     [TimeLibraryType.DAYJS, TimeLibraryType.XDATE].forEach(libraryType => {

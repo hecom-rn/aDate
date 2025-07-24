@@ -101,7 +101,7 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const dayjsTime = dayjs(testDate);
 
       expect(getYear(timeUtilsTime)).toBe(dayjsTime.year());
-      expect(getMonth(timeUtilsTime)).toBe(dayjsTime.month() + 1); // dayjs 月份是 0-11
+      expect(getMonth(timeUtilsTime)).toBe(dayjsTime.month()); // 现在都返回 0-11
       expect(getDate(timeUtilsTime)).toBe(dayjsTime.date());
       expect(getHour(timeUtilsTime)).toBe(dayjsTime.hour());
       expect(getMinute(timeUtilsTime)).toBe(dayjsTime.minute());
@@ -116,7 +116,7 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const dayjsTime = dayjs(testDate);
 
       expect(timeInstance.getYear()).toBe(dayjsTime.year());
-      expect(timeInstance.getMonth()).toBe(dayjsTime.month() + 1);
+      expect(timeInstance.getMonth()).toBe(dayjsTime.month()); // 现在都返回 0-11
       expect(timeInstance.getDate()).toBe(dayjsTime.date());
       expect(timeInstance.getHour()).toBe(dayjsTime.hour());
       expect(timeInstance.getMinute()).toBe(dayjsTime.minute());
@@ -137,7 +137,7 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       );
 
       // 测试设置月份
-      const timeUtilsMonth = TimeUtils.create(baseDate).month(12);
+      const timeUtilsMonth = TimeUtils.create(baseDate).month(11);  // 使用0-11的月份标准
       const dayjsMonth = dayjs(baseDate).month(11); // dayjs 月份是 0-11
       expect(timeUtilsMonth.format('YYYY-MM-DD HH:mm:ss')).toBe(
         dayjsMonth.format('YYYY-MM-DD HH:mm:ss')
@@ -177,7 +177,7 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
 
       const timeUtilsResult = TimeUtils.create(baseDate)
         .year(2026)
-        .month(12)
+        .month(11)  // 使用0-11的月份标准，11表示12月
         .date(25)
         .hour(0)
         .minute(0)
@@ -595,7 +595,7 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const dayjsTime = dayjs(leapDay);
 
       expect(timeUtilsYear).toBe(dayjsTime.year());
-      expect(timeUtilsMonth).toBe(dayjsTime.month() + 1);
+      expect(timeUtilsMonth).toBe(dayjsTime.month());
       expect(timeUtilsDate).toBe(dayjsTime.date());
     });
   });
