@@ -332,6 +332,158 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       expect(timeUtilsStart).toBe(dayjsStart);
       expect(timeUtilsEnd).toBe(dayjsEnd);
     });
+
+    test('函数式边界时间操作应该与 dayjs 一致', () => {
+      const testDate = '2025-07-15 14:30:25';
+      const timeObj = createTime(testDate);
+
+      // 测试函数式 API
+      const timeUtilsStartMonth = startOfMonth(timeObj);
+      const timeUtilsEndMonth = endOfMonth(timeObj);
+      const timeUtilsStartDay = startOfDay(timeObj);
+      const timeUtilsEndDay = endOfDay(timeObj);
+
+      const dayjsObj = dayjs(testDate);
+      const dayjsStartMonth = dayjsObj.startOf('month');
+      const dayjsEndMonth = dayjsObj.endOf('month');
+      const dayjsStartDay = dayjsObj.startOf('day');
+      const dayjsEndDay = dayjsObj.endOf('day');
+
+      expect(formatTime(timeUtilsStartMonth, 'YYYY-MM-DD HH:mm:ss')).toBe(
+        dayjsStartMonth.format('YYYY-MM-DD HH:mm:ss')
+      );
+      expect(formatTime(timeUtilsEndMonth, 'YYYY-MM-DD HH:mm:ss')).toBe(
+        dayjsEndMonth.format('YYYY-MM-DD HH:mm:ss')
+      );
+      expect(formatTime(timeUtilsStartDay, 'YYYY-MM-DD HH:mm:ss')).toBe(
+        dayjsStartDay.format('YYYY-MM-DD HH:mm:ss')
+      );
+      expect(formatTime(timeUtilsEndDay, 'YYYY-MM-DD HH:mm:ss')).toBe(
+        dayjsEndDay.format('YYYY-MM-DD HH:mm:ss')
+      );
+    });
+
+    test('不同月份的边界时间应该正确处理', () => {
+      const testDates = [
+        '2024-02-15 10:30:45', // 闰年2月
+        '2025-02-15 10:30:45', // 平年2月
+        '2025-01-31 23:59:59', // 1月最后一天
+        '2025-04-30 12:00:00', // 4月最后一天
+        '2025-12-01 00:00:01', // 12月第一天
+      ];
+
+      testDates.forEach(testDate => {
+        const timeUtilsStartMonth = TimeUtils.create(testDate).startOfMonth();
+        const timeUtilsEndMonth = TimeUtils.create(testDate).endOfMonth();
+
+        const dayjsStartMonth = dayjs(testDate).startOf('month');
+        const dayjsEndMonth = dayjs(testDate).endOf('month');
+
+        expect(timeUtilsStartMonth.format('YYYY-MM-DD HH:mm:ss')).toBe(
+          dayjsStartMonth.format('YYYY-MM-DD HH:mm:ss')
+        );
+        expect(timeUtilsEndMonth.format('YYYY-MM-DD HH:mm:ss')).toBe(
+          dayjsEndMonth.format('YYYY-MM-DD HH:mm:ss')
+        );
+      });
+    });
+
+    test('跨年边界时间应该正确处理', () => {
+      const testDates = [
+        '2024-12-31 23:59:59', // 年末
+        '2025-01-01 00:00:01', // 年初
+        '2024-01-01 12:30:45', // 闰年年初
+        '2025-12-31 12:30:45', // 平年年末
+      ];
+
+      testDates.forEach(testDate => {
+        const timeUtilsStartDay = TimeUtils.create(testDate).startOfDay();
+        const timeUtilsEndDay = TimeUtils.create(testDate).endOfDay();
+
+        const dayjsStartDay = dayjs(testDate).startOf('day');
+        const dayjsEndDay = dayjs(testDate).endOf('day');
+
+        expect(timeUtilsStartDay.format('YYYY-MM-DD HH:mm:ss')).toBe(
+          dayjsStartDay.format('YYYY-MM-DD HH:mm:ss')
+        );
+        expect(timeUtilsEndDay.format('YYYY-MM-DD HH:mm:ss')).toBe(
+          dayjsEndDay.format('YYYY-MM-DD HH:mm:ss')
+        );
+      });
+    });
+
+    test('边界时间操作的时间戳应该一致', () => {
+      const testDate = '2025-07-15 14:30:25';
+
+      const timeUtilsStartMonth = TimeUtils.create(testDate).startOfMonth();
+      const timeUtilsEndMonth = TimeUtils.create(testDate).endOfMonth();
+      const timeUtilsStartDay = TimeUtils.create(testDate).startOfDay();
+      const timeUtilsEndDay = TimeUtils.create(testDate).endOfDay();
+
+      const dayjsStartMonth = dayjs(testDate).startOf('month');
+      const dayjsEndMonth = dayjs(testDate).endOf('month');
+      const dayjsStartDay = dayjs(testDate).startOf('day');
+      const dayjsEndDay = dayjs(testDate).endOf('day');
+
+      // 比较时间戳
+      expect(timeUtilsStartMonth.valueOf()).toBe(dayjsStartMonth.valueOf());
+      expect(timeUtilsEndMonth.valueOf()).toBe(dayjsEndMonth.valueOf());
+      expect(timeUtilsStartDay.valueOf()).toBe(dayjsStartDay.valueOf());
+      expect(timeUtilsEndDay.valueOf()).toBe(dayjsEndDay.valueOf());
+    });
+
+    test('边界时间操作链式调用应该与 dayjs 一致', () => {
+      const testDate = '2025-07-15 14:30:25';
+
+      // 测试复杂的链式调用
+      const timeUtilsChain = TimeUtils.create(testDate)
+        .startOfMonth()
+        .add(15, 'day')
+        .endOfDay()
+        .format('YYYY-MM-DD HH:mm:ss');
+
+      const dayjsChain = dayjs(testDate)
+        .startOf('month')
+        .add(15, 'day')
+        .endOf('day')
+        .format('YYYY-MM-DD HH:mm:ss');
+
+      expect(timeUtilsChain).toBe(dayjsChain);
+
+      // 测试另一个链式调用
+      const timeUtilsChain2 = TimeUtils.create(testDate)
+        .endOfMonth()
+        .startOfDay()
+        .subtract(1, 'month')
+        .format('YYYY-MM-DD HH:mm:ss');
+
+      const dayjsChain2 = dayjs(testDate)
+        .endOf('month')
+        .startOf('day')
+        .subtract(1, 'month')
+        .format('YYYY-MM-DD HH:mm:ss');
+
+      expect(timeUtilsChain2).toBe(dayjsChain2);
+    });
+
+    test('边界时间操作精确度测试', () => {
+      const testDate = '2025-07-15 14:30:25.123';
+
+      // 测试毫秒级精确度
+      const timeUtilsStart = TimeUtils.create(testDate).startOfDay();
+      const timeUtilsEnd = TimeUtils.create(testDate).endOfDay();
+
+      const dayjsStart = dayjs(testDate).startOf('day');
+      const dayjsEnd = dayjs(testDate).endOf('day');
+
+      // 开始时间应该是 00:00:00.000
+      expect(timeUtilsStart.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe('2025-07-15 00:00:00.000');
+      expect(dayjsStart.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe('2025-07-15 00:00:00.000');
+
+      // 结束时间应该是 23:59:59.999
+      expect(timeUtilsEnd.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe('2025-07-15 23:59:59.999');
+      expect(dayjsEnd.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe('2025-07-15 23:59:59.999');
+    });
   });
 
   describe('特殊日期判断对比', () => {
