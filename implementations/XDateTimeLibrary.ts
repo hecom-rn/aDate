@@ -18,20 +18,17 @@ export class XDateTimeLibrary extends ITimeLibrary {
   /**
    * 获取当前时间戳（毫秒）
    */
-  getTime(isDate: boolean = false): number {
-    // 实际实现时使用 xDate
-    const now: Date = new Date(); // 这里用 Date 作为示例
-
+  getTime(timeObj: TimeObject, isDate: boolean = false): number {
     if (isDate) {
       // 根据系统时区调整逻辑（需要根据 xDate 的 API 调整）
       const timezoneOffset: number = this._getTimezoneOffset(zoneConfig.timezone);
       const systemOffset: number = this._getTimezoneOffset(zoneConfig.systemZone);
       const offsetDiff: number = systemOffset - timezoneOffset;
 
-      return now.getTime() + offsetDiff * 60 * 1000;
+      return timeObj.getTime() + offsetDiff * 60 * 1000;
     }
 
-    return now.getTime();
+    return timeObj.getTime();
   }
 
   /**

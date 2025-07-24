@@ -20,22 +20,22 @@ export class DayjsTimeLibrary extends ITimeLibrary {
   }
 
   /**
-   * 获取当前时间戳（毫秒）
+   * 获取时间戳（毫秒）
    */
-  getTime(isDate: boolean = false): number {
-    const now: Dayjs = this.lib().tz(zoneConfig.timezone);
+  getTime(timeObj: TimeObject, isDate: boolean = false): number {
+    const targetTime: Dayjs = timeObj.tz ? timeObj.tz(zoneConfig.timezone) : timeObj;
 
     if (isDate) {
       // 计算时区差（分钟）
-      const currentOffset: number = now.utcOffset();
+      const currentOffset: number = targetTime.utcOffset();
       const systemOffset: number = this.lib().tz(zoneConfig.systemZone).utcOffset();
       const offsetDiff: number = systemOffset - currentOffset;
 
       // 调整时间戳
-      return now.valueOf() + offsetDiff * 60 * 1000;
+      return targetTime.valueOf() + offsetDiff * 60 * 1000;
     }
 
-    return now.valueOf();
+    return targetTime.valueOf();
   }
 
   /**

@@ -3,6 +3,7 @@ import {
   getCurrentTimeLibrary,
   setDefaultTimezone,
   getTime,
+  getCurrentTimestamp,
   now,
   formatTime,
   addTime,
@@ -51,11 +52,16 @@ setDefaultTimezone('Asia/Shanghai');
 // 获取当前时间
 const currentTime: TimeObject = now();
 console.log('当前时间:', formatTime(currentTime, 'YYYY-MM-DD HH:mm:ss'));
-console.log('当前时间戳:', getTime());
+console.log('当前时间戳:', getCurrentTimestamp());
 
 // 时间计算
 const tomorrow: TimeObject = addTime(currentTime, 1, 'day');
 console.log('明天:', formatTime(tomorrow, 'YYYY-MM-DD HH:mm:ss'));
+
+// 测试 getTime 函数（现在需要 timeObj 参数）
+console.log('当前时间的时间戳:', getTime(currentTime));
+console.log('明天时间的时间戳:', getTime(tomorrow));
+console.log('使用系统时区调整的时间戳:', getTime(currentTime, true));
 
 // 测试2: 获取时间各部分
 console.log('\n📅 2. 获取时间各部分测试');

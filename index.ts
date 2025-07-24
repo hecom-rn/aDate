@@ -39,12 +39,23 @@ export function setSystemTimezone(timezone: string): void {
 }
 
 /**
+ * 获取时间戳（单位：毫秒）
+ * @param timeObj - 时间对象
+ * @param isDate - 是否根据系统时区调整时间戳
+ * @returns 时间戳
+ */
+export function getTime(timeObj: TimeObject, isDate: boolean = false): number {
+  return timeLibraryFactory.getInstance().getTime(timeObj, isDate);
+}
+
+/**
  * 获取当前时间戳（单位：毫秒）
  * @param isDate - 是否根据系统时区调整时间戳
  * @returns 当前时间戳
  */
-export function getTime(isDate: boolean = false): number {
-  return timeLibraryFactory.getInstance().getTime(isDate);
+export function getCurrentTimestamp(isDate: boolean = false): number {
+  const currentTime = timeLibraryFactory.getInstance().create();
+  return timeLibraryFactory.getInstance().getTime(currentTime, isDate);
 }
 
 /**
@@ -119,16 +130,6 @@ export function subtractTime(timeObj: TimeObject, amount: number, unit: TimeUnit
 export function compareTime(timeObj1: TimeObject, timeObj2: TimeObject): number {
   return timeLibraryFactory.getInstance().compare(timeObj1, timeObj2);
 }
-
-/**
- * 获取时间戳
- * @param timeObj - 时间对象
- * @returns 时间戳（毫秒）
- */
-export function getTimestamp(timeObj: TimeObject): number {
-  return timeLibraryFactory.getInstance().valueOf(timeObj);
-}
-
 /**
  * 转换时区
  * @param timeObj - 时间对象
@@ -440,8 +441,8 @@ export class TimeInstance {
   /**
    * 获取时间戳
    */
-  valueOf(): number {
-    return getTimestamp(this.timeObj);
+  valueOf(isDate: boolean = false): number {
+    return getTime(this.timeObj, isDate);
   }
 
   /**

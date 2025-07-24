@@ -15,10 +15,11 @@ export type TimeObject = any;
 export abstract class ITimeLibrary {
   /**
    * 获取当前时间戳（毫秒）
+   * @param timeObj - 时间对象
    * @param isDate - 是否根据系统时区调整时间戳
    * @returns 时间戳
    */
-  abstract getTime(isDate?: boolean): number;
+  abstract getTime(timeObj: TimeObject, isDate?: boolean): number;
 
   /**
    * 创建时间对象
