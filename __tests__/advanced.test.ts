@@ -5,10 +5,6 @@ import {
   getYear,
   getMonth,
   getDate,
-  setYear,
-  setMonth,
-  setDate,
-  setHour,
   getTime,
   getCurrentTimestamp,
   TimeLibraryType,
@@ -30,12 +26,12 @@ describe('TimeInstance 链式调用深度测试', () => {
 
   test('应该支持复杂的时间设置链式调用', () => {
     const result = TimeUtils.create('2025-01-01 00:00:00')
-      .setYear(2026)
-      .setMonth(6)
-      .setDate(15)
-      .setHour(14)
-      .setMinute(30)
-      .setSecond(45)
+      .year(2026)
+      .month(6)
+      .date(15)
+      .hour(14)
+      .minute(30)
+      .second(45)
       .format('YYYY-MM-DD HH:mm:ss');
 
     expect(result).toBe('2026-06-15 14:30:45');
@@ -62,6 +58,19 @@ describe('TimeInstance 链式调用深度测试', () => {
     expect(time1.isBefore(time2.toObject())).toBe(true);
     expect(time2.isAfter(time1.toObject())).toBe(true);
     expect(time1.isSame(time3.toObject())).toBe(true);
+  });
+
+  test('TimeInstance 应该支持获取时间各部分', () => {
+    const timeInstance = TimeUtils.create('2025-07-24 15:30:45');
+
+    expect(timeInstance.getYear()).toBe(2025);
+    expect(timeInstance.getMonth()).toBe(7);
+    expect(timeInstance.getDate()).toBe(24);
+    expect(timeInstance.getHour()).toBe(15);
+    expect(timeInstance.getMinute()).toBe(30);
+    expect(timeInstance.getSecond()).toBe(45);
+    expect(timeInstance.isLeapYear()).toBe(false);
+    expect(timeInstance.getDaysInMonth()).toBe(31);
   });
 });
 
@@ -193,9 +202,9 @@ describe('性能和内存测试', () => {
     for (let i = 0; i < 100; i++) {
       TimeUtils.create('2025-07-24 15:30:45')
         .add(i, 'day')
-        .setHour(12)
-        .setMinute(0)
-        .setSecond(0)
+        .hour(12)
+        .minute(0)
+        .second(0)
         .format('YYYY-MM-DD HH:mm:ss');
     }
 

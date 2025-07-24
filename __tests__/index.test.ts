@@ -216,7 +216,7 @@ describe('TimeUtils 链式调用测试', () => {
   test('应该支持链式调用', () => {
     const result = TimeUtils.create('2025-07-24 10:00:00')
       .add(1, 'day')
-      .setHour(15)
+      .hour(15)
       .format('YYYY-MM-DD HH:mm:ss');
 
     expect(result).toBe('2025-07-25 15:00:00');
@@ -224,12 +224,12 @@ describe('TimeUtils 链式调用测试', () => {
 
   test('应该支持复杂的链式操作', () => {
     const result = TimeUtils.now()
-      .setYear(2025)
-      .setMonth(12)
-      .setDate(25)
-      .setHour(0)
-      .setMinute(0)
-      .setSecond(0)
+      .year(2025)
+      .month(12)
+      .date(25)
+      .hour(0)
+      .minute(0)
+      .second(0)
       .format('YYYY-MM-DD HH:mm:ss');
 
     expect(result).toBe('2025-12-25 00:00:00');
@@ -238,12 +238,12 @@ describe('TimeUtils 链式调用测试', () => {
   test('TimeInstance 应该支持获取时间各部分', () => {
     const timeInstance = TimeUtils.create('2025-07-24 15:30:45');
 
-    expect(timeInstance.year()).toBe(2025);
-    expect(timeInstance.month()).toBe(7);
-    expect(timeInstance.date()).toBe(24);
-    expect(timeInstance.hour()).toBe(15);
-    expect(timeInstance.minute()).toBe(30);
-    expect(timeInstance.second()).toBe(45);
+    expect(timeInstance.getYear()).toBe(2025);
+    expect(timeInstance.getMonth()).toBe(7);
+    expect(timeInstance.getDate()).toBe(24);
+    expect(timeInstance.getHour()).toBe(15);
+    expect(timeInstance.getMinute()).toBe(30);
+    expect(timeInstance.getSecond()).toBe(45);
   });
 
   test('TimeInstance 应该支持日期判断', () => {
@@ -252,8 +252,8 @@ describe('TimeUtils 链式调用测试', () => {
 
     expect(leapYear.isLeapYear()).toBe(true);
     expect(normalYear.isLeapYear()).toBe(false);
-    expect(leapYear.daysInMonth()).toBe(29);
-    expect(normalYear.daysInMonth()).toBe(28);
+    expect(leapYear.getDaysInMonth()).toBe(29);
+    expect(normalYear.getDaysInMonth()).toBe(28);
   });
 });
 

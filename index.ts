@@ -455,63 +455,63 @@ export class TimeInstance {
   /**
    * 获取年份
    */
-  year(): number {
+  getYear(): number {
     return getYear(this.timeObj);
   }
 
   /**
    * 获取月份（1-12）
    */
-  month(): number {
+  getMonth(): number {
     return getMonth(this.timeObj);
   }
 
   /**
    * 获取日期（1-31）
    */
-  date(): number {
+  getDate(): number {
     return getDate(this.timeObj);
   }
 
   /**
    * 获取星期几（0-6，0表示星期日）
    */
-  day(): number {
+  getDay(): number {
     return getDay(this.timeObj);
   }
 
   /**
    * 获取小时（0-23）
    */
-  hour(): number {
+  getHour(): number {
     return getHour(this.timeObj);
   }
 
   /**
    * 获取分钟（0-59）
    */
-  minute(): number {
+  getMinute(): number {
     return getMinute(this.timeObj);
   }
 
   /**
    * 获取秒（0-59）
    */
-  second(): number {
+  getSecond(): number {
     return getSecond(this.timeObj);
   }
 
   /**
    * 获取毫秒（0-999）
    */
-  millisecond(): number {
+  getMillisecond(): number {
     return getMillisecond(this.timeObj);
   }
 
   /**
    * 设置年份
    */
-  setYear(value: number): TimeInstance {
+  year(value: number): TimeInstance {
     this.timeObj = setYear(this.timeObj, value);
     return this;
   }
@@ -519,7 +519,7 @@ export class TimeInstance {
   /**
    * 设置月份（1-12）
    */
-  setMonth(value: number): TimeInstance {
+  month(value: number): TimeInstance {
     this.timeObj = setMonth(this.timeObj, value);
     return this;
   }
@@ -527,7 +527,7 @@ export class TimeInstance {
   /**
    * 设置日期（1-31）
    */
-  setDate(value: number): TimeInstance {
+  date(value: number): TimeInstance {
     this.timeObj = setDate(this.timeObj, value);
     return this;
   }
@@ -535,7 +535,7 @@ export class TimeInstance {
   /**
    * 设置小时（0-23）
    */
-  setHour(value: number): TimeInstance {
+  hour(value: number): TimeInstance {
     this.timeObj = setHour(this.timeObj, value);
     return this;
   }
@@ -543,7 +543,7 @@ export class TimeInstance {
   /**
    * 设置分钟（0-59）
    */
-  setMinute(value: number): TimeInstance {
+  minute(value: number): TimeInstance {
     this.timeObj = setMinute(this.timeObj, value);
     return this;
   }
@@ -551,7 +551,7 @@ export class TimeInstance {
   /**
    * 设置秒（0-59）
    */
-  setSecond(value: number): TimeInstance {
+  second(value: number): TimeInstance {
     this.timeObj = setSecond(this.timeObj, value);
     return this;
   }
@@ -559,7 +559,7 @@ export class TimeInstance {
   /**
    * 设置毫秒（0-999）
    */
-  setMillisecond(value: number): TimeInstance {
+  millisecond(value: number): TimeInstance {
     this.timeObj = setMillisecond(this.timeObj, value);
     return this;
   }
@@ -606,7 +606,7 @@ export class TimeInstance {
   /**
    * 获取当前月的天数
    */
-  daysInMonth(): number {
+  getDaysInMonth(): number {
     return daysInMonth(this.timeObj);
   }
 
