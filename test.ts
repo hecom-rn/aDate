@@ -78,7 +78,7 @@ console.log('毫秒:', getMillisecond(testTime));
 console.log('UTC偏移量:', getUtcOffset(testTime), '分钟');
 
 // 测试3: 设置时间
-console.log('\n⚙️ 3. 设置时间测试');
+console.log('\n⚙️ 3. 设置���间测试');
 let modifiableTime: TimeObject = createTime('2025-01-15 10:30:45');
 console.log('原始时间:', formatTime(modifiableTime, 'YYYY-MM-DD HH:mm:ss'));
 
@@ -154,9 +154,9 @@ console.log('\n🔗 9. 链式调用测试 (TimeUtils)');
 const chainResult1: string = TimeUtils.now()
   .add(1, 'month')
   .subtract(3, 'day')
-  .setHour(12)
-  .setMinute(0)
-  .setSecond(0)
+  .hour(12)
+  .minute(0)
+  .second(0)
   .format('YYYY年MM月DD日 HH:mm:ss');
 console.log('复杂链式操作结果:', chainResult1);
 
@@ -164,29 +164,29 @@ console.log('复杂链式操作结果:', chainResult1);
 console.log('\n🎯 10. TimeInstance 完整方法测试');
 const timeInstance = TimeUtils.create('2025-12-25 15:30:45');
 console.log('原始时间:', timeInstance.format('YYYY-MM-DD HH:mm:ss'));
-console.log('获取年份:', timeInstance.year());
-console.log('获取月份:', timeInstance.month());
-console.log('获取日期:', timeInstance.date());
-console.log('获取星期:', timeInstance.day());
-console.log('获取小时:', timeInstance.hour());
-console.log('获取分钟:', timeInstance.minute());
-console.log('获取秒:', timeInstance.second());
-console.log('获取毫秒:', timeInstance.millisecond());
+console.log('获取年份:', timeInstance.getYear());
+console.log('获取月份:', timeInstance.getMonth());
+console.log('获取日期:', timeInstance.getDate());
+console.log('获取星期:', timeInstance.getDay());
+console.log('获取小时:', timeInstance.getHour());
+console.log('获取分钟:', timeInstance.getMinute());
+console.log('获取秒:', timeInstance.getSecond());
+console.log('获取毫秒:', timeInstance.getMillisecond());
 console.log('是否为闰年:', timeInstance.isLeapYear());
-console.log('当前月天数:', timeInstance.daysInMonth());
+console.log('当前月天数:', timeInstance.getDaysInMonth());
 console.log('是否为今天:', timeInstance.isToday());
 console.log('时间戳:', timeInstance.valueOf());
 
 // 测试11: 复杂的链式操作组合
 console.log('\n🎨 11. 复杂链式操作组合测试');
 const christmasEve = TimeUtils.create('2025-06-15 10:30:00')
-  .setMonth(12)        // 设置为12月
-  .setDate(24)         // 设置为24日（平安夜）
-  .setHour(18)         // 设置为晚上6点
-  .setMinute(0)        // 设置为整点
-  .setSecond(0)        // 设置秒为0
-  .startOfDay()        // 重置为当日开始
-  .add(18, 'hour')     // 加18小时（晚上6点）
+  .month(12)        // 设置为12月
+  .date(24)         // 设置为24日（平安夜）
+  .hour(18)         // 设置为晚上6点
+  .minute(0)        // 设置为整点
+  .second(0)        // 设置秒为0
+  .startOfDay()     // 重置为当日开始
+  .add(18, 'hour')  // 加18小时（晚上6点）
   .format('YYYY年MM月DD日 HH:mm:ss');
 
 console.log('计算平安夜晚6点:', christmasEve);
@@ -196,7 +196,7 @@ console.log('\n📊 12. 月末日期计算测试');
 const monthEndInstance = TimeUtils.create('2025-02-15')
   .endOfMonth();
 console.log('2月月末:', monthEndInstance.format('YYYY-MM-DD HH:mm:ss'));
-console.log('是否为2月28日:', monthEndInstance.date() === 28);
+console.log('是否为2月28日:', monthEndInstance.getDate() === 28);
 
 // 测试13: 时间库切换演示
 console.log('\n🔄 13. 时间库切换演示');
@@ -217,7 +217,7 @@ try {
   // 链式调用测试
   const xDateChain: string = TimeUtils.now()
     .add(7, 'day')
-    .setHour(9)
+    .hour(9)
     .format('YYYY年MM月DD日 HH:mm:ss');
   console.log('XDate 链式调用:', xDateChain);
 
@@ -237,7 +237,7 @@ const startTime = Date.now();
 for (let i = 0; i < 10; i++) {
   const batchTime = TimeUtils.now()
     .add(i, 'day')
-    .setHour(12)
+    .hour(12)
     .format('YYYY-MM-DD HH:mm:ss');
   if (i < 3) {
     console.log(`第${i + 1}次操作结果:`, batchTime);

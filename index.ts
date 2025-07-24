@@ -387,7 +387,8 @@ export function isSame(timeObj1: TimeObject, timeObj2: TimeObject): boolean {
 /**
  * 导出时间库类型常量，供应用层使用
  */
-export { TimeLibraryType, TimeLibraryTypeValue, TimeUnit, TimeObject };
+export { TimeLibraryType };
+export type { TimeLibraryTypeValue, TimeUnit, TimeObject };
 
 /**
  * 时间实例类，支持链式调用

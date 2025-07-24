@@ -1,4 +1,4 @@
-import { TimeLibraryFactory, TimeLibraryType } from '../TimeLibraryFactory.js';
+import { TimeLibraryType } from '../TimeLibraryFactory.js';
 import { DayjsTimeLibrary } from '../implementations/DayjsTimeLibrary.js';
 import { XDateTimeLibrary } from '../implementations/XDateTimeLibrary.js';
 

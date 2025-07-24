@@ -25,7 +25,6 @@ import {
   isBefore,
   isAfter,
   isSame,
-  type TimeObject
 } from '../index';
 
 describe('时间库抽象层基础功能测试', () => {
