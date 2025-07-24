@@ -1,19 +1,35 @@
 {
-  "name": "adate",
+  "name": "adate-time-library",
   "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
-  },
+  "description": "时间库抽象层",
+  "main": "index.ts",
   "type": "module",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "dev": "tsx test.ts",
+    "build": "tsc",
+    "start": "node dist/test.js"
+  },
   "dependencies": {
-    "dayjs": "^1.11.13"
+    "dayjs": "^1.11.10"
   },
   "devDependencies": {
-    "jest": "^30.0.4"
-  }
+    "@types/jest": "^29.5.0",
+    "@types/node": "^20.0.0",
+    "jest": "^29.5.0",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0"
+  },
+  "keywords": [
+    "time",
+    "date",
+    "typescript",
+    "abstraction"
+  ],
+  "author": "",
+  "license": "MIT"
 }

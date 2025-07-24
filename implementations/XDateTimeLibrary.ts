@@ -392,13 +392,23 @@ export class XDateTimeLibrary extends ITimeLibrary {
   private _formatDate(timeObj: TimeObject, format: string): string {
     // 简单的格式化示例，实际应使用 xDate 的格式化功能
     if (format === 'YYYY-MM-DD HH:mm:ss') {
-      return timeObj.toISOString().slice(0, 19).replace('T', ' ');
+      // 修复时区问题，使用本地时间而不是UTC时间
+      const year = timeObj.getFullYear();
+      const month = String(timeObj.getMonth() + 1).padStart(2, '0');
+      const date = String(timeObj.getDate()).padStart(2, '0');
+      const hours = String(timeObj.getHours()).padStart(2, '0');
+      const minutes = String(timeObj.getMinutes()).padStart(2, '0');
+      const seconds = String(timeObj.getSeconds()).padStart(2, '0');
+      return `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
     }
     if (format === 'YYYY年MM月DD日') {
       return `${timeObj.getFullYear()}年${String(timeObj.getMonth() + 1).padStart(2, '0')}月${String(timeObj.getDate()).padStart(2, '0')}日`;
     }
     if (format === 'YYYY-MM-DD') {
-      return timeObj.toISOString().slice(0, 10);
+      const year = timeObj.getFullYear();
+      const month = String(timeObj.getMonth() + 1).padStart(2, '0');
+      const date = String(timeObj.getDate()).padStart(2, '0');
+      return `${year}-${month}-${date}`;
     }
     return timeObj.toString();
   }

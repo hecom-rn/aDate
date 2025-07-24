@@ -1,12 +1,18 @@
 import dayjs, { Dayjs } from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import weekOfYear from 'dayjs/plugin/weekOfYear';
+import quarterOfYear from 'dayjs/plugin/quarterOfYear';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { ITimeLibrary, TimeUnit, TimeObject } from '../interfaces/ITimeLibrary';
 import { zoneConfig } from '../config';
 
 // 启用插件
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.extend(weekOfYear);
+dayjs.extend(quarterOfYear);
+dayjs.extend(customParseFormat);
 
 /**
  * Dayjs 时间库实现
