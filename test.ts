@@ -160,7 +160,7 @@ const chainResult1: string = TimeUtils.now()
   .format('YYYY年MM月DD日 HH:mm:ss');
 console.log('复杂链式操作结果:', chainResult1);
 
-// 测试10: TimeInstance 的所有方法
+// 测试10: TimeInstance 的所���方法
 console.log('\n🎯 10. TimeInstance 完整方法测试');
 const timeInstance = TimeUtils.create('2025-12-25 15:30:45');
 console.log('原始时间:', timeInstance.format('YYYY-MM-DD HH:mm:ss'));
@@ -169,7 +169,7 @@ console.log('获取月份:', timeInstance.getMonth());
 console.log('获取日期:', timeInstance.getDate());
 console.log('获取星期:', timeInstance.getDay());
 console.log('获取小时:', timeInstance.getHour());
-console.log('获取分钟:', timeInstance.getMinute());
+console.log('获取���钟:', timeInstance.getMinute());
 console.log('获取秒:', timeInstance.getSecond());
 console.log('获取毫秒:', timeInstance.getMillisecond());
 console.log('是否为闰年:', timeInstance.isLeapYear());
@@ -198,8 +198,41 @@ const monthEndInstance = TimeUtils.create('2025-02-15')
 console.log('2月月末:', monthEndInstance.format('YYYY-MM-DD HH:mm:ss'));
 console.log('是否为2月28日:', monthEndInstance.getDate() === 28);
 
-// 测试13: 时间库切换演示
-console.log('\n🔄 13. 时间库切换演示');
+// 测试13: UTC功能测试
+console.log('\n🌐 13. UTC功能测试 (TimeUtils.utc)');
+
+// 创建UTC时间
+const utcTime = TimeUtils.utc('2025-07-25 12:00:00');
+console.log('UTC时间:', utcTime.format('YYYY-MM-DD HH:mm:ss'));
+
+// 创建本地时间进行对比
+const localTime = TimeUtils.create('2025-07-25 12:00:00');
+console.log('本地时间:', localTime.format('YYYY-MM-DD HH:mm:ss'));
+
+// 获取时间戳对比
+console.log('UTC时间戳:', utcTime.valueOf());
+console.log('本地时间戳:', localTime.valueOf());
+console.log('时间戳差值:', Math.abs(utcTime.valueOf() - localTime.valueOf()), '毫秒');
+
+// UTC链式调用测试
+const utcChain = TimeUtils.utc('2025-01-01')
+  .add(6, 'month')
+  .date(25)
+  .hour(15)
+  .format('YYYY-MM-DD HH:mm:ss');
+
+console.log('UTC链式调用结果:', utcChain);
+
+// 比较UTC与dayjs.utc的一致性测试
+const utcInstance = TimeUtils.utc();
+console.log('当前UTC时间:', utcInstance.format('YYYY-MM-DD HH:mm:ss'));
+console.log('UTC年份:', utcInstance.getYear());
+console.log('UTC月份:', utcInstance.getMonth());
+console.log('UTC日期:', utcInstance.getDate());
+console.log('UTC小时:', utcInstance.getHour());
+
+// 测试14: 时间库切换演示
+console.log('\n🔄 14. 时间库切换演示');
 console.log('当前使用:', getCurrentTimeLibrary());
 
 // 切换到 XDate 演示

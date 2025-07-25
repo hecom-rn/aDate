@@ -69,6 +69,15 @@ export function createTime(input?: string | number | Date, timezone?: string): T
 }
 
 /**
+ * 创建UTC时间对象
+ * @param input - 输入时间
+ * @returns UTC时间对象
+ */
+export function createUtcTime(input?: string | number | Date): TimeObject {
+  return timeLibraryFactory.getInstance().createUtc(input);
+}
+
+/**
  * 获取当前时间对象
  * @param timezone - 时区
  * @returns 当前时间对象
@@ -656,6 +665,16 @@ export const TimeUtils = {
    */
   create(input?: string | number | Date, timezone?: string): TimeInstance {
     const timeObj: TimeObject = createTime(input, timezone);
+    return new TimeInstance(timeObj);
+  },
+
+  /**
+   * 创建UTC时间工具实例
+   * @param input - 输入时间
+   * @returns UTC时间工具实例
+   */
+  utc(input?: string | number | Date): TimeInstance {
+    const timeObj: TimeObject = createUtcTime(input);
     return new TimeInstance(timeObj);
   },
 

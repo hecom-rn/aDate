@@ -55,6 +55,13 @@ export class DayjsTimeLibrary extends ITimeLibrary {
   }
 
   /**
+   * 创建UTC时间对象
+   */
+  createUtc(input?: string | number | Date): TimeObject {
+    return this.lib.utc(input);
+  }
+
+  /**
    * 格式化时间
    */
   format(timeObj: TimeObject, format: string, timezone?: string): string {

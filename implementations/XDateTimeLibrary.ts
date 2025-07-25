@@ -43,6 +43,17 @@ export class XDateTimeLibrary extends ITimeLibrary {
   }
 
   /**
+   * 创建UTC时间对象
+   */
+  createUtc(input?: string | number | Date): TimeObject {
+    // 使用 UTC 方法创建时间对象
+    const date: Date = input ? new Date(input) : new Date();
+    // 标记为 UTC 时间
+    (date as any)._isUtc = true;
+    return date;
+  }
+
+  /**
    * 格式化时间
    */
   format(timeObj: TimeObject, format: string, timezone?: string): string {
