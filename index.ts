@@ -418,6 +418,13 @@ export class TimeInstance {
   }
 
   /**
+   * 获取UTC偏移量（分钟）
+   */
+  utcOffset(): number {
+    return getUtcOffset(this.timeObj);
+  }
+
+  /**
    * 格式化
    */
   format(format: string, timezone?: string): string {

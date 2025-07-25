@@ -856,4 +856,401 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       expect(isToday(tomorrowTime)).toBe(false);
     });
   });
+  describe('UTC功能对比', () => {
+    test('UTC转换应该与 dayjs.utc() 一致', () => {
+      const testDate = '2025-07-24 15:30:45';
+
+      // 测试TimeInstance的utc方法
+      const timeUtilsUtc = TimeUtils.create(testDate).utc();
+      const dayjsUtc = dayjs(testDate).utc();
+
+      // 比较格式化结果
+      expect(timeUtilsUtc.format('YYYY-MM-DD HH:mm:ss')).toBe(
+          dayjsUtc.format('YYYY-MM-DD HH:mm:ss')
+      );
+
+      // 比较时间戳
+      expect(timeUtilsUtc.valueOf()).toBe(dayjsUtc.valueOf());
+    });
+
+    test('UTC时间的各个部分应该与 dayjs 一致', () => {
+      const testDate = '2025-07-24 15:30:45';
+
+      const timeUtilsUtc = TimeUtils.create(testDate).utc();
+      const dayjsUtc = dayjs(testDate).utc();
+
+      expect(timeUtilsUtc.getYear()).toBe(dayjsUtc.year());
+      expect(timeUtilsUtc.getMonth()).toBe(dayjsUtc.month());
+      expect(timeUtilsUtc.getDate()).toBe(dayjsUtc.date());
+      expect(timeUtilsUtc.getHour()).toBe(dayjsUtc.hour());
+      expect(timeUtilsUtc.getMinute()).toBe(dayjsUtc.minute());
+      expect(timeUtilsUtc.getSecond()).toBe(dayjsUtc.second());
+      expect(timeUtilsUtc.getMillisecond()).toBe(dayjsUtc.millisecond());
+    });
+
+    test('UTC偏移量应该与 dayjs.utcOffset() 一致', () => {
+      const testDate = '2025-07-24 15:30:45';
+
+      const timeInstance = TimeUtils.create(testDate);
+      const dayjsTime = dayjs(testDate);
+
+      // 比较UTC偏移量
+      expect(timeInstance.utcOffset()).toBe(dayjsTime.utcOffset());
+    });
+
+    test('不同时区的UTC偏移量应该正确', () => {
+      const testDate = '2025-07-24 15:30:45';
+
+      // 测试本地时间的UTC偏移量
+      const localTimeInstance = TimeUtils.create(testDate);
+      const localDayjsTime = dayjs(testDate);
+
+      expect(localTimeInstance.utcOffset()).toBe(localDayjsTime.utcOffset());
+
+      // 测试UTC时间的偏移量应该是0
+      const utcTimeInstance = TimeUtils.create(testDate).utc();
+      const utcDayjsTime = dayjs(testDate).utc();
+
+      expect(utcTimeInstance.utcOffset()).toBe(utcDayjsTime.utcOffset());
+      expect(utcTimeInstance.utcOffset()).toBe(0);
+    });
+
+    test('UTC时间链式操作应该与 dayjs 一致', () => {
+      const testDate = '2025-07-24 15:30:45';
+
+      // 测试UTC后的链式操作
+      const timeUtilsChain = TimeUtils.create(testDate)
+          .utc()
+          .add(1, 'hour')
+          .format('YYYY-MM-DD HH:mm:ss');
+
+      const dayjsChain = dayjs(testDate)
+          .utc()
+          .add(1, 'hour')
+          .format('YYYY-MM-DD HH:mm:ss');
+
+      expect(timeUtilsChain).toBe(dayjsChain);
+    });
+
+    test('UTC时间操作后的UTC偏移量应该保持为0', () => {
+      const testDate = '2025-07-24 15:30:45';
+
+      // 进行各种操作后UTC偏移量应该仍然是0
+      const timeUtilsAfterOps = TimeUtils.create(testDate)
+          .utc()
+          .add(1, 'day')
+          .hour(12)
+          .minute(30);
+
+      const dayjsAfterOps = dayjs(testDate)
+          .utc()
+          .add(1, 'day')
+          .hour(12)
+          .minute(30);
+
+      expect(timeUtilsAfterOps.utcOffset()).toBe(0);
+      expect(dayjsAfterOps.utcOffset()).toBe(0);
+      expect(timeUtilsAfterOps.utcOffset()).toBe(dayjsAfterOps.utcOffset());
+    });
+
+    test('多种日期格式的UTC转换应该一致', () => {
+      const testDates = [
+        '2025-07-24 15:30:45',
+        '2025/07/24 15:30:45',
+        '2025-07-24T15:30:45',
+        '2025-07-24T15:30:45Z',
+        1721813445000 // 时间戳
+      ];
+
+      testDates.forEach(testDate => {
+        const timeUtilsUtc = TimeUtils.create(testDate).utc();
+        const dayjsUtc = dayjs(testDate).utc();
+
+        expect(timeUtilsUtc.valueOf()).toBe(dayjsUtc.valueOf());
+        expect(timeUtilsUtc.format('YYYY-MM-DD HH:mm:ss')).toBe(
+            dayjsUtc.format('YYYY-MM-DD HH:mm:ss')
+        );
+      });
+    });
+
+    test('UTC时间的边界操作应该与 dayjs 一致', () => {
+      const testDate = '2025-07-24 15:30:45';
+
+      // 测试UTC时间的日开始和结束
+      const timeUtilsStartOfDay = TimeUtils.create(testDate).utc().startOfDay();
+      const dayjsStartOfDay = dayjs(testDate).utc().startOf('day');
+
+      const timeUtilsEndOfDay = TimeUtils.create(testDate).utc().endOfDay();
+      const dayjsEndOfDay = dayjs(testDate).utc().endOf('day');
+
+      expect(timeUtilsStartOfDay.format('YYYY-MM-DD HH:mm:ss')).toBe(
+          dayjsStartOfDay.format('YYYY-MM-DD HH:mm:ss')
+      );
+      expect(timeUtilsEndOfDay.format('YYYY-MM-DD HH:mm:ss')).toBe(
+          dayjsEndOfDay.format('YYYY-MM-DD HH:mm:ss')
+      );
+
+      // 测试UTC时间的月开始和结束
+      const timeUtilsStartOfMonth = TimeUtils.create(testDate).utc().startOfMonth();
+      const dayjsStartOfMonth = dayjs(testDate).utc().startOf('month');
+
+      const timeUtilsEndOfMonth = TimeUtils.create(testDate).utc().endOfMonth();
+      const dayjsEndOfMonth = dayjs(testDate).utc().endOf('month');
+
+      expect(timeUtilsStartOfMonth.format('YYYY-MM-DD HH:mm:ss')).toBe(
+          dayjsStartOfMonth.format('YYYY-MM-DD HH:mm:ss')
+      );
+      expect(timeUtilsEndOfMonth.format('YYYY-MM-DD HH:mm:ss')).toBe(
+          dayjsEndOfMonth.format('YYYY-MM-DD HH:mm:ss')
+      );
+    });
+
+    test('UTC时间比较应该与 dayjs 一致', () => {
+      const date1 = '2025-07-24 10:00:00';
+      const date2 = '2025-07-24 15:00:00';
+
+      const timeUtils1Utc = TimeUtils.create(date1).utc();
+      const timeUtils2Utc = TimeUtils.create(date2).utc();
+
+      const dayjs1Utc = dayjs(date1).utc();
+      const dayjs2Utc = dayjs(date2).utc();
+
+      expect(timeUtils1Utc.isBefore(timeUtils2Utc.toObject())).toBe(
+          dayjs1Utc.isBefore(dayjs2Utc)
+      );
+      expect(timeUtils2Utc.isAfter(timeUtils1Utc.toObject())).toBe(
+          dayjs2Utc.isAfter(dayjs1Utc)
+      );
+    });
+
+    test('utcOffset方法应该与 dayjs.utcOffset() 完全一致', () => {
+      const testDates = [
+        '2025-07-24 15:30:45',
+        '2025-01-01 00:00:00',
+        '2025-12-31 23:59:59',
+        '2024-02-29 12:00:00', // 闰年
+        new Date().toISOString()
+      ];
+
+      testDates.forEach(testDate => {
+        const timeInstance = TimeUtils.create(testDate);
+        const dayjsTime = dayjs(testDate);
+
+        // 本地时间的UTC偏移量应该一致
+        expect(timeInstance.utcOffset()).toBe(dayjsTime.utcOffset());
+      });
+    });
+
+    test('UTC转换后utcOffset应该为0', () => {
+      const testDates = [
+        '2025-07-24 15:30:45',
+        '2025-01-01 00:00:00',
+        '2025-12-31 23:59:59',
+        1721813445000 // 时间戳
+      ];
+
+      testDates.forEach(testDate => {
+        const timeUtilsUtc = TimeUtils.create(testDate).utc();
+        const dayjsUtc = dayjs(testDate).utc();
+
+        // UTC时间的偏移量都应该是0
+        expect(timeUtilsUtc.utcOffset()).toBe(0);
+        expect(dayjsUtc.utcOffset()).toBe(0);
+        expect(timeUtilsUtc.utcOffset()).toBe(dayjsUtc.utcOffset());
+      });
+    });
+
+    test('链式操作中utcOffset应该保持正确', () => {
+      const testDate = '2025-07-24 15:30:45';
+
+      // 本地时间进行操作后，utcOffset应该保持不变
+      const originalOffset = TimeUtils.create(testDate).utcOffset();
+      const originalDayjsOffset = dayjs(testDate).utcOffset();
+
+      const timeUtilsAfterOps = TimeUtils.create(testDate)
+          .add(1, 'day')
+          .hour(10)
+          .minute(30);
+
+      const dayjsAfterOps = dayjs(testDate)
+          .add(1, 'day')
+          .hour(10)
+          .minute(30);
+
+      expect(timeUtilsAfterOps.utcOffset()).toBe(originalOffset);
+      expect(dayjsAfterOps.utcOffset()).toBe(originalDayjsOffset);
+      expect(timeUtilsAfterOps.utcOffset()).toBe(dayjsAfterOps.utcOffset());
+
+      // UTC时间进行操作后，utcOffset应该保持为0
+      const timeUtilsUtcAfterOps = TimeUtils.create(testDate)
+          .utc()
+          .add(1, 'day')
+          .hour(10)
+          .minute(30);
+
+      const dayjsUtcAfterOps = dayjs(testDate)
+          .utc()
+          .add(1, 'day')
+          .hour(10)
+          .minute(30);
+
+      expect(timeUtilsUtcAfterOps.utcOffset()).toBe(0);
+      expect(dayjsUtcAfterOps.utcOffset()).toBe(0);
+      expect(timeUtilsUtcAfterOps.utcOffset()).toBe(dayjsUtcAfterOps.utcOffset());
+    });
+
+    test('边界时间的utcOffset应该与 dayjs 一致', () => {
+      const testDate = '2025-07-24 15:30:45';
+
+      // 测试startOfDay的utcOffset
+      const timeUtilsStartDay = TimeUtils.create(testDate).startOfDay();
+      const dayjsStartDay = dayjs(testDate).startOf('day');
+
+      expect(timeUtilsStartDay.utcOffset()).toBe(dayjsStartDay.utcOffset());
+
+      // 测试endOfDay的utcOffset
+      const timeUtilsEndDay = TimeUtils.create(testDate).endOfDay();
+      const dayjsEndDay = dayjs(testDate).endOf('day');
+
+      expect(timeUtilsEndDay.utcOffset()).toBe(dayjsEndDay.utcOffset());
+
+      // 测试UTC边界时间的utcOffset
+      const timeUtilsUtcStartDay = TimeUtils.create(testDate).utc().startOfDay();
+      const dayjsUtcStartDay = dayjs(testDate).utc().startOf('day');
+
+      expect(timeUtilsUtcStartDay.utcOffset()).toBe(0);
+      expect(dayjsUtcStartDay.utcOffset()).toBe(0);
+      expect(timeUtilsUtcStartDay.utcOffset()).toBe(dayjsUtcStartDay.utcOffset());
+    });
+
+    test('不同类型输入的utcOffset应该一致', () => {
+      const now = new Date();
+      const timestamp = now.getTime();
+      const isoString = now.toISOString();
+      const dateString = '2025-07-24 15:30:45';
+
+      const inputs = [
+        { type: 'timestamp', value: timestamp },
+        { type: 'isoString', value: isoString },
+        { type: 'dateString', value: dateString },
+        { type: 'dateObject', value: now }
+      ];
+
+      inputs.forEach(({ type, value }) => {
+        const timeInstance = TimeUtils.create(value);
+        const dayjsTime = dayjs(value);
+
+        expect(timeInstance.utcOffset()).toBe(dayjsTime.utcOffset());
+
+        // 测试UTC转换后的utcOffset
+        const timeInstanceUtc = TimeUtils.create(value).utc();
+        const dayjsTimeUtc = dayjs(value).utc();
+
+        expect(timeInstanceUtc.utcOffset()).toBe(0);
+        expect(dayjsTimeUtc.utcOffset()).toBe(0);
+        expect(timeInstanceUtc.utcOffset()).toBe(dayjsTimeUtc.utcOffset());
+      });
+    });
+
+    test('utcOffset在复杂链式操作中应该保持正确', () => {
+      const testDate = '2025-07-24 15:30:45';
+
+      // 复杂的本地时间链式操作
+      const complexLocalChain = TimeUtils.create(testDate)
+          .add(1, 'month')
+          .startOfMonth()
+          .add(15, 'day')
+          .hour(12)
+          .minute(30)
+          .second(45);
+
+      const complexDayjsLocalChain = dayjs(testDate)
+          .add(1, 'month')
+          .startOf('month')
+          .add(15, 'day')
+          .hour(12)
+          .minute(30)
+          .second(45);
+
+      expect(complexLocalChain.utcOffset()).toBe(complexDayjsLocalChain.utcOffset());
+
+      // 复杂的UTC时间链式操作
+      const complexUtcChain = TimeUtils.create(testDate)
+          .utc()
+          .add(1, 'month')
+          .startOfMonth()
+          .add(15, 'day')
+          .hour(12)
+          .minute(30)
+          .second(45);
+
+      const complexDayjsUtcChain = dayjs(testDate)
+          .utc()
+          .add(1, 'month')
+          .startOf('month')
+          .add(15, 'day')
+          .hour(12)
+          .minute(30)
+          .second(45);
+
+      expect(complexUtcChain.utcOffset()).toBe(0);
+      expect(complexDayjsUtcChain.utcOffset()).toBe(0);
+      expect(complexUtcChain.utcOffset()).toBe(complexDayjsUtcChain.utcOffset());
+    });
+
+    test('跨时区边界的utcOffset应该正确处理', () => {
+      // 测试跨年边界
+      const yearEnd = '2024-12-31 23:59:59';
+      const yearStart = '2025-01-01 00:00:01';
+
+      [yearEnd, yearStart].forEach(testDate => {
+        const timeInstance = TimeUtils.create(testDate);
+        const dayjsTime = dayjs(testDate);
+
+        expect(timeInstance.utcOffset()).toBe(dayjsTime.utcOffset());
+
+        const timeInstanceUtc = TimeUtils.create(testDate).utc();
+        const dayjsTimeUtc = dayjs(testDate).utc();
+
+        expect(timeInstanceUtc.utcOffset()).toBe(0);
+        expect(dayjsTimeUtc.utcOffset()).toBe(0);
+      });
+
+      // 测试闰年边界
+      const leapYear = '2024-02-29 12:00:00';
+      const timeInstance = TimeUtils.create(leapYear);
+      const dayjsTime = dayjs(leapYear);
+
+      expect(timeInstance.utcOffset()).toBe(dayjsTime.utcOffset());
+
+      const timeInstanceUtc = TimeUtils.create(leapYear).utc();
+      const dayjsTimeUtc = dayjs(leapYear).utc();
+
+      expect(timeInstanceUtc.utcOffset()).toBe(0);
+      expect(dayjsTimeUtc.utcOffset()).toBe(0);
+    });
+
+    test('utcOffset与时间戳的关系应该与 dayjs 一致', () => {
+      const testDate = '2025-07-24 15:30:45';
+
+      const timeInstance = TimeUtils.create(testDate);
+      const dayjsTime = dayjs(testDate);
+
+      // 同一时刻的本地时间和UTC时间应该有相同的时间戳但不同的utcOffset
+      const timeInstanceUtc = TimeUtils.create(testDate).utc();
+      const dayjsTimeUtc = dayjs(testDate).utc();
+
+      // 时间戳应该相同
+      expect(timeInstance.valueOf()).toBe(dayjsTime.valueOf());
+      expect(timeInstanceUtc.valueOf()).toBe(dayjsTimeUtc.valueOf());
+      expect(timeInstance.valueOf()).toBe(timeInstanceUtc.valueOf());
+
+      // 但是utcOffset应该不同（除非本地时间就是UTC）
+      if (timeInstance.utcOffset() !== 0) {
+        expect(timeInstance.utcOffset()).not.toBe(timeInstanceUtc.utcOffset());
+      }
+      expect(timeInstanceUtc.utcOffset()).toBe(0);
+      expect(dayjsTimeUtc.utcOffset()).toBe(0);
+    });
+  });
 });
