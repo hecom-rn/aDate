@@ -179,6 +179,13 @@ export class DayjsTimeLibrary extends ITimeLibrary {
   }
 
   /**
+   * 获取年份中的第几周
+   */
+  week(timeObj: TimeObject): number {
+    return timeObj.week();
+  }
+
+  /**
    * 获取小时（0-23）
    */
   hour(timeObj: TimeObject): number {
@@ -281,6 +288,34 @@ export class DayjsTimeLibrary extends ITimeLibrary {
    */
   endOfDay(timeObj: TimeObject): TimeObject {
     return timeObj.endOf('day');
+  }
+
+  /**
+   * 获取当前周的开始时间
+   */
+  startOfWeek(timeObj: TimeObject): TimeObject {
+    return timeObj.startOf('week');
+  }
+
+  /**
+   * 获取当前周的结束时间
+   */
+  endOfWeek(timeObj: TimeObject): TimeObject {
+    return timeObj.endOf('week');
+  }
+
+  /**
+   * 获取当前季度的开始时间
+   */
+  startOfQuarter(timeObj: TimeObject): TimeObject {
+    return timeObj.startOf('quarter');
+  }
+
+  /**
+   * 获取当前年的开始时间
+   */
+  startOfYear(timeObj: TimeObject): TimeObject {
+    return timeObj.startOf('year');
   }
 
   /**

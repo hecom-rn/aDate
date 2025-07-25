@@ -1,7 +1,7 @@
 /**
  * 时间单位类型
  */
-export type TimeUnit = 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second' | 'millisecond';
+export type TimeUnit = 'year' | 'quarter' | 'month' | 'week' | 'day' | 'hour' | 'minute' | 'second' | 'millisecond';
 
 /**
  * 时间对象类型（通用）
@@ -143,6 +143,13 @@ export abstract class ITimeLibrary {
   abstract day(timeObj: TimeObject): number;
 
   /**
+   * 获取年份中的第几周
+   * @param timeObj - 时间对象
+   * @returns 周数
+   */
+  abstract week(timeObj: TimeObject): number;
+
+  /**
    * 获取小时（0-23）
    * @param timeObj - 时间对象
    * @returns 小时
@@ -253,6 +260,34 @@ export abstract class ITimeLibrary {
    * @returns 日末时间对象
    */
   abstract endOfDay(timeObj: TimeObject): TimeObject;
+
+  /**
+   * 获取当前周的开始时间
+   * @param timeObj - 时间对象
+   * @returns 周初时间对象
+   */
+  abstract startOfWeek(timeObj: TimeObject): TimeObject;
+
+  /**
+   * 获取当前周的结束时间
+   * @param timeObj - 时间对象
+   * @returns 周末时间对象
+   */
+  abstract endOfWeek(timeObj: TimeObject): TimeObject;
+
+  /**
+   * 获取当前季度的开始时间
+   * @param timeObj - 时间对象
+   * @returns 季度初时间对象
+   */
+  abstract startOfQuarter(timeObj: TimeObject): TimeObject;
+
+  /**
+   * 获取当前年的开始时间
+   * @param timeObj - 时间对象
+   * @returns 年初时间对象
+   */
+  abstract startOfYear(timeObj: TimeObject): TimeObject;
 
   /**
    * 判断是否为闰年

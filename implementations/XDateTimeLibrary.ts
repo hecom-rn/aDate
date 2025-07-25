@@ -198,6 +198,29 @@ export class XDateTimeLibrary extends ITimeLibrary {
   }
 
   /**
+   * 获取年份中的第几周
+   */
+  week(timeObj: TimeObject): number {
+    // 使用 ISO 8601 标准计算周数
+    const date = new Date(timeObj.getTime());
+    const yearStart = new Date(date.getFullYear(), 0, 1);
+    const weekStart = new Date(yearStart.getTime());
+
+    // 找到该年第一个星期四（ISO 8601 标准）
+    const dayOfWeek = yearStart.getDay();
+    const daysToThursday = dayOfWeek <= 4 ? 4 - dayOfWeek : 11 - dayOfWeek;
+    weekStart.setDate(yearStart.getDate() + daysToThursday - 3); // 周一
+
+    if (date < weekStart) {
+      // 如果日期在第一周之前，属于上一年的最后一周
+      const prevYear = new Date(date.getFullYear() - 1, 0, 1);
+      return this._calculateWeekNumber(date, prevYear);
+    }
+
+    return this._calculateWeekNumber(date, yearStart);
+  }
+
+  /**
    * 获取小时（0-23）
    */
   hour(timeObj: TimeObject): number {
@@ -338,6 +361,56 @@ export class XDateTimeLibrary extends ITimeLibrary {
   }
 
   /**
+   * 获取当前周的开始时间
+   */
+  startOfWeek(timeObj: TimeObject): TimeObject {
+    const newDate: Date = new Date(timeObj.getTime());
+    const day = newDate.getDay(); // 0 = 星期日, 1 = 星期一, ...
+    const diff = newDate.getDate() - day; // 计算到本周星期日的日期差
+    newDate.setDate(diff);
+    newDate.setHours(0, 0, 0, 0);
+    (newDate as any)._timezone = timeObj._timezone;
+    return newDate;
+  }
+
+  /**
+   * 获取当前周的结束时间
+   */
+  endOfWeek(timeObj: TimeObject): TimeObject {
+    const newDate: Date = new Date(timeObj.getTime());
+    const day = newDate.getDay(); // 0 = 星期日, 1 = 星期一, ...
+    const diff = newDate.getDate() + (6 - day); // 计算到本周星期六的日期差
+    newDate.setDate(diff);
+    newDate.setHours(23, 59, 59, 999);
+    (newDate as any)._timezone = timeObj._timezone;
+    return newDate;
+  }
+
+  /**
+   * 获取当前季度的开始时间
+   */
+  startOfQuarter(timeObj: TimeObject): TimeObject {
+    const newDate: Date = new Date(timeObj.getTime());
+    const quarter = Math.floor(newDate.getMonth() / 3); // 0, 1, 2, 3
+    const quarterStartMonth = quarter * 3; // 0, 3, 6, 9
+    newDate.setMonth(quarterStartMonth, 1); // 设置到季度第一个月的第一天
+    newDate.setHours(0, 0, 0, 0);
+    (newDate as any)._timezone = timeObj._timezone;
+    return newDate;
+  }
+
+  /**
+   * 获取当前年的开始时间
+   */
+  startOfYear(timeObj: TimeObject): TimeObject {
+    const newDate: Date = new Date(timeObj.getTime());
+    newDate.setMonth(0, 1); // 设置到一月第一天
+    newDate.setHours(0, 0, 0, 0);
+    (newDate as any)._timezone = timeObj._timezone;
+    return newDate;
+  }
+
+  /**
    * 判断是否为闰年
    */
   isLeapYear(timeObj: TimeObject): boolean {
@@ -422,5 +495,14 @@ export class XDateTimeLibrary extends ITimeLibrary {
       return `${year}-${month}-${date}`;
     }
     return timeObj.toString();
+  }
+
+  /**
+   * 计算给定日期在给定年份中的周数
+   */
+  private _calculateWeekNumber(date: Date, yearStart: Date): number {
+    const diff = date.getTime() - yearStart.getTime();
+    const oneWeek = 7 * 24 * 60 * 60 * 1000;
+    return Math.floor(diff / oneWeek) + 1;
   }
 }

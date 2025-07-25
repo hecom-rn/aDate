@@ -195,6 +195,15 @@ export function getDay(timeObj: TimeObject): number {
 }
 
 /**
+ * 获取年份中的第几周
+ * @param timeObj - 时间对象
+ * @returns 周数
+ */
+export function getWeek(timeObj: TimeObject): number {
+  return timeLibraryFactory.getInstance().week(timeObj);
+}
+
+/**
  * 获取小时（0-23）
  * @param timeObj - 时间对象
  * @returns 小时
@@ -307,6 +316,42 @@ export function setMillisecond(timeObj: TimeObject, value: number): TimeObject {
  */
 export function startOfMonth(timeObj: TimeObject): TimeObject {
   return timeLibraryFactory.getInstance().startOfMonth(timeObj);
+}
+
+/**
+ * 获取当前周的开始时间
+ * @param timeObj - 时间对象
+ * @returns 周初时间对象
+ */
+export function startOfWeek(timeObj: TimeObject): TimeObject {
+  return timeLibraryFactory.getInstance().startOfWeek(timeObj);
+}
+
+/**
+ * 获取当前周的结束时间
+ * @param timeObj - 时间对象
+ * @returns 周末时间对象
+ */
+export function endOfWeek(timeObj: TimeObject): TimeObject {
+  return timeLibraryFactory.getInstance().endOfWeek(timeObj);
+}
+
+/**
+ * 获取当前季度的开始时间
+ * @param timeObj - 时间对象
+ * @returns 季度初时间对象
+ */
+export function startOfQuarter(timeObj: TimeObject): TimeObject {
+  return timeLibraryFactory.getInstance().startOfQuarter(timeObj);
+}
+
+/**
+ * 获取当前年的开始时间
+ * @param timeObj - 时间对象
+ * @returns 年初时间对象
+ */
+export function startOfYear(timeObj: TimeObject): TimeObject {
+  return timeLibraryFactory.getInstance().startOfYear(timeObj);
 }
 
 /**
@@ -506,6 +551,13 @@ export class TimeInstance {
   }
 
   /**
+   * 获取年份中的第几周
+   */
+  getWeek(): number {
+    return getWeek(this.timeObj);
+  }
+
+  /**
    * 获取小时（0-23）
    */
   getHour(): number {
@@ -595,6 +647,38 @@ export class TimeInstance {
   startOfMonth(): TimeInstance {
     this.timeObj = startOfMonth(this.timeObj);
     return this;
+  }
+
+  /**
+   * 获取本周的开始时间（星期日 00:00:00）
+   */
+  startOfWeek(): TimeInstance {
+    const newTimeObj = startOfWeek(this.timeObj);
+    return new TimeInstance(newTimeObj);
+  }
+
+  /**
+   * 获取本周的结束时间（星期六 23:59:59.999）
+   */
+  endOfWeek(): TimeInstance {
+    const newTimeObj = endOfWeek(this.timeObj);
+    return new TimeInstance(newTimeObj);
+  }
+
+  /**
+   * 获取当前季度的开始时间
+   */
+  startOfQuarter(): TimeInstance {
+    const newTimeObj = startOfQuarter(this.timeObj);
+    return new TimeInstance(newTimeObj);
+  }
+
+  /**
+   * 获取当前年的开始时间
+   */
+  startOfYear(): TimeInstance {
+    const newTimeObj = startOfYear(this.timeObj);
+    return new TimeInstance(newTimeObj);
   }
 
   /**

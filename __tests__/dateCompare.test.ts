@@ -49,7 +49,7 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
 
       // 格式化后应该相同
       expect(timeUtilsTime.format('YYYY-MM-DD HH:mm:ss')).toBe(
-        dayjsTime.format('YYYY-MM-DD HH:mm:ss')
+          dayjsTime.format('YYYY-MM-DD HH:mm:ss')
       );
     });
 
@@ -66,7 +66,7 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
         const dayjsTime = dayjs(input);
 
         expect(timeUtilsTime.format('YYYY-MM-DD')).toBe(
-          dayjsTime.format('YYYY-MM-DD')
+            dayjsTime.format('YYYY-MM-DD')
         );
       });
     });
@@ -133,42 +133,42 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const timeUtilsYear = TimeUtils.create(baseDate).year(2026);
       const dayjsYear = dayjs(baseDate).year(2026);
       expect(timeUtilsYear.format('YYYY-MM-DD HH:mm:ss')).toBe(
-        dayjsYear.format('YYYY-MM-DD HH:mm:ss')
+          dayjsYear.format('YYYY-MM-DD HH:mm:ss')
       );
 
       // 测试设置月份
       const timeUtilsMonth = TimeUtils.create(baseDate).month(11);  // 使用0-11的月份标准
       const dayjsMonth = dayjs(baseDate).month(11); // dayjs 月份是 0-11
       expect(timeUtilsMonth.format('YYYY-MM-DD HH:mm:ss')).toBe(
-        dayjsMonth.format('YYYY-MM-DD HH:mm:ss')
+          dayjsMonth.format('YYYY-MM-DD HH:mm:ss')
       );
 
       // 测试设置日期
       const timeUtilsDate = TimeUtils.create(baseDate).date(1);
       const dayjsDate = dayjs(baseDate).date(1);
       expect(timeUtilsDate.format('YYYY-MM-DD HH:mm:ss')).toBe(
-        dayjsDate.format('YYYY-MM-DD HH:mm:ss')
+          dayjsDate.format('YYYY-MM-DD HH:mm:ss')
       );
 
       // 测试设置小时
       const timeUtilsHour = TimeUtils.create(baseDate).hour(0);
       const dayjsHour = dayjs(baseDate).hour(0);
       expect(timeUtilsHour.format('YYYY-MM-DD HH:mm:ss')).toBe(
-        dayjsHour.format('YYYY-MM-DD HH:mm:ss')
+          dayjsHour.format('YYYY-MM-DD HH:mm:ss')
       );
 
       // 测试设置分钟
       const timeUtilsMinute = TimeUtils.create(baseDate).minute(0);
       const dayjsMinute = dayjs(baseDate).minute(0);
       expect(timeUtilsMinute.format('YYYY-MM-DD HH:mm:ss')).toBe(
-        dayjsMinute.format('YYYY-MM-DD HH:mm:ss')
+          dayjsMinute.format('YYYY-MM-DD HH:mm:ss')
       );
 
       // 测试设置秒
       const timeUtilsSecond = TimeUtils.create(baseDate).second(0);
       const dayjsSecond = dayjs(baseDate).second(0);
       expect(timeUtilsSecond.format('YYYY-MM-DD HH:mm:ss')).toBe(
-        dayjsSecond.format('YYYY-MM-DD HH:mm:ss')
+          dayjsSecond.format('YYYY-MM-DD HH:mm:ss')
       );
     });
 
@@ -176,22 +176,22 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const baseDate = '2025-07-24 15:30:45';
 
       const timeUtilsResult = TimeUtils.create(baseDate)
-        .year(2026)
-        .month(11)  // 使用0-11的月份标准，11表示12月
-        .date(25)
-        .hour(0)
-        .minute(0)
-        .second(0)
-        .format('YYYY-MM-DD HH:mm:ss');
+          .year(2026)
+          .month(11)  // 使用0-11的月份标准，11表示12月
+          .date(25)
+          .hour(0)
+          .minute(0)
+          .second(0)
+          .format('YYYY-MM-DD HH:mm:ss');
 
       const dayjsResult = dayjs(baseDate)
-        .year(2026)
-        .month(11) // dayjs 月份是 0-11
-        .date(25)
-        .hour(0)
-        .minute(0)
-        .second(0)
-        .format('YYYY-MM-DD HH:mm:ss');
+          .year(2026)
+          .month(11) // dayjs 月份是 0-11
+          .date(25)
+          .hour(0)
+          .minute(0)
+          .second(0)
+          .format('YYYY-MM-DD HH:mm:ss');
 
       expect(timeUtilsResult).toBe(dayjsResult);
     });
@@ -211,12 +211,12 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
 
       units.forEach(({ unit, amount }) => {
         const timeUtilsResult = TimeUtils.create(baseDate)
-          .add(amount, unit)
-          .format('YYYY-MM-DD HH:mm:ss');
+            .add(amount, unit)
+            .format('YYYY-MM-DD HH:mm:ss');
 
         const dayjsResult = dayjs(baseDate)
-          .add(amount, unit)
-          .format('YYYY-MM-DD HH:mm:ss');
+            .add(amount, unit)
+            .format('YYYY-MM-DD HH:mm:ss');
 
         expect(timeUtilsResult).toBe(dayjsResult);
       });
@@ -235,12 +235,12 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
 
       units.forEach(({ unit, amount }) => {
         const timeUtilsResult = TimeUtils.create(baseDate)
-          .subtract(amount, unit)
-          .format('YYYY-MM-DD HH:mm:ss');
+            .subtract(amount, unit)
+            .format('YYYY-MM-DD HH:mm:ss');
 
         const dayjsResult = dayjs(baseDate)
-          .subtract(amount, unit)
-          .format('YYYY-MM-DD HH:mm:ss');
+            .subtract(amount, unit)
+            .format('YYYY-MM-DD HH:mm:ss');
 
         expect(timeUtilsResult).toBe(dayjsResult);
       });
@@ -295,18 +295,18 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const testDate = '2025-07-15 14:30:25';
 
       const timeUtilsStart = TimeUtils.create(testDate)
-        .startOfMonth()
-        .format('YYYY-MM-DD HH:mm:ss');
+          .startOfMonth()
+          .format('YYYY-MM-DD HH:mm:ss');
       const dayjsStart = dayjs(testDate)
-        .startOf('month')
-        .format('YYYY-MM-DD HH:mm:ss');
+          .startOf('month')
+          .format('YYYY-MM-DD HH:mm:ss');
 
       const timeUtilsEnd = TimeUtils.create(testDate)
-        .endOfMonth()
-        .format('YYYY-MM-DD HH:mm:ss');
+          .endOfMonth()
+          .format('YYYY-MM-DD HH:mm:ss');
       const dayjsEnd = dayjs(testDate)
-        .endOf('month')
-        .format('YYYY-MM-DD HH:mm:ss');
+          .endOf('month')
+          .format('YYYY-MM-DD HH:mm:ss');
 
       expect(timeUtilsStart).toBe(dayjsStart);
       expect(timeUtilsEnd).toBe(dayjsEnd);
@@ -316,18 +316,18 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const testDate = '2025-07-15 14:30:25';
 
       const timeUtilsStart = TimeUtils.create(testDate)
-        .startOfDay()
-        .format('YYYY-MM-DD HH:mm:ss');
+          .startOfDay()
+          .format('YYYY-MM-DD HH:mm:ss');
       const dayjsStart = dayjs(testDate)
-        .startOf('day')
-        .format('YYYY-MM-DD HH:mm:ss');
+          .startOf('day')
+          .format('YYYY-MM-DD HH:mm:ss');
 
       const timeUtilsEnd = TimeUtils.create(testDate)
-        .endOfDay()
-        .format('YYYY-MM-DD HH:mm:ss');
+          .endOfDay()
+          .format('YYYY-MM-DD HH:mm:ss');
       const dayjsEnd = dayjs(testDate)
-        .endOf('day')
-        .format('YYYY-MM-DD HH:mm:ss');
+          .endOf('day')
+          .format('YYYY-MM-DD HH:mm:ss');
 
       expect(timeUtilsStart).toBe(dayjsStart);
       expect(timeUtilsEnd).toBe(dayjsEnd);
@@ -350,16 +350,16 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const dayjsEndDay = dayjsObj.endOf('day');
 
       expect(formatTime(timeUtilsStartMonth, 'YYYY-MM-DD HH:mm:ss')).toBe(
-        dayjsStartMonth.format('YYYY-MM-DD HH:mm:ss')
+          dayjsStartMonth.format('YYYY-MM-DD HH:mm:ss')
       );
       expect(formatTime(timeUtilsEndMonth, 'YYYY-MM-DD HH:mm:ss')).toBe(
-        dayjsEndMonth.format('YYYY-MM-DD HH:mm:ss')
+          dayjsEndMonth.format('YYYY-MM-DD HH:mm:ss')
       );
       expect(formatTime(timeUtilsStartDay, 'YYYY-MM-DD HH:mm:ss')).toBe(
-        dayjsStartDay.format('YYYY-MM-DD HH:mm:ss')
+          dayjsStartDay.format('YYYY-MM-DD HH:mm:ss')
       );
       expect(formatTime(timeUtilsEndDay, 'YYYY-MM-DD HH:mm:ss')).toBe(
-        dayjsEndDay.format('YYYY-MM-DD HH:mm:ss')
+          dayjsEndDay.format('YYYY-MM-DD HH:mm:ss')
       );
     });
 
@@ -380,10 +380,10 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
         const dayjsEndMonth = dayjs(testDate).endOf('month');
 
         expect(timeUtilsStartMonth.format('YYYY-MM-DD HH:mm:ss')).toBe(
-          dayjsStartMonth.format('YYYY-MM-DD HH:mm:ss')
+            dayjsStartMonth.format('YYYY-MM-DD HH:mm:ss')
         );
         expect(timeUtilsEndMonth.format('YYYY-MM-DD HH:mm:ss')).toBe(
-          dayjsEndMonth.format('YYYY-MM-DD HH:mm:ss')
+            dayjsEndMonth.format('YYYY-MM-DD HH:mm:ss')
         );
       });
     });
@@ -404,10 +404,10 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
         const dayjsEndDay = dayjs(testDate).endOf('day');
 
         expect(timeUtilsStartDay.format('YYYY-MM-DD HH:mm:ss')).toBe(
-          dayjsStartDay.format('YYYY-MM-DD HH:mm:ss')
+            dayjsStartDay.format('YYYY-MM-DD HH:mm:ss')
         );
         expect(timeUtilsEndDay.format('YYYY-MM-DD HH:mm:ss')).toBe(
-          dayjsEndDay.format('YYYY-MM-DD HH:mm:ss')
+            dayjsEndDay.format('YYYY-MM-DD HH:mm:ss')
         );
       });
     });
@@ -437,31 +437,31 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
 
       // 测试复杂的链式调用
       const timeUtilsChain = TimeUtils.create(testDate)
-        .startOfMonth()
-        .add(15, 'day')
-        .endOfDay()
-        .format('YYYY-MM-DD HH:mm:ss');
+          .startOfMonth()
+          .add(15, 'day')
+          .endOfDay()
+          .format('YYYY-MM-DD HH:mm:ss');
 
       const dayjsChain = dayjs(testDate)
-        .startOf('month')
-        .add(15, 'day')
-        .endOf('day')
-        .format('YYYY-MM-DD HH:mm:ss');
+          .startOf('month')
+          .add(15, 'day')
+          .endOf('day')
+          .format('YYYY-MM-DD HH:mm:ss');
 
       expect(timeUtilsChain).toBe(dayjsChain);
 
       // 测试另一个链式调用
       const timeUtilsChain2 = TimeUtils.create(testDate)
-        .endOfMonth()
-        .startOfDay()
-        .subtract(1, 'month')
-        .format('YYYY-MM-DD HH:mm:ss');
+          .endOfMonth()
+          .startOfDay()
+          .subtract(1, 'month')
+          .format('YYYY-MM-DD HH:mm:ss');
 
       const dayjsChain2 = dayjs(testDate)
-        .endOf('month')
-        .startOf('day')
-        .subtract(1, 'month')
-        .format('YYYY-MM-DD HH:mm:ss');
+          .endOf('month')
+          .startOf('day')
+          .subtract(1, 'month')
+          .format('YYYY-MM-DD HH:mm:ss');
 
       expect(timeUtilsChain2).toBe(dayjsChain2);
     });
@@ -561,12 +561,12 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const jan31 = '2025-01-31';
 
       const timeUtilsResult = TimeUtils.create(jan31)
-        .add(1, 'month')
-        .format('YYYY-MM-DD');
+          .add(1, 'month')
+          .format('YYYY-MM-DD');
 
       const dayjsResult = dayjs(jan31)
-        .add(1, 'month')
-        .format('YYYY-MM-DD');
+          .add(1, 'month')
+          .format('YYYY-MM-DD');
 
       expect(timeUtilsResult).toBe(dayjsResult);
     });
@@ -575,12 +575,12 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const newYear = '2025-01-01';
 
       const timeUtilsResult = TimeUtils.create(newYear)
-        .subtract(1, 'day')
-        .format('YYYY-MM-DD');
+          .subtract(1, 'day')
+          .format('YYYY-MM-DD');
 
       const dayjsResult = dayjs(newYear)
-        .subtract(1, 'day')
-        .format('YYYY-MM-DD');
+          .subtract(1, 'day')
+          .format('YYYY-MM-DD');
 
       expect(timeUtilsResult).toBe(dayjsResult);
     });
@@ -608,9 +608,9 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const timeUtilsStart = Date.now();
       for (let i = 0; i < iterations; i++) {
         TimeUtils.create('2025-07-24 15:30:45')
-          .add(i, 'day')
-          .hour(12)
-          .format('YYYY-MM-DD HH:mm:ss');
+            .add(i, 'day')
+            .hour(12)
+            .format('YYYY-MM-DD HH:mm:ss');
       }
       const timeUtilsDuration = Date.now() - timeUtilsStart;
 
@@ -618,9 +618,9 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const dayjsStart = Date.now();
       for (let i = 0; i < iterations; i++) {
         dayjs('2025-07-24 15:30:45')
-          .add(i, 'day')
-          .hour(12)
-          .format('YYYY-MM-DD HH:mm:ss');
+            .add(i, 'day')
+            .hour(12)
+            .format('YYYY-MM-DD HH:mm:ss');
       }
       const dayjsDuration = Date.now() - dayjsStart;
 
@@ -668,7 +668,7 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const dayjsMs = dayjs(baseDate).millisecond(999);
 
       expect(timeUtilsMs.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe(
-        dayjsMs.format('YYYY-MM-DD HH:mm:ss.SSS')
+          dayjsMs.format('YYYY-MM-DD HH:mm:ss.SSS')
       );
     });
   });
@@ -750,24 +750,24 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const baseDate = '2025-07-24 15:30:45';
 
       const timeUtilsComplex = TimeUtils.create(baseDate)
-        .add(1, 'year')
-        .subtract(2, 'month')
-        .date(15)
-        .hour(9)
-        .minute(30)
-        .second(0)
-        .add(5, 'day')
-        .format('YYYY-MM-DD HH:mm:ss');
+          .add(1, 'year')
+          .subtract(2, 'month')
+          .date(15)
+          .hour(9)
+          .minute(30)
+          .second(0)
+          .add(5, 'day')
+          .format('YYYY-MM-DD HH:mm:ss');
 
       const dayjsComplex = dayjs(baseDate)
-        .add(1, 'year')
-        .subtract(2, 'month')
-        .date(15)
-        .hour(9)
-        .minute(30)
-        .second(0)
-        .add(5, 'day')
-        .format('YYYY-MM-DD HH:mm:ss');
+          .add(1, 'year')
+          .subtract(2, 'month')
+          .date(15)
+          .hour(9)
+          .minute(30)
+          .second(0)
+          .add(5, 'day')
+          .format('YYYY-MM-DD HH:mm:ss');
 
       expect(timeUtilsComplex).toBe(dayjsComplex);
     });
@@ -777,12 +777,12 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const mar31 = '2025-03-31';
 
       const timeUtilsResult = TimeUtils.create(mar31)
-        .subtract(1, 'month')
-        .format('YYYY-MM-DD');
+          .subtract(1, 'month')
+          .format('YYYY-MM-DD');
 
       const dayjsResult = dayjs(mar31)
-        .subtract(1, 'month')
-        .format('YYYY-MM-DD');
+          .subtract(1, 'month')
+          .format('YYYY-MM-DD');
 
       expect(timeUtilsResult).toBe(dayjsResult);
     });
@@ -830,7 +830,7 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
           const dayjsTime = dayjs(date);
 
           expect(timeUtils.format('YYYY-MM-DD HH:mm:ss')).toBe(
-            dayjsTime.format('YYYY-MM-DD HH:mm:ss')
+              dayjsTime.format('YYYY-MM-DD HH:mm:ss')
           );
         } catch (error) {
           console.warn(`处理极值日期 ${date} 时出错:`, error);
