@@ -78,7 +78,7 @@ console.log('毫秒:', getMillisecond(testTime));
 console.log('UTC偏移量:', getUtcOffset(testTime), '分钟');
 
 // 测试3: 设置时间
-console.log('\n⚙️ 3. 设置���间测试');
+console.log('\n⚙️ 3. 设置时间测试');
 let modifiableTime: TimeObject = createTime('2025-01-15 10:30:45');
 console.log('原始时间:', formatTime(modifiableTime, 'YYYY-MM-DD HH:mm:ss'));
 
@@ -199,10 +199,10 @@ console.log('2月月末:', monthEndInstance.format('YYYY-MM-DD HH:mm:ss'));
 console.log('是否为2月28日:', monthEndInstance.getDate() === 28);
 
 // 测试13: UTC功能测试
-console.log('\n🌐 13. UTC功能测试 (TimeUtils.utc)');
+console.log('\n🌐 13. UTC功能测试 (TimeInstance.utc)');
 
-// 创建UTC时间
-const utcTime = TimeUtils.utc('2025-07-25 12:00:00');
+// 创建时间并转换为UTC
+const utcTime = TimeUtils.create('2025-07-25 12:00:00').utc();
 console.log('UTC时间:', utcTime.format('YYYY-MM-DD HH:mm:ss'));
 
 // 创建本地时间进行对比
@@ -215,7 +215,8 @@ console.log('本地时间戳:', localTime.valueOf());
 console.log('时间戳差值:', Math.abs(utcTime.valueOf() - localTime.valueOf()), '毫秒');
 
 // UTC链式调用测试
-const utcChain = TimeUtils.utc('2025-01-01')
+const utcChain = TimeUtils.create('2025-01-01')
+  .utc()
   .add(6, 'month')
   .date(25)
   .hour(15)
@@ -223,8 +224,8 @@ const utcChain = TimeUtils.utc('2025-01-01')
 
 console.log('UTC链式调用结果:', utcChain);
 
-// 比较UTC与dayjs.utc的一致性测试
-const utcInstance = TimeUtils.utc();
+// 当前时间转UTC测试
+const utcInstance = TimeUtils.create().utc();
 console.log('当前UTC时间:', utcInstance.format('YYYY-MM-DD HH:mm:ss'));
 console.log('UTC年份:', utcInstance.getYear());
 console.log('UTC月份:', utcInstance.getMonth());

@@ -410,6 +410,14 @@ export class TimeInstance {
   }
 
   /**
+   * 转换为UTC时间
+   */
+  utc(): TimeInstance {
+    const utcTimeObj: TimeObject = timeLibraryFactory.getInstance().createUtc(this.timeObj);
+    return new TimeInstance(utcTimeObj);
+  }
+
+  /**
    * 格式化
    */
   format(format: string, timezone?: string): string {
@@ -665,16 +673,6 @@ export const TimeUtils = {
    */
   create(input?: string | number | Date, timezone?: string): TimeInstance {
     const timeObj: TimeObject = createTime(input, timezone);
-    return new TimeInstance(timeObj);
-  },
-
-  /**
-   * 创建UTC时间工具实例
-   * @param input - 输入时间
-   * @returns UTC时间工具实例
-   */
-  utc(input?: string | number | Date): TimeInstance {
-    const timeObj: TimeObject = createUtcTime(input);
     return new TimeInstance(timeObj);
   },
 
