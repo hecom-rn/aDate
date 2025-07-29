@@ -136,7 +136,22 @@ export class XDateTimeLibrary extends ITimeLibrary {
    * 获取时间戳
    */
   valueOf(timeObj: TimeObject): number {
-    return timeObj.getTime();
+    // 兼容不同类型的时间对象
+    if (timeObj && typeof timeObj.valueOf === 'function') {
+      return timeObj.valueOf();
+    }
+    if (timeObj && typeof timeObj.getTime === 'function') {
+      return timeObj.getTime();
+    }
+    // 如果是数字或字符串，尝试转换
+    if (typeof timeObj === 'number') {
+      return timeObj;
+    }
+    if (typeof timeObj === 'string') {
+      return new Date(timeObj).getTime();
+    }
+    // 默认情况下，尝试转换为Date
+    return new Date(timeObj).getTime();
   }
 
   /**
@@ -458,6 +473,35 @@ export class XDateTimeLibrary extends ITimeLibrary {
    */
   isSame(timeObj1: TimeObject, timeObj2: TimeObject): boolean {
     return timeObj1.getTime() === timeObj2.getTime();
+  }
+
+  /**
+   * 计算两个时间的差值
+   */
+  diff(timeObj1: TimeObject, timeObj2: TimeObject, unit?: TimeUnit, precise?: boolean): number {
+    // 兼容不同类型的时间对象
+    const time1 = this.valueOf(timeObj1);
+    const time2 = this.valueOf(timeObj2);
+    const diffMs = time1 - time2;
+
+    if (!unit || unit === 'millisecond') {
+      return diffMs;
+    }
+
+    const conversions: Record<TimeUnit, number> = {
+      millisecond: 1,
+      second: 1000,
+      minute: 1000 * 60,
+      hour: 1000 * 60 * 60,
+      day: 1000 * 60 * 60 * 24,
+      week: 1000 * 60 * 60 * 24 * 7,
+      month: 1000 * 60 * 60 * 24 * 30.44, // 平均月份天数
+      quarter: 1000 * 60 * 60 * 24 * 91.31, // 平均季度天数
+      year: 1000 * 60 * 60 * 24 * 365.25 // 平均年份天数（考虑闰年）
+    };
+
+    const result = diffMs / conversions[unit];
+    return precise ? result : Math.floor(result);
   }
 
   // 私有辅助方法

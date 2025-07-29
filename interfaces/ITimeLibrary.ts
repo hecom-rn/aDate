@@ -333,4 +333,14 @@ export abstract class ITimeLibrary {
    * @returns 是否相同
    */
   abstract isSame(timeObj1: TimeObject, timeObj2: TimeObject): boolean;
+
+  /**
+   * 计算两个时间的差值
+   * @param timeObj1 - 时间对象1
+   * @param timeObj2 - 时间对象2
+   * @param unit - 单位（year, month, day, hour, minute, second, millisecond）
+   * @param precise - 是否精确计算（包含小数部分）
+   * @returns 时间差值
+   */
+  abstract diff(timeObj1: TimeObject, timeObj2: TimeObject, unit?: TimeUnit, precise?: boolean): number;
 }

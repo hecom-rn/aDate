@@ -446,6 +446,18 @@ export function isSame(timeObj1: TimeObject, timeObj2: TimeObject): boolean {
 }
 
 /**
+ * 计算两个时间的差值
+ * @param timeObj1 - 时间对象1
+ * @param timeObj2 - 时间对象2
+ * @param unit - 单位（year, month, day, hour, minute, second, millisecond）
+ * @param precise - 是否精确计算（包含小数部分）
+ * @returns 时间差值
+ */
+export function diff(timeObj1: TimeObject, timeObj2: TimeObject, unit?: TimeUnit, precise?: boolean): number {
+  return timeLibraryFactory.getInstance().diff(timeObj1, timeObj2, unit, precise);
+}
+
+/**
  * 导出时间库类型常量，供应用层使用
  */
 export { TimeLibraryType };

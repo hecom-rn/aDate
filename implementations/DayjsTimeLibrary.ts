@@ -378,4 +378,11 @@ export class DayjsTimeLibrary extends ITimeLibrary {
   isSame(timeObj1: TimeObject, timeObj2: TimeObject): boolean {
     return timeObj1.isSame(timeObj2);
   }
+
+  /**
+   * 计算两个时间的差值
+   */
+  diff(timeObj1: TimeObject, timeObj2: TimeObject, unit?: TimeUnit, precise?: boolean): number {
+    return timeObj1.diff(timeObj2, unit, precise);
+  }
 }
