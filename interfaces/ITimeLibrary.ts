@@ -119,42 +119,42 @@ export abstract class ITimeLibrary {
    * @param timeObj - 时间对象
    * @returns 年份
    */
-  abstract year(timeObj: TimeObject): number;
+  abstract year(timeObj: TimeObject, timezone?: string): number;
 
   /**
    * 获取月份（0-11）
    * @param timeObj - 时间对象
    * @returns 月份
    */
-  abstract month(timeObj: TimeObject): number;
+  abstract month(timeObj: TimeObject, timezone?: string): number;
 
   /**
    * 获取日期（1-31）
    * @param timeObj - 时间对象
    * @returns 日期
    */
-  abstract date(timeObj: TimeObject): number;
+  abstract date(timeObj: TimeObject, timezone?: string): number;
 
   /**
    * 获取星期几（0-6，0表示星期日）
    * @param timeObj - 时间对象
    * @returns 星期几
    */
-  abstract day(timeObj: TimeObject): number;
+  abstract day(timeObj: TimeObject, timezone?: string): number;
 
   /**
    * 获取年份中的第几周
    * @param timeObj - 时间对象
    * @returns 周数
    */
-  abstract week(timeObj: TimeObject): number;
+  abstract week(timeObj: TimeObject, timezone?: string): number;
 
   /**
    * 获取小时（0-23）
    * @param timeObj - 时间对象
    * @returns 小时
    */
-  abstract hour(timeObj: TimeObject): number;
+  abstract hour(timeObj: TimeObject, timezone?: string): number;
 
   /**
    * 获取分钟（0-59）

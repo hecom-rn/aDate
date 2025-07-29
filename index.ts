@@ -1,5 +1,6 @@
 import { timeLibraryFactory, TimeLibraryType, TimeLibraryTypeValue } from './TimeLibraryFactory';
 import { TimeUnit, TimeObject } from './interfaces/ITimeLibrary';
+import { zoneConfig } from './config';
 
 /**
  * 时间库统一API
@@ -91,10 +92,11 @@ export function now(timezone?: string): TimeObject {
  * @param timeObj - 时间对象
  * @param format - 格式字符串
  * @param timezone - 时区
+ * @param isDate - 是否根据系统时区调整
  * @returns 格式化后的时间字符串
  */
-export function formatTime(timeObj: TimeObject, format: string, timezone?: string): string {
-  return timeLibraryFactory.getInstance().format(timeObj, format, timezone);
+export function formatTime(timeObj: TimeObject, format: string, isDate: boolean = false, timezone?: string): string {
+  return timeLibraryFactory.getInstance().format(timeObj, format, timezone ? timezone : isDate ? zoneConfig.systemZone : undefined);
 }
 
 /**
@@ -163,53 +165,58 @@ export function getUtcOffset(timeObj: TimeObject): number {
  * @param timeObj - 时间对象
  * @returns 年份
  */
-export function getYear(timeObj: TimeObject): number {
-  return timeLibraryFactory.getInstance().year(timeObj);
+export function getYear(timeObj: TimeObject, isDate: boolean = false): number {
+  return timeLibraryFactory.getInstance().year(timeObj, isDate ? zoneConfig.systemZone : undefined);
 }
 
 /**
  * 获取月份（0-11）
  * @param timeObj - 时间对象
+ * @param isDate - 是否根据系统时区调整
  * @returns 月份
  */
-export function getMonth(timeObj: TimeObject): number {
-  return timeLibraryFactory.getInstance().month(timeObj);
+export function getMonth(timeObj: TimeObject, isDate: boolean = false): number {
+  return timeLibraryFactory.getInstance().month(timeObj, isDate ? zoneConfig.systemZone : undefined);
 }
 
 /**
  * 获取日期（1-31）
  * @param timeObj - 时间对象
+ * @param isDate - 是否根据系统时区调整
  * @returns 日期
  */
-export function getDate(timeObj: TimeObject): number {
-  return timeLibraryFactory.getInstance().date(timeObj);
+export function getDate(timeObj: TimeObject, isDate: boolean = false): number {
+  return timeLibraryFactory.getInstance().date(timeObj, isDate ? zoneConfig.systemZone : undefined);
 }
 
 /**
  * 获取星期几（0-6，0表示星期日）
  * @param timeObj - 时间对象
+ * @param isDate - 是否根据系统时区调整
  * @returns 星期几
  */
-export function getDay(timeObj: TimeObject): number {
-  return timeLibraryFactory.getInstance().day(timeObj);
+export function getDay(timeObj: TimeObject, isDate: boolean = false): number {
+  return timeLibraryFactory.getInstance().day(timeObj, isDate ? zoneConfig.systemZone : undefined);
 }
 
 /**
  * 获取年份中的第几周
  * @param timeObj - 时间对象
+ * @param isDate - 是否根据系统时区调整
  * @returns 周数
  */
-export function getWeek(timeObj: TimeObject): number {
-  return timeLibraryFactory.getInstance().week(timeObj);
+export function getWeek(timeObj: TimeObject, isDate: boolean = false): number {
+  return timeLibraryFactory.getInstance().week(timeObj, isDate ? zoneConfig.systemZone : undefined);
 }
 
 /**
  * 获取小时（0-23）
  * @param timeObj - 时间对象
+ * @param isDate - 是否根据系统时区调整
  * @returns 小时
  */
-export function getHour(timeObj: TimeObject): number {
-  return timeLibraryFactory.getInstance().hour(timeObj);
+export function getHour(timeObj: TimeObject, isDate: boolean = false): number {
+  return timeLibraryFactory.getInstance().hour(timeObj, isDate ? zoneConfig.systemZone : undefined);
 }
 
 /**
@@ -472,8 +479,8 @@ export class TimeInstance {
   /**
    * 格式化
    */
-  format(format: string, timezone?: string): string {
-    return formatTime(this.timeObj, format, timezone);
+  format(format: string, isDate: boolean = false, timezone?: string): string {
+    return formatTime(this.timeObj, format, isDate, timezone);
   }
 
   /**
@@ -525,43 +532,43 @@ export class TimeInstance {
   /**
    * 获取年份
    */
-  getYear(): number {
-    return getYear(this.timeObj);
+  getYear(isDate: boolean = false): number {
+    return getYear(this.timeObj, isDate);
   }
 
   /**
    * 获取月份（0-11）
    */
-  getMonth(): number {
-    return getMonth(this.timeObj);
+  getMonth(isDate: boolean = false): number {
+    return getMonth(this.timeObj, isDate);
   }
 
   /**
    * 获取日期（1-31）
    */
-  getDate(): number {
-    return getDate(this.timeObj);
+  getDate(isDate: boolean = false): number {
+    return getDate(this.timeObj, isDate);
   }
 
   /**
    * 获取星期几（0-6，0表示星期日）
    */
-  getDay(): number {
-    return getDay(this.timeObj);
+  getDay(isDate: boolean = false): number {
+    return getDay(this.timeObj, isDate);
   }
 
   /**
    * 获取年份中的第几周
    */
-  getWeek(): number {
-    return getWeek(this.timeObj);
+  getWeek(isDate: boolean = false): number {
+    return getWeek(this.timeObj, isDate);
   }
 
   /**
    * 获取小时（0-23）
    */
-  getHour(): number {
-    return getHour(this.timeObj);
+  getHour(isDate: boolean = false): number {
+    return getHour(this.timeObj, isDate);
   }
 
   /**

@@ -222,6 +222,38 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       });
     });
 
+    test('aaaa', () => {
+      const timeStamp1 = TimeUtils.create('2025-07-24 15:30:45').valueOf(true);
+      const timeStamp2 = TimeUtils.create('2025-07-24 15:30:45').valueOf();
+      const timeDesc = TimeUtils.create(timeStamp1).format('YYYY-MM-DD HH:mm:ss',true);
+      const hour = TimeUtils.create(timeStamp1).getHour(true);
+      expect(timeDesc).toBe('2025-07-24 15:30:45')
+
+      const dt = '2025-07-24 15:30:45';
+      const firstWeekEnd = '2025-07-24 16:30:45';
+      const end1 = dayjs(dt);
+      const start1 = dayjs(firstWeekEnd);
+      const difTime1 = end1 - start1;
+
+      const end2 = new Date(dt);
+      const start2 = new Date(firstWeekEnd);
+      const difTime2 = end2 - start2;
+
+      const end3 = TimeUtils.create(dt);
+      const start3 = TimeUtils.create(firstWeekEnd);
+      const difTime3 = end3.valueOf() - start3.valueOf();
+
+      console.log(TimeUtils.create().valueOf(), '************TimeUtils.create().valueOf()************');
+      console.log(TimeUtils.now().valueOf(), '************TimeUtils.now().valueOf()************');
+      console.log(dayjs().valueOf(), '************TimeUtils.create().valueOf()************');
+
+      const aaa = dayjs().utc().format('ddd, DD MMM YYYY HH:mm:ss [GMT]');
+      const bbb = dayjs.utc().format('ddd, DD MMM YYYY HH:mm:ss [GMT]');
+      const ccc = TimeUtils.create().utc().format('ddd, DD MMM YYYY HH:mm:ss [GMT]')
+      expect(aaa).toBe(bbb);
+      expect(aaa).toBe(ccc);
+    });
+
     test('时间减法应该与 dayjs 一致', () => {
       const baseDate = '2025-07-24 15:30:45';
       const units: Array<{ unit: any, amount: number }> = [

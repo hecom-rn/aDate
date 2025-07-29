@@ -34,8 +34,8 @@ export class DayjsTimeLibrary extends ITimeLibrary {
     if (isDate) {
       // 计算时区差（分钟）
       const currentOffset: number = targetTime.utcOffset();
-      const systemOffset: number = this.lib().tz(zoneConfig.systemZone).utcOffset();
-      const offsetDiff: number = systemOffset - currentOffset;
+      const systemOffset: number = timeObj.tz(zoneConfig.systemZone).utcOffset();
+      const offsetDiff: number = currentOffset - systemOffset;
 
       // 调整时间戳
       return targetTime.valueOf() + offsetDiff * 60 * 1000;
@@ -153,42 +153,60 @@ export class DayjsTimeLibrary extends ITimeLibrary {
   /**
    * 获取年份
    */
-  year(timeObj: TimeObject): number {
+  year(timeObj: TimeObject, timezone?: string): number {
+    if (timezone) {
+      return timeObj.tz(timezone).year();
+    }
     return timeObj.year();
   }
 
   /**
    * 获取月份（0-11）
    */
-  month(timeObj: TimeObject): number {
+  month(timeObj: TimeObject, timezone?: string): number {
+    if (timezone) {
+      return timeObj.tz(timezone).month();
+    }
     return timeObj.month(); // dayjs 月份是 0-11，直接返回
   }
 
   /**
    * 获取日期（1-31）
    */
-  date(timeObj: TimeObject): number {
+  date(timeObj: TimeObject, timezone?: string): number {
+    if (timezone) {
+      return timeObj.tz(timezone).date();
+    }
     return timeObj.date();
   }
 
   /**
    * 获取星期几（0-6，0表示星期日）
    */
-  day(timeObj: TimeObject): number {
+  day(timeObj: TimeObject, timezone?: string): number {
+    if (timezone) {
+      return timeObj.tz(timezone).day();
+    }
     return timeObj.day();
   }
 
   /**
    * 获取年份中的第几周
    */
-  week(timeObj: TimeObject): number {
+  week(timeObj: TimeObject, timezone?: string): number {
+    if (timezone) {
+      return timeObj.tz(timezone).week();
+    }
     return timeObj.week();
   }
 
   /**
    * 获取小时（0-23）
    */
-  hour(timeObj: TimeObject): number {
+  hour(timeObj: TimeObject, timezone?: string): number {
+    if (timezone) {
+      return timeObj.tz(timezone).hour();
+    }
     return timeObj.hour();
   }
 
