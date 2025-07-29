@@ -385,4 +385,11 @@ export class DayjsTimeLibrary extends ITimeLibrary {
   diff(timeObj1: TimeObject, timeObj2: TimeObject, unit?: TimeUnit, precise?: boolean): number {
     return timeObj1.diff(timeObj2, unit, precise);
   }
+
+  /**
+   * 判断时间对象是否有效
+   */
+  isValid(timeObj: TimeObject): boolean {
+    return timeObj.isValid();
+  }
 }

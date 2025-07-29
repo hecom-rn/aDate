@@ -343,4 +343,11 @@ export abstract class ITimeLibrary {
    * @returns 时间差值
    */
   abstract diff(timeObj1: TimeObject, timeObj2: TimeObject, unit?: TimeUnit, precise?: boolean): number;
+
+  /**
+   * 判断时间对象是否有效
+   * @param timeObj - 时间对象
+   * @returns 是否为有效时间
+   */
+  abstract isValid(timeObj: TimeObject): boolean;
 }

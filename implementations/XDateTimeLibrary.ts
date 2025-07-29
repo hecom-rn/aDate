@@ -549,4 +549,12 @@ export class XDateTimeLibrary extends ITimeLibrary {
     const oneWeek = 7 * 24 * 60 * 60 * 1000;
     return Math.floor(diff / oneWeek) + 1;
   }
+
+  /**
+   * 判断时间对象是否有效
+   */
+  isValid(timeObj: TimeObject): boolean {
+    // 检查是否为有效的Date对象且时间不是NaN
+    return timeObj instanceof Date && !isNaN(timeObj.getTime());
+  }
 }

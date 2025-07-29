@@ -458,6 +458,15 @@ export function diff(timeObj1: TimeObject, timeObj2: TimeObject, unit?: TimeUnit
 }
 
 /**
+ * 判断时间对象是否有效
+ * @param timeObj - 时间对象
+ * @returns 是否为有效时间
+ */
+export function isValid(timeObj: TimeObject): boolean {
+  return timeLibraryFactory.getInstance().isValid(timeObj);
+}
+
+/**
  * 导出时间库类型常量，供应用层使用
  */
 export { TimeLibraryType };
@@ -767,6 +776,13 @@ export class TimeInstance {
   isSame(other: TimeInstance | TimeObject): boolean {
     const otherTimeObj: TimeObject = other instanceof TimeInstance ? other.timeObj : other;
     return isSame(this.timeObj, otherTimeObj);
+  }
+
+  /**
+   * 判断时间对象是否有效
+   */
+  isValid(): boolean {
+    return isValid(this.timeObj);
   }
 }
 

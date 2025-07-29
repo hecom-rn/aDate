@@ -1,6 +1,6 @@
 import { setTimeLibrary, TimeLibraryType, createTime, diff } from '../index';
 
-describe('diff 时间���值计算测试', () => {
+describe('diff 时间差值计算测试', () => {
   beforeEach(() => {
     // 默认使用 Dayjs
     setTimeLibrary(TimeLibraryType.DAYJS);
@@ -110,12 +110,12 @@ describe('diff 时间���值计算测试', () => {
   describe('跨时区测试', () => {
     test('不同时区的时间差值', () => {
       // 创建相同UTC时间但不同时区表示的时间对象
-      const time1 = createTime('2023-01-01T10:00:00+08:00'); // 北京时间
-      const time2 = createTime('2023-01-01T02:00:00+00:00'); // UTC时间，实际是同一时间
+      const time1 = createTime('2023-01-01 10:00:00', 'Asia/Shanghai');
+      const time2 = createTime('2023-01-01 02:00:00', 'UTC');
 
       // 它们实际上是同一时间，差值应该是0或很小
       const result = Math.abs(diff(time1, time2, 'hour'));
-      expect(result).toBeLessThanOrEqual(2); // 放宽误差范围，考虑时区解析差异
+      expect(result).toBeLessThanOrEqual(1); // 允许小的时区误差
     });
   });
 
@@ -155,7 +155,7 @@ describe('diff 时间���值计算测试', () => {
       const dayjsResult = diff(time1, time2, 'hour');
 
       // 测试 XDateTime
-      setTimeLibrary(TimeLibraryType.XDATETIME);
+      setTimeLibrary(TimeLibraryType.XDATE);
       const xdatetimeResult = diff(time1, time2, 'hour');
 
       // 两种实现的结果应该相同
@@ -172,7 +172,7 @@ describe('diff 时间���值计算测试', () => {
       const dayjsResult = diff(time1, time2, 'hour', true);
 
       // 测试 XDateTime
-      setTimeLibrary(TimeLibraryType.XDATETIME);
+      setTimeLibrary(TimeLibraryType.XDATE);
       const xdatetimeResult = diff(time1, time2, 'hour', true);
 
       // 精确计算结果应该接近
