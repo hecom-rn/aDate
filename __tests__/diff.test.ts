@@ -1,4 +1,11 @@
-import { setTimeLibrary, TimeLibraryType, createTime, diff } from '../index';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import { setTimeLibrary, TimeLibraryType, createTime, diff, TimeUtils } from '../index';
+
+// 启用 dayjs 插件
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 describe('diff 时间差值计算测试', () => {
   beforeEach(() => {
@@ -213,6 +220,370 @@ describe('diff 时间差值计算测试', () => {
 
       // 性能测试：1000次计算应该在合理时间内完成（比如500ms）
       expect(duration).toBeLessThan(500);
+    });
+  });
+
+  describe('与 Dayjs diff 方法的详细对比测试', () => {
+    beforeEach(() => {
+      setTimeLibrary(TimeLibraryType.DAYJS);
+    });
+
+    test('毫秒级差值对比', () => {
+      const date1 = '2023-07-24 15:30:45.123';
+      const date2 = '2023-07-24 15:30:45.456';
+
+      const timeObj1 = createTime(date1);
+      const timeObj2 = createTime(date2);
+      const dayjsTime1 = dayjs(date1);
+      const dayjsTime2 = dayjs(date2);
+
+      // 毫秒差值对比
+      expect(diff(timeObj1, timeObj2, 'millisecond')).toBe(dayjsTime1.diff(dayjsTime2, 'millisecond'));
+      expect(diff(timeObj1, timeObj2)).toBe(dayjsTime1.diff(dayjsTime2)); // 默认毫秒
+    });
+
+    test('秒级差值对比', () => {
+      const date1 = '2023-07-24 15:30:45';
+      const date2 = '2023-07-24 15:30:15';
+
+      const timeObj1 = createTime(date1);
+      const timeObj2 = createTime(date2);
+      const dayjsTime1 = dayjs(date1);
+      const dayjsTime2 = dayjs(date2);
+
+      expect(diff(timeObj1, timeObj2, 'second')).toBe(dayjsTime1.diff(dayjsTime2, 'second'));
+    });
+
+    test('分钟级差值对比', () => {
+      const date1 = '2023-07-24 15:45:00';
+      const date2 = '2023-07-24 15:15:00';
+
+      const timeObj1 = createTime(date1);
+      const timeObj2 = createTime(date2);
+      const dayjsTime1 = dayjs(date1);
+      const dayjsTime2 = dayjs(date2);
+
+      expect(diff(timeObj1, timeObj2, 'minute')).toBe(dayjsTime1.diff(dayjsTime2, 'minute'));
+    });
+
+    test('小时级差值对比', () => {
+      const date1 = '2023-07-24 20:00:00';
+      const date2 = '2023-07-24 15:00:00';
+
+      const timeObj1 = createTime(date1);
+      const timeObj2 = createTime(date2);
+      const dayjsTime1 = dayjs(date1);
+      const dayjsTime2 = dayjs(date2);
+
+      expect(diff(timeObj1, timeObj2, 'hour')).toBe(dayjsTime1.diff(dayjsTime2, 'hour'));
+    });
+
+    test('天数差值对比', () => {
+      const testCases = [
+        ['2023-07-30', '2023-07-24'],
+        ['2023-08-01', '2023-07-25'],
+        ['2023-12-31', '2023-01-01'],
+        ['2024-02-29', '2024-02-01'], // 闰年
+      ];
+
+      testCases.forEach(([date1, date2]) => {
+        const timeObj1 = createTime(date1);
+        const timeObj2 = createTime(date2);
+        const dayjsTime1 = dayjs(date1);
+        const dayjsTime2 = dayjs(date2);
+
+        expect(diff(timeObj1, timeObj2, 'day')).toBe(dayjsTime1.diff(dayjsTime2, 'day'));
+      });
+    });
+
+    test('周数差值对比', () => {
+      const testCases = [
+        ['2023-08-07', '2023-07-24'],
+        ['2023-12-25', '2023-01-02'],
+        ['2024-01-15', '2023-12-18'],
+      ];
+
+      testCases.forEach(([date1, date2]) => {
+        const timeObj1 = createTime(date1);
+        const timeObj2 = createTime(date2);
+        const dayjsTime1 = dayjs(date1);
+        const dayjsTime2 = dayjs(date2);
+
+        expect(diff(timeObj1, timeObj2, 'week')).toBe(dayjsTime1.diff(dayjsTime2, 'week'));
+      });
+    });
+
+    test('月份差值对比', () => {
+      const testCases = [
+        ['2023-10-15', '2023-07-15'],
+        ['2024-02-29', '2023-12-01'], // 跨年
+        ['2023-12-31', '2023-01-01'], // 一整年
+        ['2023-03-31', '2023-02-28'], // 月末边界
+      ];
+
+      testCases.forEach(([date1, date2]) => {
+        const timeObj1 = createTime(date1);
+        const timeObj2 = createTime(date2);
+        const dayjsTime1 = dayjs(date1);
+        const dayjsTime2 = dayjs(date2);
+
+        expect(diff(timeObj1, timeObj2, 'month')).toBe(dayjsTime1.diff(dayjsTime2, 'month'));
+      });
+    });
+
+    test('年份差值对比', () => {
+      const testCases = [
+        ['2025-07-24', '2023-07-24'],
+        ['2030-01-01', '2020-12-31'],
+        ['2024-02-29', '2020-02-29'], // 闰年到闰年
+        ['2023-02-28', '2020-02-29'], // 平年到闰年
+      ];
+
+      testCases.forEach(([date1, date2]) => {
+        const timeObj1 = createTime(date1);
+        const timeObj2 = createTime(date2);
+        const dayjsTime1 = dayjs(date1);
+        const dayjsTime2 = dayjs(date2);
+
+        expect(diff(timeObj1, timeObj2, 'year')).toBe(dayjsTime1.diff(dayjsTime2, 'year'));
+      });
+    });
+
+    test('精确计算对比 (float=true)', () => {
+      const testCases = [
+        {
+          date1: '2023-07-24 15:30:00',
+          date2: '2023-07-24 15:00:00',
+          unit: 'hour' as const,
+          expected: 0.5
+        },
+        {
+          date1: '2023-07-24 12:00:00',
+          date2: '2023-07-24 00:00:00',
+          unit: 'day' as const,
+          expected: 0.5
+        },
+        {
+          date1: '2023-07-24 15:15:00',
+          date2: '2023-07-24 15:00:00',
+          unit: 'hour' as const,
+          expected: 0.25
+        }
+      ];
+
+      testCases.forEach(({ date1, date2, unit, expected }) => {
+        const timeObj1 = createTime(date1);
+        const timeObj2 = createTime(date2);
+        const dayjsTime1 = dayjs(date1);
+        const dayjsTime2 = dayjs(date2);
+
+        const ourResult = diff(timeObj1, timeObj2, unit, true);
+        const dayjsResult = dayjsTime1.diff(dayjsTime2, unit, true);
+
+        expect(ourResult).toBeCloseTo(dayjsResult, 6);
+        expect(ourResult).toBeCloseTo(expected, 6);
+      });
+    });
+
+    test('负数差值对比', () => {
+      const testCases = [
+        {
+          date1: '2023-07-20',
+          date2: '2023-07-24',
+          unit: 'day' as const,
+          expected: -4
+        },
+        {
+          date1: '2023-07-24 10:00:00',
+          date2: '2023-07-24 15:00:00',
+          unit: 'hour' as const,
+          expected: -5
+        },
+        {
+          date1: '2023-01-01',
+          date2: '2023-12-31',
+          unit: 'month' as const,
+          expected: -11
+        }
+      ];
+
+      testCases.forEach(({ date1, date2, unit, expected }) => {
+        const timeObj1 = createTime(date1);
+        const timeObj2 = createTime(date2);
+        const dayjsTime1 = dayjs(date1);
+        const dayjsTime2 = dayjs(date2);
+
+        const ourResult = diff(timeObj1, timeObj2, unit);
+        const dayjsResult = dayjsTime1.diff(dayjsTime2, unit);
+
+        expect(ourResult).toBe(dayjsResult);
+        expect(ourResult).toBe(expected);
+      });
+    });
+
+    test('边界时间差值对比', () => {
+      const testCases = [
+        // 年末年初
+        ['2024-01-01 00:00:00', '2023-12-31 23:59:59'],
+        // 月末月初
+        ['2023-08-01 00:00:00', '2023-07-31 23:59:59'],
+        // 闰年2月29日
+        ['2024-03-01', '2024-02-29'],
+        // 夏令时边界（如果支持的话）
+        ['2023-03-13', '2023-03-12'],
+      ];
+
+      testCases.forEach(([date1, date2]) => {
+        const timeObj1 = createTime(date1);
+        const timeObj2 = createTime(date2);
+        const dayjsTime1 = dayjs(date1);
+        const dayjsTime2 = dayjs(date2);
+
+        // 测试多个单位
+        ['millisecond', 'second', 'minute', 'hour', 'day'].forEach(unit => {
+          expect(diff(timeObj1, timeObj2, unit as any)).toBe(
+            dayjsTime1.diff(dayjsTime2, unit as any)
+          );
+        });
+      });
+    });
+
+    test('TimeInstance.diff() 方法对比', () => {
+      const date1 = '2023-07-24 15:30:45';
+      const date2 = '2023-07-24 10:15:30';
+
+      const timeInstance1 = TimeUtils.create(date1);
+      const timeInstance2 = TimeUtils.create(date2);
+      const dayjsTime1 = dayjs(date1);
+      const dayjsTime2 = dayjs(date2);
+
+      // 测试实例方法
+      expect(timeInstance1.diff(timeInstance2, 'hour')).toBe(
+        dayjsTime1.diff(dayjsTime2, 'hour')
+      );
+
+      expect(timeInstance1.diff(timeInstance2.toObject(), 'minute')).toBe(
+        dayjsTime1.diff(dayjsTime2, 'minute')
+      );
+
+      expect(timeInstance1.diff(timeInstance2, 'second', true)).toBeCloseTo(
+        dayjsTime1.diff(dayjsTime2, 'second', true),
+        6
+      );
+    });
+
+    test('链式操作后的diff对比', () => {
+      const baseDate = '2023-07-24 15:30:45';
+
+      // 我们的实现
+      const timeInstance1 = TimeUtils.create(baseDate)
+        .add(1, 'month')
+        .subtract(5, 'day')
+        .hour(10);
+
+      const timeInstance2 = TimeUtils.create(baseDate)
+        .add(2, 'week')
+        .minute(30);
+
+      // dayjs 实现
+      const dayjsTime1 = dayjs(baseDate)
+        .add(1, 'month')
+        .subtract(5, 'day')
+        .hour(10);
+
+      const dayjsTime2 = dayjs(baseDate)
+        .add(2, 'week')
+        .minute(30);
+
+      // 比较结果
+      expect(timeInstance1.diff(timeInstance2, 'day')).toBe(
+        dayjsTime1.diff(dayjsTime2, 'day')
+      );
+
+      expect(timeInstance1.diff(timeInstance2, 'hour')).toBe(
+        dayjsTime1.diff(dayjsTime2, 'hour')
+      );
+    });
+
+    test('UTC时间差值对比', () => {
+      const date1 = '2023-07-24 15:30:45';
+      const date2 = '2023-07-24 10:15:30';
+
+      // 我们的UTC实现
+      const timeUtc1 = TimeUtils.create(date1).utc();
+      const timeUtc2 = TimeUtils.create(date2).utc();
+
+      // dayjs UTC实现
+      const dayjsUtc1 = dayjs(date1).utc();
+      const dayjsUtc2 = dayjs(date2).utc();
+
+      // 比较各种单位的差值
+      ['millisecond', 'second', 'minute', 'hour', 'day'].forEach(unit => {
+        expect(timeUtc1.diff(timeUtc2, unit as any)).toBe(
+          dayjsUtc1.diff(dayjsUtc2, unit as any)
+        );
+      });
+    });
+
+    test('大数值时间差对比', () => {
+      const testCases = [
+        // 很大的时间差
+        ['2030-12-31', '1970-01-01'],
+        // 很小的时间差
+        ['2023-07-24 15:30:45.001', '2023-07-24 15:30:45.000'],
+        // 跨多个年份
+        ['2025-07-24', '2020-01-01'],
+      ];
+
+      testCases.forEach(([date1, date2]) => {
+        const timeObj1 = createTime(date1);
+        const timeObj2 = createTime(date2);
+        const dayjsTime1 = dayjs(date1);
+        const dayjsTime2 = dayjs(date2);
+
+        // 测试年、月、日差值
+        expect(diff(timeObj1, timeObj2, 'year')).toBe(
+          dayjsTime1.diff(dayjsTime2, 'year')
+        );
+        expect(diff(timeObj1, timeObj2, 'month')).toBe(
+          dayjsTime1.diff(dayjsTime2, 'month')
+        );
+        expect(diff(timeObj1, timeObj2, 'day')).toBe(
+          dayjsTime1.diff(dayjsTime2, 'day')
+        );
+      });
+    });
+
+    test('diff计算性能对比', () => {
+      const time1 = createTime('2023-07-24 15:30:45');
+      const time2 = createTime('2023-01-01 00:00:00');
+      const dayjsTime1 = dayjs('2023-07-24 15:30:45');
+      const dayjsTime2 = dayjs('2023-01-01 00:00:00');
+
+      const iterations = 1000;
+
+      // 我们的实现性能测试
+      const ourStart = Date.now();
+      for (let i = 0; i < iterations; i++) {
+        diff(time1, time2, 'day');
+        diff(time1, time2, 'hour');
+        diff(time1, time2, 'minute');
+      }
+      const ourDuration = Date.now() - ourStart;
+
+      // dayjs性能测试
+      const dayjsStart = Date.now();
+      for (let i = 0; i < iterations; i++) {
+        dayjsTime1.diff(dayjsTime2, 'day');
+        dayjsTime1.diff(dayjsTime2, 'hour');
+        dayjsTime1.diff(dayjsTime2, 'minute');
+      }
+      const dayjsDuration = Date.now() - dayjsStart;
+
+      // 性能应该在合理范围内（允许我们的实现比dayjs慢3倍）
+      expect(ourDuration).toBeLessThan(dayjsDuration * 3);
+
+      console.log(`diff性能对比 - 我们的实现: ${ourDuration}ms, Dayjs: ${dayjsDuration}ms`);
     });
   });
 

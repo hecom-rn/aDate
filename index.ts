@@ -784,6 +784,18 @@ export class TimeInstance {
   isValid(): boolean {
     return isValid(this.timeObj);
   }
+
+  /**
+   * 计算与另一个时间的差值
+   * @param other - 另一个时间对象
+   * @param unit - 单位（year, month, day, hour, minute, second, millisecond）
+   * @param precise - 是否精确计算（包含小数部分）
+   * @returns 时间差值
+   */
+  diff(other: TimeInstance | TimeObject, unit?: TimeUnit, precise?: boolean): number {
+    const otherTimeObj: TimeObject = other instanceof TimeInstance ? other.timeObj : other;
+    return diff(this.timeObj, otherTimeObj, unit, precise);
+  }
 }
 
 /**
