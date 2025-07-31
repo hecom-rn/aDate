@@ -40,9 +40,6 @@ describe('时间库抽象层基础功能测试', () => {
     });
 
     test('应该能够切换时间库', () => {
-      setTimeLibrary(TimeLibraryType.XDATE);
-      expect(getCurrentTimeLibrary()).toBe(TimeLibraryType.XDATE);
-
       setTimeLibrary(TimeLibraryType.DAYJS);
       expect(getCurrentTimeLibrary()).toBe(TimeLibraryType.DAYJS);
     });
@@ -263,14 +260,6 @@ describe('时间库切换测试', () => {
     const dayjsTime = createTime('2025-07-24 15:30:00');
     const dayjsFormatted = formatTime(dayjsTime, 'YYYY-MM-DD HH:mm:ss');
 
-    // 切换到 xDate
-    setTimeLibrary(TimeLibraryType.XDATE);
-    const xdateTime = createTime('2025-07-24 15:30:00');
-    const xdateFormatted = formatTime(xdateTime, 'YYYY-MM-DD HH:mm:ss');
-
-    // 两个库的格式化结果应该一致
-    expect(xdateFormatted).toBe('2025-07-24 15:30:00');
-
     // 切换回 dayjs
     setTimeLibrary(TimeLibraryType.DAYJS);
     expect(getCurrentTimeLibrary()).toBe(TimeLibraryType.DAYJS);
@@ -282,7 +271,7 @@ describe('时间库切换测试', () => {
       { input: '2024-02-29 12:00:00', expected: { year: 2024, month: 1, date: 29 } }   // 2月对应索引1
     ];
 
-    [TimeLibraryType.DAYJS, TimeLibraryType.XDATE].forEach(libraryType => {
+    [TimeLibraryType.DAYJS].forEach(libraryType => {
       setTimeLibrary(libraryType);
 
       testCases.forEach(({ input, expected }) => {

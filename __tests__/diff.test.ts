@@ -175,13 +175,6 @@ describe('diff 时间差值计算测试', () => {
       // 测试 Dayjs
       setTimeLibrary(TimeLibraryType.DAYJS);
       const dayjsResult = diff(time1, time2, 'hour');
-
-      // 测试 XDateTime
-      setTimeLibrary(TimeLibraryType.XDATE);
-      const xdatetimeResult = diff(time1, time2, 'hour');
-
-      // 两种实现的结果应该相同
-      expect(dayjsResult).toBe(xdatetimeResult);
       expect(dayjsResult).toBe(5);
     });
 
@@ -192,13 +185,6 @@ describe('diff 时间差值计算测试', () => {
       // 测试 Dayjs
       setTimeLibrary(TimeLibraryType.DAYJS);
       const dayjsResult = diff(time1, time2, 'hour', true);
-
-      // 测试 XDateTime
-      setTimeLibrary(TimeLibraryType.XDATE);
-      const xdatetimeResult = diff(time1, time2, 'hour', true);
-
-      // 精确计算结果应该接近
-      expect(Math.abs(dayjsResult - xdatetimeResult)).toBeLessThan(0.01);
       expect(dayjsResult).toBeCloseTo(0.5, 1);
     });
   });

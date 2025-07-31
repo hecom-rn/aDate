@@ -1,5 +1,4 @@
 import { DayjsTimeLibrary } from './implementations/DayjsTimeLibrary';
-import { XDateTimeLibrary } from './implementations/XDateTimeLibrary';
 import { ITimeLibrary } from './interfaces/ITimeLibrary';
 
 /**
@@ -7,7 +6,7 @@ import { ITimeLibrary } from './interfaces/ITimeLibrary';
  */
 export const TimeLibraryType = {
   DAYJS: 'dayjs',
-  XDATE: 'xdate',
+  // XDATE: 'xdate',
   // 可以继续添加其他时间库
   // MOMENT: 'moment',
   // DATE_FNS: 'date-fns'
@@ -70,9 +69,6 @@ class TimeLibraryFactory {
     switch (this.currentType) {
       case TimeLibraryType.DAYJS:
         this.instance = new DayjsTimeLibrary();
-        break;
-      case TimeLibraryType.XDATE:
-        this.instance = new XDateTimeLibrary();
         break;
       default:
         throw new Error(`Unsupported time library type: ${this.currentType}`);

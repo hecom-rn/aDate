@@ -236,33 +236,6 @@ console.log('UTC小时:', utcInstance.getHour());
 console.log('\n🔄 14. 时间库切换演示');
 console.log('当前使用:', getCurrentTimeLibrary());
 
-// 切换到 XDate 演示
-try {
-  console.log('\n切换到 XDate 库...');
-  setTimeLibrary(TimeLibraryType.XDATE);
-  console.log('切换后的时间库:', getCurrentTimeLibrary());
-
-  // 使用 XDate 库进行相同的操作
-  const xDateTime: TimeObject = now();
-  console.log('XDate 当前时间:', formatTime(xDateTime, 'YYYY-MM-DD HH:mm:ss'));
-  console.log('XDate 年份:', getYear(xDateTime));
-  console.log('XDate 月份:', getMonth(xDateTime));
-
-  // 链式调用测试
-  const xDateChain: string = TimeUtils.now()
-    .add(7, 'day')
-    .hour(9)
-    .format('YYYY年MM月DD日 HH:mm:ss');
-  console.log('XDate 链式调用:', xDateChain);
-
-} catch (error) {
-  console.log('XDate 库切换成功，演示完成');
-} finally {
-  // 切换回 dayjs
-  setTimeLibrary(TimeLibraryType.DAYJS);
-  console.log('切换回 dayjs:', getCurrentTimeLibrary());
-}
-
 // 测试14: 性能对比示例
 console.log('\n⚡ 14. 不同操作的演示');
 const startTime = Date.now();

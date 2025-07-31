@@ -223,6 +223,25 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
     });
 
     test('时间戳和格式化综合测试', () => {
+      const t1 = new Date(2025, 7).getTime();
+      const t2 = TimeUtils.create().year(2025).month(7).startOfMonth().valueOf();
+      console.log(t1, '************t1************');
+      console.log(t2, '************t2************');
+      expect(t1).toBe(t2);
+
+      const t3 = new Date(2025, 0).getTime();
+      const t4 = TimeUtils.create().year(2025).month(0).startOfMonth().valueOf();
+      const t5 = TimeUtils.create().year(2025).startOfYear().valueOf();
+      console.log(t3, '************t3************');
+      console.log(t4, '************t4************');
+      expect(t3).toBe(t4);
+      expect(t5).toBe(t4);
+
+      const current = TimeUtils.create().year(2025).month(3).date(30);
+      const t6 = new Date(current.valueOf()).setDate(current.getDate() - 1);
+      const t7 = current.date(current.getDate() - 1).valueOf();
+      expect(t7).toBe(t6);
+
       const timeStamp1 = TimeUtils.create('2025-07-24 15:30:45').valueOf(true);
       const timeStamp2 = TimeUtils.create('2025-07-24 15:30:45').valueOf();
       const timeDesc = TimeUtils.create(timeStamp1).format('YYYY-MM-DD HH:mm:ss',true);
