@@ -392,4 +392,11 @@ export class DayjsTimeLibrary extends ITimeLibrary {
   isValid(timeObj: TimeObject): boolean {
     return timeObj.isValid();
   }
+
+  /**
+   * 获取 unix 时间戳（秒）
+   */
+  unix(timeObj: TimeObject): number {
+    return this.lib(timeObj).unix();
+  }
 }

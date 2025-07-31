@@ -476,6 +476,15 @@ export function isValid(timeObj: TimeObject): boolean {
 }
 
 /**
+ * 获取 unix 时间戳（秒）
+ * @param timeObj - 时间对象
+ * @returns unix 时间戳（秒）
+ */
+export function unix(timeObj: TimeObject): number {
+  return timeLibraryFactory.getInstance().unix(timeObj);
+}
+
+/**
  * 导出时间库类型常量，供应用层使用
  */
 export { TimeLibraryType };
@@ -792,6 +801,10 @@ export class TimeInstance {
    */
   isValid(): boolean {
     return isValid(this.timeObj);
+  }
+
+  unix(): number {
+    return unix(this.timeObj);
   }
 
   /**

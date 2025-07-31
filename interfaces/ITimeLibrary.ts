@@ -350,4 +350,11 @@ export abstract class ITimeLibrary {
    * @returns 是否为有效时间
    */
   abstract isValid(timeObj: TimeObject): boolean;
+
+  /**
+   * 获取 unix 时间戳（秒）
+   * @param timeObj - 时间对象
+   * @returns unix 时间戳（秒）
+   */
+  abstract unix(timeObj: TimeObject): number;
 }
