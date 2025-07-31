@@ -47,11 +47,11 @@ export class DayjsTimeLibrary extends ITimeLibrary {
   /**
    * 创建时间对象
    */
-  create(input?: string | number | Date, timezone?: string): TimeObject {
+  create(input?: string | number | Date, formatOrOptions?: string | object, timezone?: string): TimeObject {
     if (timezone) {
-      return this.lib(input).tz(timezone);
+      return this.lib(input, formatOrOptions).tz(timezone);
     }
-    return this.lib(input);
+    return this.lib(input, formatOrOptions);
   }
 
   /**

@@ -118,8 +118,8 @@ describe('diff 时间差值计算测试', () => {
     test('不同时区的时间差值', () => {
       // 创建相同UTC时间但不同时区表示的时间对象
       // 上海时间 2023-01-01 10:00:00 对应 UTC 2023-01-01 02:00:00
-      const time1 = createTime('2023-01-01 10:00:00', 'Asia/Shanghai');
-      const time2 = createTime('2023-01-01 02:00:00', 'UTC');
+      const time1 = createTime('2023-01-01 10:00:00', 'YYYY-MM-DD HH:mm:ss', 'Asia/Shanghai');
+      const time2 = createTime('2023-01-01 02:00:00', 'YYYY-MM-DD HH:mm:ss', 'UTC');
 
       // 由于时区处理可能有差异，我们先测试是否能正确计算
       // 如果时区处理正确，这两个时间应该是同一时刻

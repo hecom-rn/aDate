@@ -62,11 +62,12 @@ export function getCurrentTimestamp(isDate: boolean = false): number {
 /**
  * 创建时间对象
  * @param input - 输入时间
+ * @param formatOrOptions - dayjs的第二个参数（格式字符串或配置对象）
  * @param timezone - 时区
  * @returns 时间对象
  */
-export function createTime(input?: string | number | Date, timezone?: string): TimeObject {
-  return timeLibraryFactory.getInstance().create(input, timezone);
+export function createTime(input?: string | number | Date, formatOrOptions?: string | object, timezone?: string): TimeObject {
+  return timeLibraryFactory.getInstance().create(input, formatOrOptions, timezone);
 }
 
 /**
@@ -87,15 +88,6 @@ export function now(timezone?: string): TimeObject {
   return timeLibraryFactory.getInstance().create(undefined, timezone);
 }
 
-function convertFormat(format: string): string {
-  if (!format) return format;
-
-  // 处理常见的格式转换
-  return format
-      .replace(/y/g, 'Y') // 年份统一为4位
-      .replace(/d/g, 'D'); // 日期统一为2位
-}
-
 /**
  * 格式化时间
  * @param timeObj - 时间对象
@@ -105,7 +97,7 @@ function convertFormat(format: string): string {
  * @returns 格式化后的时间字符串
  */
 export function formatTime(timeObj: TimeObject, format: string, isDate: boolean = false, timezone?: string): string {
-  return timeLibraryFactory.getInstance().format(timeObj, convertFormat(format), timezone ? timezone : isDate ? zoneConfig.systemZone : undefined);
+  return timeLibraryFactory.getInstance().format(timeObj, format, timezone ? timezone : isDate ? zoneConfig.systemZone : undefined);
 }
 
 /**
@@ -831,8 +823,8 @@ export const TimeUtils = {
    * @param timezone - 时区
    * @returns 时间工具实例
    */
-  create(input?: string | number | Date, timezone?: string): TimeInstance {
-    const timeObj: TimeObject = createTime(input, timezone);
+  create(input?: string | number | Date, formatOrOptions?: string | object, timezone?: string): TimeInstance {
+    const timeObj: TimeObject = createTime(input, formatOrOptions, timezone);
     return new TimeInstance(timeObj);
   },
 
