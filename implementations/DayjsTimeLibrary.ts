@@ -397,6 +397,13 @@ export class DayjsTimeLibrary extends ITimeLibrary {
    * 获取 unix 时间戳（秒）
    */
   unix(timeObj: TimeObject): number {
-    return this.lib(timeObj).unix();
+    return timeObj.unix();
+  }
+
+  /**
+   * 转为 ISO 字符串
+   */
+  toISOString(timeObj: TimeObject): string {
+    return timeObj.toISOString();
   }
 }

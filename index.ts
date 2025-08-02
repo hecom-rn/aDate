@@ -810,6 +810,13 @@ export class TimeInstance {
     const otherTimeObj: TimeObject = other instanceof TimeInstance ? other.timeObj : other;
     return diff(this.timeObj, otherTimeObj, unit, precise);
   }
+
+  /**
+   * 转为 ISO 字符串
+   */
+  toISOString(): string {
+    return timeLibraryFactory.getInstance().toISOString(this.timeObj);
+  }
 }
 
 /**

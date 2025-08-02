@@ -358,4 +358,10 @@ export abstract class ITimeLibrary {
    * @returns unix 时间戳（秒）
    */
   abstract unix(timeObj: TimeObject): number;
-}
+
+  /**
+   * 转为 ISO 字符串
+   * @param timeObj - 时间对象
+   * @returns ISO 格式字符串
+   */
+  abstract toISOString(timeObj: TimeObject): string;

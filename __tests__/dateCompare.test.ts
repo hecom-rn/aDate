@@ -223,6 +223,24 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
     });
 
     test('时间戳和格式化综合测试', () => {
+      const desc1 = new Date(1721813445000).toISOString();
+      const desc2 = TimeUtils.create(1721813445000).toISOString();
+      expect(desc1).toBe(desc2);
+
+      const timestamp1 = new Date().valueOf();
+      const timestamp2 = TimeUtils.create().valueOf();
+      expect(timestamp1).toBe(timestamp2);
+
+      const current1 = new Date();
+      current1.setHours(0, 0, 0, 0);
+      const day1 = current1.getDate() - 1;
+      const t11 = new Date(current1.getTime()).setDate(current1.getDate() - 1);
+      const current2 = TimeUtils.create().startOfDay();
+      const day2 = current2.getDate() - 1;
+      const t22 = current2.date(current2.getDate() - 1).valueOf();
+      expect(day1).toBe(day2);
+      expect(t11).toBe(t22);
+
       const t1 = new Date(2025, 7).getTime();
       const t2 = TimeUtils.create().year(2025).month(7).startOfMonth().valueOf();
       console.log(t1, '************t1************');
@@ -1589,5 +1607,13 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       expect(timeInstanceUtc.utcOffset()).toBe(0);
       expect(dayjsTimeUtc.utcOffset()).toBe(0);
     });
+  });
+
+  test('unix和toISOString方法对比dayjs', () => {
+    const date = new Date(2025, 7, 1, 12, 34, 56, 789);
+    const timeInstance = TimeUtils.create(date);
+    const dayjsInstance = dayjs(date);
+    expect(timeInstance.unix()).toBe(dayjsInstance.unix());
+    expect(timeInstance.toISOString()).toBe(dayjsInstance.toISOString());
   });
 });
