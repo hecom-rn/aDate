@@ -365,3 +365,4 @@ export abstract class ITimeLibrary {
    * @returns ISO 格式字符串
    */
   abstract toISOString(timeObj: TimeObject): string;
+}
