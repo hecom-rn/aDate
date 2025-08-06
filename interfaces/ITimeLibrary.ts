@@ -372,4 +372,12 @@ export abstract class ITimeLibrary {
    * @returns 克隆的时间对象
    */
   abstract clone(timeObj: TimeObject): TimeObject;
+
+  /**
+   * 设置或获取时间对象的本地化设置
+   * @param timeObj - 时间对象
+   * @param localeString - 本地化字符串（如 'zh-cn', 'en-us'），如果不提供则返回当前的 locale
+   * @returns 如果提供了 localeString，返回新的时间对象；否则返回当前的 locale 字符串
+   */
+  abstract locale(timeObj: TimeObject, localeString?: string): TimeObject | string;
 }

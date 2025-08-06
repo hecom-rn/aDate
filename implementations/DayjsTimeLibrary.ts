@@ -413,4 +413,17 @@ export class DayjsTimeLibrary extends ITimeLibrary {
   clone(timeObj: TimeObject): TimeObject {
     return timeObj.clone();
   }
+
+  /**
+   * 设置或获取时间对象的本地化设置
+   */
+  locale(timeObj: TimeObject, localeString?: string): TimeObject | string {
+    if (localeString) {
+      // 设置 locale 并返回新的时间对象
+      return timeObj.locale(localeString);
+    } else {
+      // 获取当前的 locale
+      return timeObj.locale();
+    }
+  }
 }

@@ -426,6 +426,16 @@ export function cloneTime(timeObj: TimeObject): TimeObject {
 }
 
 /**
+ * 设置或获取时间对象的本地化设置
+ * @param timeObj - 时间对象
+ * @param localeString - 本地化字符串（如 'zh-cn', 'en-us'），如果不提供则返回当前的 locale
+ * @returns 如果提供了 localeString，返回新的时间对象；否则返回当前的 locale 字符串
+ */
+export function locale(timeObj: TimeObject, localeString?: string): TimeObject | string {
+  return timeLibraryFactory.getInstance().locale(timeObj, localeString);
+}
+
+/**
  * 判断时间是否在指定时间之前
  * @param timeObj1 - 时间对象1
  * @param timeObj2 - 时间对象2
@@ -834,6 +844,22 @@ export class TimeInstance {
   clone(): TimeInstance {
     const clonedTimeObj = timeLibraryFactory.getInstance().clone(this.timeObj);
     return new TimeInstance(clonedTimeObj);
+  }
+
+  /**
+   * 设置或获取时间对象的本地化设置
+   * @param localeString - 本地化字符串（如 'zh-cn', 'en-us'），如果不提供则返回当前的 locale
+   * @returns 如果提供了 localeString，返回新的 TimeInstance；否则返回当前的 locale 字符串
+   */
+  locale(localeString?: string): TimeInstance | string {
+    const result = locale(this.timeObj, localeString);
+    if (localeString) {
+      // 如果设置了 locale，返回新的 TimeInstance
+      return new TimeInstance(result as TimeObject);
+    } else {
+      // 如果没有设置 locale，返回当前的 locale 字符串
+      return result as string;
+    }
   }
 }
 
