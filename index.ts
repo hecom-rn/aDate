@@ -436,6 +436,49 @@ export function locale(timeObj: TimeObject, localeString?: string): TimeObject |
 }
 
 /**
+ * 获取星期几的名称数组
+ * @param localOrder - 是否按本地顺序排列
+ * @returns 星期几名称数组
+ */
+export function weekdays(localOrder?: boolean): string[] {
+  return timeLibraryFactory.getInstance().weekdays(localOrder);
+}
+
+/**
+ * 获取星期几的简短名称数组
+ * @param localOrder - 是否按本地顺序排列
+ * @returns 星期几简短名称数组
+ */
+export function weekdaysShort(localOrder?: boolean): string[] {
+  return timeLibraryFactory.getInstance().weekdaysShort(localOrder);
+}
+
+/**
+ * 获取星期几的最短名称数组
+ * @param localOrder - 是否按本地顺序排列
+ * @returns 星期几最短名称数组
+ */
+export function weekdaysMin(localOrder?: boolean): string[] {
+  return timeLibraryFactory.getInstance().weekdaysMin(localOrder);
+}
+
+/**
+ * 获取月份的简短名称数组
+ * @returns 月份简短名称数组
+ */
+export function monthsShort(): string[] {
+  return timeLibraryFactory.getInstance().monthsShort();
+}
+
+/**
+ * 获取月份的名称数组
+ * @returns 月份名称数组
+ */
+export function months(): string[] {
+  return timeLibraryFactory.getInstance().months();
+}
+
+/**
  * 判断时间是否在指定时间之前
  * @param timeObj1 - 时间对象1
  * @param timeObj2 - 时间对象2
@@ -860,6 +903,49 @@ export class TimeInstance {
       // 如果没有设置 locale，返回当前的 locale 字符串
       return result as string;
     }
+  }
+
+  /**
+   * 获取星期几的名称数组
+   * @param localOrder - 是否按本地顺序排列
+   * @returns 星期几名称数组
+   */
+  weekdays(localOrder?: boolean): string[] {
+    return weekdays(localOrder);
+  }
+
+  /**
+   * 获取星期几的简短名称数组
+   * @param localOrder - 是否按本地顺序排列
+   * @returns 星期几简短名称数组
+   */
+  weekdaysShort(localOrder?: boolean): string[] {
+    return weekdaysShort(localOrder);
+  }
+
+  /**
+   * 获取星期几的最短名称数组
+   * @param localOrder - 是否按本地顺序排列
+   * @returns 星期几最短名称数组
+   */
+  weekdaysMin(localOrder?: boolean): string[] {
+    return weekdaysMin(localOrder);
+  }
+
+  /**
+   * 获取月份的简短名称数组
+   * @returns 月份简短名称数组
+   */
+  monthsShort(): string[] {
+    return monthsShort();
+  }
+
+  /**
+   * 获取月份的名称数组
+   * @returns 月份名称数组
+   */
+  months(): string[] {
+    return months();
   }
 }
 

@@ -6,10 +6,12 @@ import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { ITimeLibrary, TimeUnit, TimeObject } from '../interfaces/ITimeLibrary';
 import { zoneConfig } from '../config';
+import localeData from 'dayjs/plugin/localeData';
 
 // 启用插件
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.extend(localeData);
 dayjs.extend(weekOfYear);
 dayjs.extend(quarterOfYear);
 dayjs.extend(customParseFormat);
@@ -425,5 +427,40 @@ export class DayjsTimeLibrary extends ITimeLibrary {
       // 获取当前的 locale
       return timeObj.locale();
     }
+  }
+
+  /**
+   * 获取星期几的名称数组
+   */
+  weekdays(localOrder?: boolean): string[] {
+    return this.lib.weekdays(localOrder);
+  }
+
+  /**
+   * 获取星期几的简短名称数组
+   */
+  weekdaysShort(localOrder?: boolean): string[] {
+    return this.lib.weekdaysShort(localOrder);
+  }
+
+  /**
+   * 获取星期几的最短名称数组
+   */
+  weekdaysMin(localOrder?: boolean): string[] {
+    return this.lib.weekdaysMin(localOrder);
+  }
+
+  /**
+   * 获取月份的简短名称数组
+   */
+  monthsShort(): string[] {
+    return this.lib.monthsShort();
+  }
+
+  /**
+   * 获取月份的名称数组
+   */
+  months(): string[] {
+    return this.lib.months();
   }
 }

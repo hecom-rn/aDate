@@ -380,4 +380,37 @@ export abstract class ITimeLibrary {
    * @returns 如果提供了 localeString，返回新的时间对象；否则返回当前的 locale 字符串
    */
   abstract locale(timeObj: TimeObject, localeString?: string): TimeObject | string;
+
+  /**
+   * 获取星期几的名称数组
+   * @param localOrder - 是否按本地顺序排列
+   * @returns 星期几名称数组
+   */
+  abstract weekdays(localOrder?: boolean): string[];
+
+  /**
+   * 获取星期几的简短名称数组
+   * @param localOrder - 是否按本地顺序排列
+   * @returns 星期几简短名称数组
+   */
+  abstract weekdaysShort(localOrder?: boolean): string[];
+
+  /**
+   * 获取星期几的最短名称数组
+   * @param localOrder - 是否按本地顺序排列
+   * @returns 星期几最短名称数组
+   */
+  abstract weekdaysMin(localOrder?: boolean): string[];
+
+  /**
+   * 获取月份的简短名称数组
+   * @returns 月份简短名称数组
+   */
+  abstract monthsShort(): string[];
+
+  /**
+   * 获取月份的名称数组
+   * @returns 月份名称数组
+   */
+  abstract months(): string[];
 }
