@@ -882,49 +882,6 @@ export class TimeInstance {
     const clonedTimeObj = timeLibraryFactory.getInstance().clone(this.timeObj);
     return new TimeInstance(clonedTimeObj);
   }
-
-  /**
-   * 获取星期几的名称数组
-   * @param localOrder - 是否按本地顺序排列
-   * @returns 星期几名称数组
-   */
-  weekdays(localOrder?: boolean): string[] {
-    return weekdays(localOrder);
-  }
-
-  /**
-   * 获取星期几的简短名称数组
-   * @param localOrder - 是否按本地顺序排列
-   * @returns 星期几简短名称数组
-   */
-  weekdaysShort(localOrder?: boolean): string[] {
-    return weekdaysShort(localOrder);
-  }
-
-  /**
-   * 获取星期几的最短名称数组
-   * @param localOrder - 是否按本地顺序排列
-   * @returns 星期几最短名称数组
-   */
-  weekdaysMin(localOrder?: boolean): string[] {
-    return weekdaysMin(localOrder);
-  }
-
-  /**
-   * 获取月份的简短名称数组
-   * @returns 月份简短名称数组
-   */
-  monthsShort(): string[] {
-    return monthsShort();
-  }
-
-  /**
-   * 获取月份的名称数组
-   * @returns 月份名称数组
-   */
-  months(): string[] {
-    return months();
-  }
 }
 
 /**
@@ -943,15 +900,6 @@ export const TimeUtils = {
     return new TimeInstance(timeObj);
   },
 
-
-    /**
-     * 当前全局本地化设置
-     * @returns 当前本地化字符串
-     */
-    locale(localeStr?: string): string {
-      return locale(localeStr);
-    },
-
   /**
    * 获取当前时间工具实例
    * @param timezone - 时区
@@ -960,5 +908,56 @@ export const TimeUtils = {
   now(timezone?: string): TimeInstance {
     const timeObj: TimeObject = now(timezone);
     return new TimeInstance(timeObj);
-  }
+  },
+
+  /**
+   * 获取星期几的名称数组
+   * @param localOrder - 是否按本地顺序排列
+   * @returns 星期几名称数组
+   */
+  weekdays(localOrder?: boolean): string[] {
+    return weekdays(localOrder);
+  },
+
+  /**
+   * 获取星期几的简短名称数组
+   * @param localOrder - 是否按本地顺序排列
+   * @returns 星期几简短名称数组
+   */
+  weekdaysShort(localOrder?: boolean): string[] {
+    return weekdaysShort(localOrder);
+  },
+
+  /**
+   * 获取星期几的最短名称数组
+   * @param localOrder - 是否按本地顺序排列
+   * @returns 星期几最短名称数组
+   */
+  weekdaysMin(localOrder?: boolean): string[] {
+    return weekdaysMin(localOrder);
+  },
+
+  /**
+   * 获取月份的简短名称数组
+   * @returns 月份简短名称数组
+   */
+  monthsShort(): string[] {
+    return monthsShort();
+  },
+
+  /**
+   * 获取月份的名称数组
+   * @returns 月份名称数组
+   */
+  months(): string[] {
+    return months();
+  },
+
+  /**
+   * 当前全局本地化设置
+   * @returns 当前本地化字符串
+   */
+  locale(localeStr?: string): string {
+    return locale(localeStr);
+  },
 };

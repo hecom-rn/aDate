@@ -77,8 +77,7 @@ describe('TimeUtils.locale 方法单元测试', () => {
     test('应该支持中文 locale (zh-cn)', () => {
       TimeUtils.locale('zh-cn');
 
-      const timeInstance = TimeUtils.create('2025-01-01');
-      const weekdays = timeInstance.weekdays();
+      const weekdays = TimeUtils.weekdays();
 
       expect(weekdays).toContain('星期日');
       expect(weekdays).toContain('星期一');
@@ -88,8 +87,7 @@ describe('TimeUtils.locale 方法单元测试', () => {
     test('应该支持英文 locale (en)', () => {
       TimeUtils.locale('en');
 
-      const timeInstance = TimeUtils.create('2025-01-01');
-      const weekdays = timeInstance.weekdays();
+      const weekdays = TimeUtils.weekdays();
 
       expect(weekdays).toContain('Sunday');
       expect(weekdays).toContain('Monday');
@@ -117,10 +115,9 @@ describe('TimeUtils.locale 方法单元测试', () => {
     test('中文 locale 应该影响 weekdays 输出', () => {
       TimeUtils.locale('zh-cn');
 
-      const timeInstance = TimeUtils.create('2025-01-01');
-      const weekdays = timeInstance.weekdays();
-      const weekdaysShort = timeInstance.weekdaysShort();
-      const months = timeInstance.months();
+      const weekdays = TimeUtils.weekdays();
+      const weekdaysShort = TimeUtils.weekdaysShort();
+      const months = TimeUtils.months();
 
       // 验证中文输出
       expect(weekdays[0]).toBe('星期日');
@@ -135,9 +132,8 @@ describe('TimeUtils.locale 方法单元测试', () => {
     test('英文 locale 应该影响 weekdays 输出', () => {
       TimeUtils.locale('en');
 
-      const timeInstance = TimeUtils.create('2025-01-01');
-      const weekdays = timeInstance.weekdays();
-      const months = timeInstance.months();
+      const weekdays = TimeUtils.weekdays();
+      const months = TimeUtils.months();
 
       // 验证英文输出
       expect(weekdays[0]).toBe('Sunday');
@@ -151,18 +147,15 @@ describe('TimeUtils.locale 方法单元测试', () => {
     test('locale 切换应该立即生效', () => {
       // 设置中文
       TimeUtils.locale('zh-cn');
-      let timeInstance = TimeUtils.create('2025-01-01');
-      expect(timeInstance.weekdays()[0]).toBe('星期日');
+      expect(TimeUtils.weekdays()[0]).toBe('星期日');
 
       // 切换到英文
       TimeUtils.locale('en');
-      timeInstance = TimeUtils.create('2025-01-01');
-      expect(timeInstance.weekdays()[0]).toBe('Sunday');
+      expect(TimeUtils.weekdays()[0]).toBe('Sunday');
 
       // 再切换回中文
       TimeUtils.locale('zh-cn');
-      timeInstance = TimeUtils.create('2025-01-01');
-      expect(timeInstance.weekdays()[0]).toBe('星期日');
+      expect(TimeUtils.weekdays()[0]).toBe('星期日');
     });
   });
 
@@ -214,13 +207,11 @@ describe('TimeUtils.locale 方法单元测试', () => {
         TimeUtils.locale(locale);
         dayjs.locale(locale);
 
-        const timeInstance = TimeUtils.create('2025-01-01');
-
-        expect(timeInstance.weekdays()).toEqual(dayjs.weekdays());
-        expect(timeInstance.weekdaysShort()).toEqual(dayjs.weekdaysShort());
-        expect(timeInstance.weekdaysMin()).toEqual(dayjs.weekdaysMin());
-        expect(timeInstance.months()).toEqual(dayjs.months());
-        expect(timeInstance.monthsShort()).toEqual(dayjs.monthsShort());
+        expect(TimeUtils.weekdays()).toEqual(dayjs.weekdays());
+        expect(TimeUtils.weekdaysShort()).toEqual(dayjs.weekdaysShort());
+        expect(TimeUtils.weekdaysMin()).toEqual(dayjs.weekdaysMin());
+        expect(TimeUtils.months()).toEqual(dayjs.months());
+        expect(TimeUtils.monthsShort()).toEqual(dayjs.monthsShort());
       });
     });
   });

@@ -1619,24 +1619,24 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
     expect(timeInstance.toISOString()).toBe(dayjsInstance.toISOString());
   });
   test('weekdays等方法验证', () => {
-    const dayjsMonths = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
+    const dayjsMonths = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];// monthNames、monthNamesShort
     const dayjsMonthsShort = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
-    const dayjsWeekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+    const dayjsWeekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']; // dayNames
     const dayjsWeekdaysShort = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-    const dayjsWeekdaysMin = ['日', '一', '二', '三', '四', '五', '六'];
+    const dayjsWeekdaysMin = ['日', '一', '二', '三', '四', '五', '六']; // dayNamesShort
 
-    const timeInstance = TimeUtils.create().weekdays();
-    expect(timeInstance).toEqual(dayjsWeekdays);
+    const timeInstanceWeekdays = TimeUtils.weekdays();
+    expect(timeInstanceWeekdays).toEqual(dayjsWeekdays);
 
-    const timeInstanceShort = TimeUtils.create().weekdaysShort(); // 修正：调用正确的方法
+    const timeInstanceShort = TimeUtils.weekdaysShort(); // 修正：调用正确的方法
     expect(timeInstanceShort).toEqual(dayjsWeekdaysShort);
 
-    const timeInstanceMonth = TimeUtils.create().months();
+    const timeInstanceMonth = TimeUtils.months();
     expect(timeInstanceMonth).toEqual(dayjsMonths);
 
-    const timeInstanceMonthShort = TimeUtils.create().monthsShort();
+    const timeInstanceMonthShort = TimeUtils.monthsShort();
     expect(timeInstanceMonthShort).toEqual(dayjsMonthsShort);
-    const weekdaysMin = TimeUtils.create().weekdaysMin();
+    const weekdaysMin = TimeUtils.weekdaysMin();
     expect(weekdaysMin).toEqual(dayjsWeekdaysMin);
   });
 });

@@ -91,9 +91,8 @@ describe('LocaleData 功能测试', () => {
   });
 
   describe('TimeInstance 方法测试', () => {
-    test('TimeInstance.weekdays() 应该返回星期几名称数组', () => {
-      const timeInstance = TimeUtils.create('2024-01-01');
-      const result = timeInstance.weekdays();
+    test('TimeUtils.weekdays() 应该返回星期几名称数组', () => {
+      const result = TimeUtils.weekdays();
       expect(Array.isArray(result)).toBe(true);
       expect(result.length).toBe(7);
 
@@ -102,9 +101,8 @@ describe('LocaleData 功能测试', () => {
       expect(result).toEqual(staticResult);
     });
 
-    test('TimeInstance.weekdays(true) 应该按本地顺序返回星期几名称数组', () => {
-      const timeInstance = TimeUtils.create('2024-01-01');
-      const result = timeInstance.weekdays(true);
+    test('TimeUtils.weekdays(true) 应该按本地顺序返回星期几名称数组', () => {
+      const result = TimeUtils.weekdays(true);
       expect(Array.isArray(result)).toBe(true);
       expect(result.length).toBe(7);
 
@@ -113,9 +111,8 @@ describe('LocaleData 功能测试', () => {
       expect(result).toEqual(staticResult);
     });
 
-    test('TimeInstance.weekdaysShort() 应该返回星期几简短名称数组', () => {
-      const timeInstance = TimeUtils.create('2024-01-01');
-      const result = timeInstance.weekdaysShort();
+    test('TimeUtils.weekdaysShort() 应该返回星期几简短名称数组', () => {
+      const result = TimeUtils.weekdaysShort();
       expect(Array.isArray(result)).toBe(true);
       expect(result.length).toBe(7);
 
@@ -124,9 +121,8 @@ describe('LocaleData 功能测试', () => {
       expect(result).toEqual(staticResult);
     });
 
-    test('TimeInstance.weekdaysMin() 应该返回星期几最短名称数组', () => {
-      const timeInstance = TimeUtils.create('2024-01-01');
-      const result = timeInstance.weekdaysMin();
+    test('TimeUtils.weekdaysMin() 应该返回星期几最短名称数组', () => {
+      const result = TimeUtils.weekdaysMin();
       expect(Array.isArray(result)).toBe(true);
       expect(result.length).toBe(7);
 
@@ -135,9 +131,8 @@ describe('LocaleData 功能测试', () => {
       expect(result).toEqual(staticResult);
     });
 
-    test('TimeInstance.months() 应该返回月份名称数组', () => {
-      const timeInstance = TimeUtils.create('2024-01-01');
-      const result = timeInstance.months();
+    test('TimeUtils.months() 应该返回月份名称数组', () => {
+      const result = TimeUtils.months();
       expect(Array.isArray(result)).toBe(true);
       expect(result.length).toBe(12);
 
@@ -146,9 +141,8 @@ describe('LocaleData 功能测试', () => {
       expect(result).toEqual(staticResult);
     });
 
-    test('TimeInstance.monthsShort() 应该返回月份简短名称数组', () => {
-      const timeInstance = TimeUtils.create('2024-01-01');
-      const result = timeInstance.monthsShort();
+    test('TimeUtils.monthsShort() 应该返回月份简短名称数组', () => {
+      const result = TimeUtils.monthsShort();
       expect(Array.isArray(result)).toBe(true);
       expect(result.length).toBe(12);
 
@@ -191,21 +185,19 @@ describe('LocaleData 功能测试', () => {
       expect(monthsResult).toEqual(dayjs.months());
     });
 
-    test('TimeInstance 在不同 locale 下应该返回正确的名称', () => {
-      const timeInstance = TimeUtils.create('2024-01-01');
-
+    test('TimeUtils 在不同 locale 下应该返回正确的名称', () => {
       // 测试中文
       dayjs.locale('zh-cn');
-      const zhWeekdays = timeInstance.weekdays();
-      const zhMonths = timeInstance.months();
+      const zhWeekdays = TimeUtils.weekdays();
+      const zhMonths = TimeUtils.months();
 
       expect(zhWeekdays).toContain('星期日');
       expect(zhMonths).toContain('一月');
 
       // 测试英文
       dayjs.locale('en');
-      const enWeekdays = timeInstance.weekdays();
-      const enMonths = timeInstance.months();
+      const enWeekdays = TimeUtils.weekdays();
+      const enMonths = TimeUtils.months();
 
       expect(enWeekdays).toContain('Sunday');
       expect(enMonths).toContain('January');
@@ -213,12 +205,13 @@ describe('LocaleData 功能测试', () => {
   });
 
   describe('链式调用测试', () => {
-    test('应该能够在链式调用中使用 locale 相关方法', () => {
+    test('TimeUtils 方法应该独立于时间实例正常工作', () => {
       const timeInstance = TimeUtils.create('2024-01-01');
 
-      // 这些方法不应该影响链式调用
-      const weekdaysResult = timeInstance.add(1, 'day').weekdays();
-      const monthsResult = timeInstance.subtract(1, 'day').months();
+      // 时间操作不应该影响 locale 相关方法
+      timeInstance.add(1, 'day');
+      const weekdaysResult = TimeUtils.weekdays();
+      const monthsResult = TimeUtils.months();
 
       expect(Array.isArray(weekdaysResult)).toBe(true);
       expect(Array.isArray(monthsResult)).toBe(true);
@@ -226,16 +219,16 @@ describe('LocaleData 功能测试', () => {
       expect(monthsResult.length).toBe(12);
     });
 
-    test('locale 相关方法不应该修改原始时间实例', () => {
+    test('locale 相关方法不应该修改时间实例', () => {
       const timeInstance = TimeUtils.create('2024-01-01');
       const originalFormat = timeInstance.format('YYYY-MM-DD');
 
       // 调用 locale 相关方法
-      timeInstance.weekdays();
-      timeInstance.months();
-      timeInstance.weekdaysShort();
-      timeInstance.monthsShort();
-      timeInstance.weekdaysMin();
+      TimeUtils.weekdays();
+      TimeUtils.months();
+      TimeUtils.weekdaysShort();
+      TimeUtils.monthsShort();
+      TimeUtils.weekdaysMin();
 
       // 验证原始时间没有改变
       expect(timeInstance.format('YYYY-MM-DD')).toBe(originalFormat);
@@ -262,11 +255,11 @@ describe('LocaleData 功能测试', () => {
       const instance1 = TimeUtils.create('2024-01-01');
       const instance2 = TimeUtils.create('2024-12-31');
 
-      expect(instance1.weekdays()).toEqual(instance2.weekdays());
-      expect(instance1.months()).toEqual(instance2.months());
-      expect(instance1.weekdaysShort()).toEqual(instance2.weekdaysShort());
-      expect(instance1.monthsShort()).toEqual(instance2.monthsShort());
-      expect(instance1.weekdaysMin()).toEqual(instance2.weekdaysMin());
+      expect(TimeUtils.weekdays()).toEqual(TimeUtils.weekdays());
+      expect(TimeUtils.months()).toEqual(TimeUtils.months());
+      expect(TimeUtils.weekdaysShort()).toEqual(TimeUtils.weekdaysShort());
+      expect(TimeUtils.monthsShort()).toEqual(TimeUtils.monthsShort());
+      expect(TimeUtils.weekdaysMin()).toEqual(TimeUtils.weekdaysMin());
     });
   });
 
@@ -288,17 +281,16 @@ describe('LocaleData 功能测试', () => {
       expect(duration).toBeLessThan(100);
     });
 
-    test('TimeInstance 的 locale 方法应该有良好的性能', () => {
-      const timeInstance = TimeUtils.create('2024-01-01');
+    test('TimeUtils 的 locale 方法应该有良好的性能', () => {
       const iterations = 1000;
 
       const startTime = Date.now();
       for (let i = 0; i < iterations; i++) {
-        timeInstance.weekdays();
-        timeInstance.weekdaysShort();
-        timeInstance.weekdaysMin();
-        timeInstance.months();
-        timeInstance.monthsShort();
+        TimeUtils.weekdays();
+        TimeUtils.weekdaysShort();
+        TimeUtils.weekdaysMin();
+        TimeUtils.months();
+        TimeUtils.monthsShort();
       }
       const duration = Date.now() - startTime;
 
@@ -333,23 +325,21 @@ describe('LocaleData 功能测试', () => {
       });
     });
 
-    test('TimeInstance 方法应该与对应的静态方法返回相同结果', () => {
-      const timeInstance = TimeUtils.create('2024-01-01');
+    test('TimeUtils 方法应该与对应的静态方法返回相同结果', () => {
+      expect(TimeUtils.weekdays()).toEqual(weekdays());
+      expect(TimeUtils.weekdays(true)).toEqual(weekdays(true));
+      expect(TimeUtils.weekdays(false)).toEqual(weekdays(false));
 
-      expect(timeInstance.weekdays()).toEqual(weekdays());
-      expect(timeInstance.weekdays(true)).toEqual(weekdays(true));
-      expect(timeInstance.weekdays(false)).toEqual(weekdays(false));
+      expect(TimeUtils.weekdaysShort()).toEqual(weekdaysShort());
+      expect(TimeUtils.weekdaysShort(true)).toEqual(weekdaysShort(true));
+      expect(TimeUtils.weekdaysShort(false)).toEqual(weekdaysShort(false));
 
-      expect(timeInstance.weekdaysShort()).toEqual(weekdaysShort());
-      expect(timeInstance.weekdaysShort(true)).toEqual(weekdaysShort(true));
-      expect(timeInstance.weekdaysShort(false)).toEqual(weekdaysShort(false));
+      expect(TimeUtils.weekdaysMin()).toEqual(weekdaysMin());
+      expect(TimeUtils.weekdaysMin(true)).toEqual(weekdaysMin(true));
+      expect(TimeUtils.weekdaysMin(false)).toEqual(weekdaysMin(false));
 
-      expect(timeInstance.weekdaysMin()).toEqual(weekdaysMin());
-      expect(timeInstance.weekdaysMin(true)).toEqual(weekdaysMin(true));
-      expect(timeInstance.weekdaysMin(false)).toEqual(weekdaysMin(false));
-
-      expect(timeInstance.months()).toEqual(months());
-      expect(timeInstance.monthsShort()).toEqual(monthsShort());
+      expect(TimeUtils.months()).toEqual(months());
+      expect(TimeUtils.monthsShort()).toEqual(monthsShort());
     });
   });
 });
