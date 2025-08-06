@@ -406,4 +406,11 @@ export class DayjsTimeLibrary extends ITimeLibrary {
   toISOString(timeObj: TimeObject): string {
     return timeObj.toISOString();
   }
+
+  /**
+   * 克隆时间对象
+   */
+  clone(timeObj: TimeObject): TimeObject {
+    return timeObj.clone();
+  }
 }

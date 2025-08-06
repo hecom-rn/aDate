@@ -365,4 +365,11 @@ export abstract class ITimeLibrary {
    * @returns ISO 格式字符串
    */
   abstract toISOString(timeObj: TimeObject): string;
+
+  /**
+   * 克隆时间对象
+   * @param timeObj - 时间对象
+   * @returns 克隆的时间对象
+   */
+  abstract clone(timeObj: TimeObject): TimeObject;
 }

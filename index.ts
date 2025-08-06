@@ -417,6 +417,15 @@ export function isToday(timeObj: TimeObject): boolean {
 }
 
 /**
+ * 克隆时间对象
+ * @param timeObj - 时间对象
+ * @returns 克隆的时间对象
+ */
+export function cloneTime(timeObj: TimeObject): TimeObject {
+  return timeLibraryFactory.getInstance().clone(timeObj);
+}
+
+/**
  * 判断时间是否在指定时间之前
  * @param timeObj1 - 时间对象1
  * @param timeObj2 - 时间对象2
@@ -816,6 +825,15 @@ export class TimeInstance {
    */
   toISOString(): string {
     return timeLibraryFactory.getInstance().toISOString(this.timeObj);
+  }
+
+  /**
+   * 克隆时间实例
+   * @returns 克隆的时间实例
+   */
+  clone(): TimeInstance {
+    const clonedTimeObj = timeLibraryFactory.getInstance().clone(this.timeObj);
+    return new TimeInstance(clonedTimeObj);
   }
 }
 
