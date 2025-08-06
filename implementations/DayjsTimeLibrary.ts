@@ -7,6 +7,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { ITimeLibrary, TimeUnit, TimeObject } from '../interfaces/ITimeLibrary';
 import { zoneConfig } from '../config';
 import localeData from 'dayjs/plugin/localeData';
+import 'dayjs/locale/zh-cn'; // 导入中文语言包
 
 // 启用插件
 dayjs.extend(utc);
@@ -417,19 +418,6 @@ export class DayjsTimeLibrary extends ITimeLibrary {
   }
 
   /**
-   * 设置或获取时间对象的本地化设置
-   */
-  locale(timeObj: TimeObject, localeString?: string): TimeObject | string {
-    if (localeString) {
-      // 设置 locale 并返回新的时间对象
-      return timeObj.locale(localeString);
-    } else {
-      // 获取当前的 locale
-      return timeObj.locale();
-    }
-  }
-
-  /**
    * 获取星期几的名称数组
    */
   weekdays(localOrder?: boolean): string[] {
@@ -462,5 +450,12 @@ export class DayjsTimeLibrary extends ITimeLibrary {
    */
   months(): string[] {
     return this.lib.months();
+  }
+
+  /**
+   * 设置全局本地化设置
+   */
+  locale(localeStr?: string): string {
+    return this.lib.locale(localeStr);
   }
 }

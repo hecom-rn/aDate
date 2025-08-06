@@ -70,6 +70,10 @@ export function createTime(input?: string | number | Date, formatOrOptions?: str
   return timeLibraryFactory.getInstance().create(input, formatOrOptions, timezone);
 }
 
+export function locale(localeStr?: string): string {
+    return timeLibraryFactory.getInstance().locale(localeStr);
+}
+
 /**
  * 创建UTC时间对象
  * @param input - 输入时间
@@ -423,16 +427,6 @@ export function isToday(timeObj: TimeObject): boolean {
  */
 export function cloneTime(timeObj: TimeObject): TimeObject {
   return timeLibraryFactory.getInstance().clone(timeObj);
-}
-
-/**
- * 设置或获取时间对象的本地化设置
- * @param timeObj - 时间对象
- * @param localeString - 本地化字符串（如 'zh-cn', 'en-us'），如果不提供则返回当前的 locale
- * @returns 如果提供了 localeString，返回新的时间对象；否则返回当前的 locale 字符串
- */
-export function locale(timeObj: TimeObject, localeString?: string): TimeObject | string {
-  return timeLibraryFactory.getInstance().locale(timeObj, localeString);
 }
 
 /**
@@ -890,22 +884,6 @@ export class TimeInstance {
   }
 
   /**
-   * 设置或获取时间对象的本地化设置
-   * @param localeString - 本地化字符串（如 'zh-cn', 'en-us'），如果不提供则返回当前的 locale
-   * @returns 如果提供了 localeString，返回新的 TimeInstance；否则返回当前的 locale 字符串
-   */
-  locale(localeString?: string): TimeInstance | string {
-    const result = locale(this.timeObj, localeString);
-    if (localeString) {
-      // 如果设置了 locale，返回新的 TimeInstance
-      return new TimeInstance(result as TimeObject);
-    } else {
-      // 如果没有设置 locale，返回当前的 locale 字符串
-      return result as string;
-    }
-  }
-
-  /**
    * 获取星期几的名称数组
    * @param localOrder - 是否按本地顺序排列
    * @returns 星期几名称数组
@@ -964,6 +942,15 @@ export const TimeUtils = {
     const timeObj: TimeObject = createTime(input, formatOrOptions, timezone);
     return new TimeInstance(timeObj);
   },
+
+
+    /**
+     * 当前全局本地化设置
+     * @returns 当前本地化字符串
+     */
+    locale(localeStr?: string): string {
+      return locale(localeStr);
+    },
 
   /**
    * 获取当前时间工具实例

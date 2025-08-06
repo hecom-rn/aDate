@@ -135,8 +135,8 @@ console.log('时间1 是否与 时间3 相同:', isSame(time1, time3));
 
 // 测试7: 时区转换
 console.log('\n🌍 7. 时区转换测试');
-const beijingTime: TimeObject = createTime('2025-07-24 15:30:00', 'Asia/Shanghai');
-console.log('北京时间:', formatTime(beijingTime, 'YYYY-MM-DD HH:mm:ss'));
+const beijingTime: TimeObject = createTime('2025-07-24 15:30:00');
+console.log('北京时间:', formatTime(beijingTime, 'YYYY-MM-DD HH:mm:ss', 'Asia/Shanghai'));
 const newYorkTime: TimeObject = convertToTimezone(beijingTime, 'America/New_York');
 console.log('纽约时间:', formatTime(newYorkTime, 'YYYY-MM-DD HH:mm:ss'));
 const londonTime: TimeObject = convertToTimezone(beijingTime, 'Europe/London');

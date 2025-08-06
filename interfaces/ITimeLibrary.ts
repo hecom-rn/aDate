@@ -374,14 +374,6 @@ export abstract class ITimeLibrary {
   abstract clone(timeObj: TimeObject): TimeObject;
 
   /**
-   * 设置或获取时间对象的本地化设置
-   * @param timeObj - 时间对象
-   * @param localeString - 本地化字符串（如 'zh-cn', 'en-us'），如果不提供则返回当前的 locale
-   * @returns 如果提供了 localeString，返回新的时间对象；否则返回当前的 locale 字符串
-   */
-  abstract locale(timeObj: TimeObject, localeString?: string): TimeObject | string;
-
-  /**
    * 获取星期几的名称数组
    * @param localOrder - 是否按本地顺序排列
    * @returns 星期几名称数组
@@ -413,4 +405,11 @@ export abstract class ITimeLibrary {
    * @returns 月份名称数组
    */
   abstract months(): string[];
+
+  /**
+   * 设置全局本地化设置
+   * @param localeStr - 本地化字符串（如 'zh-cn', 'en-us'）
+   * @returns 设置后的本地化字符串
+   */
+  abstract locale(localeStr?: string): string;
 }
