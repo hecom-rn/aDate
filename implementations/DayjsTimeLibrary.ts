@@ -67,7 +67,7 @@ export class DayjsTimeLibrary extends ITimeLibrary {
   /**
    * 格式化时间
    */
-  format(timeObj: TimeObject, format: string, timezone?: string): string {
+  format(timeObj: TimeObject, format?: string, timezone?: string): string {
     if (timezone) {
       return timeObj.tz(timezone).format(format);
     }

@@ -100,7 +100,7 @@ export function now(timezone?: string): TimeObject {
  * @param isDate - 是否根据系统时区调整
  * @returns 格式化后的时间字符串
  */
-export function formatTime(timeObj: TimeObject, format: string, isDate: boolean = false, timezone?: string): string {
+export function formatTime(timeObj: TimeObject, format?: string, isDate: boolean = false, timezone?: string): string {
   return timeLibraryFactory.getInstance().format(timeObj, format, timezone ? timezone : isDate ? zoneConfig.systemZone : undefined);
 }
 
@@ -566,7 +566,7 @@ export class TimeInstance {
   /**
    * 格式化
    */
-  format(format: string, isDate: boolean = false, timezone?: string): string {
+  format(format?: string, isDate: boolean = false, timezone?: string): string {
     return formatTime(this.timeObj, format, isDate, timezone);
   }
 

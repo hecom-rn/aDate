@@ -44,7 +44,7 @@ export abstract class ITimeLibrary {
    * @param timezone - 时区
    * @returns 格式化后的时间字符串
    */
-  abstract format(timeObj: TimeObject, format: string, timezone?: string): string;
+  abstract format(timeObj: TimeObject, format?: string, timezone?: string): string;
 
   /**
    * 解析时间字符串
