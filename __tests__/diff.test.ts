@@ -822,8 +822,9 @@ describe('diff 时间差值计算测试', () => {
 
     test('默认单位对比（毫秒）', () => {
       const testCases = [
-        ['2023-01-01 10:00:01.500', '2023-01-01 10:00:00.000'],
-        ['2023-01-01 10:00:00.000', '2023-01-01 10:00:01.500']
+        ['2023-01-01 10:00:00.500', '2023-01-01 10:00:00.000'],
+        ['2023-01-01 10:00:01.000', '2023-01-01 10:00:00.500'],
+        ['2023-01-01 10:00:00.999', '2023-01-01 10:00:00.001']
       ];
 
       testCases.forEach(([time1Str, time2Str]) => {
@@ -832,9 +833,13 @@ describe('diff 时间差值计算测试', () => {
         const dayjsTime1 = dayjs(time1Str);
         const dayjsTime2 = dayjs(time2Str);
 
-        // 测试默认单位（不传unit参数）
         const timeUtilsDiff = diff(timeUtilsTime1, timeUtilsTime2);
         const dayjsDiff = dayjsTime1.diff(dayjsTime2);
+        expect(timeUtilsDiff).toBe(dayjsDiff);
+      });
+    });
+  });
+
   describe('参数验证测试', () => {
     test('无单位参数时默认返回毫秒', () => {
       const time1 = createTime('2023-01-01 10:00:01');
