@@ -364,6 +364,16 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
   });
 
   describe('边界时间操作对比', () => {
+
+    test('按照时区创建时间测试', () => {
+      const testDate = '2025-07-15 14:30:25';
+      const timeUtilsStart = TimeUtils.create(testDate);
+      const t1 = timeUtilsStart.valueOf(true);
+      const timeUtilsStart1 = TimeUtils.create(testDate, undefined, 'Asia/Seoul');
+      const t2 = timeUtilsStart1.valueOf();
+      expect(t1).toEqual(t2);
+    });
+
     test('月初月末操作应该与 dayjs 一致', () => {
       const testDate = '2025-07-15 14:30:25';
 
