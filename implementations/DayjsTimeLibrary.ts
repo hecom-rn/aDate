@@ -52,7 +52,7 @@ export class DayjsTimeLibrary extends ITimeLibrary {
    */
   create(input?: string | number | Date, formatOrOptions?: string | object, timezone?: string): TimeObject {
     if (timezone) {
-      return this.lib(input, formatOrOptions).tz(timezone);
+      return this.lib.tz(input, timezone);
     }
     return this.lib(input, formatOrOptions);
   }

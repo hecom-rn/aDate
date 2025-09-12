@@ -603,7 +603,7 @@ export class TimeInstance {
   }
 
   /**
-   * 获取时间戳
+   * 获取时间戳，如果 isDate 为 true，则根据系统时区调整时间戳，否则使用当前时区
    */
   valueOf(isDate: boolean = false): number {
     return getTime(this.timeObj, isDate);
