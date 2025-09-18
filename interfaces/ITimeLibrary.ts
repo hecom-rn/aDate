@@ -162,7 +162,7 @@ export abstract class ITimeLibrary {
    * @param timeObj - 时间对象
    * @returns 分钟
    */
-  abstract minute(timeObj: TimeObject): number;
+  abstract minute(timeObj: TimeObject, timezone?: string): number;
 
   /**
    * 获取秒（0-59）

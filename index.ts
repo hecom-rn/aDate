@@ -89,7 +89,7 @@ export function createUtcTime(input?: string | number | Date): TimeObject {
  * @returns 当前时间对象
  */
 export function now(timezone?: string): TimeObject {
-  return timeLibraryFactory.getInstance().create(undefined, timezone);
+  return timeLibraryFactory.getInstance().create(undefined, undefined, timezone);
 }
 
 /**
@@ -101,7 +101,7 @@ export function now(timezone?: string): TimeObject {
  * @returns 格式化后的时间字符串
  */
 export function formatTime(timeObj: TimeObject, format?: string, isDate: boolean = false, timezone?: string): string {
-  return timeLibraryFactory.getInstance().format(timeObj, format, timezone ? timezone : isDate ? zoneConfig.systemZone : undefined);
+  return timeLibraryFactory.getInstance().format(timeObj, format, timezone ? timezone : isDate ? zoneConfig.systemZone : zoneConfig.timezone);
 }
 
 /**
@@ -171,7 +171,7 @@ export function getUtcOffset(timeObj: TimeObject): number {
  * @returns 年份
  */
 export function getYear(timeObj: TimeObject, isDate: boolean = false): number {
-  return timeLibraryFactory.getInstance().year(timeObj, isDate ? zoneConfig.systemZone : undefined);
+  return timeLibraryFactory.getInstance().year(timeObj, isDate ? zoneConfig.systemZone : zoneConfig.timezone);
 }
 
 /**
@@ -181,7 +181,7 @@ export function getYear(timeObj: TimeObject, isDate: boolean = false): number {
  * @returns 月份
  */
 export function getMonth(timeObj: TimeObject, isDate: boolean = false): number {
-  return timeLibraryFactory.getInstance().month(timeObj, isDate ? zoneConfig.systemZone : undefined);
+  return timeLibraryFactory.getInstance().month(timeObj, isDate ? zoneConfig.systemZone : zoneConfig.timezone);
 }
 
 /**
@@ -191,7 +191,7 @@ export function getMonth(timeObj: TimeObject, isDate: boolean = false): number {
  * @returns 日期
  */
 export function getDate(timeObj: TimeObject, isDate: boolean = false): number {
-  return timeLibraryFactory.getInstance().date(timeObj, isDate ? zoneConfig.systemZone : undefined);
+  return timeLibraryFactory.getInstance().date(timeObj, isDate ? zoneConfig.systemZone : zoneConfig.timezone);
 }
 
 /**
@@ -201,7 +201,7 @@ export function getDate(timeObj: TimeObject, isDate: boolean = false): number {
  * @returns 星期几
  */
 export function getDay(timeObj: TimeObject, isDate: boolean = false): number {
-  return timeLibraryFactory.getInstance().day(timeObj, isDate ? zoneConfig.systemZone : undefined);
+  return timeLibraryFactory.getInstance().day(timeObj, isDate ? zoneConfig.systemZone : zoneConfig.timezone);
 }
 
 /**
@@ -211,7 +211,7 @@ export function getDay(timeObj: TimeObject, isDate: boolean = false): number {
  * @returns 周数
  */
 export function getWeek(timeObj: TimeObject, isDate: boolean = false): number {
-  return timeLibraryFactory.getInstance().week(timeObj, isDate ? zoneConfig.systemZone : undefined);
+  return timeLibraryFactory.getInstance().week(timeObj, isDate ? zoneConfig.systemZone : zoneConfig.timezone);
 }
 
 /**
@@ -221,16 +221,17 @@ export function getWeek(timeObj: TimeObject, isDate: boolean = false): number {
  * @returns 小时
  */
 export function getHour(timeObj: TimeObject, isDate: boolean = false): number {
-  return timeLibraryFactory.getInstance().hour(timeObj, isDate ? zoneConfig.systemZone : undefined);
+  return timeLibraryFactory.getInstance().hour(timeObj, isDate ? zoneConfig.systemZone : zoneConfig.timezone);
 }
 
 /**
  * 获取分钟（0-59）
  * @param timeObj - 时间对象
+ * @param isDate - 是否根据系统时区调整
  * @returns 分钟
  */
-export function getMinute(timeObj: TimeObject): number {
-  return timeLibraryFactory.getInstance().minute(timeObj);
+export function getMinute(timeObj: TimeObject, isDate: boolean = false): number {
+  return timeLibraryFactory.getInstance().minute(timeObj, isDate ? zoneConfig.systemZone : zoneConfig.timezone);
 }
 
 /**
@@ -661,8 +662,8 @@ export class TimeInstance {
   /**
    * 获取分钟（0-59）
    */
-  getMinute(): number {
-    return getMinute(this.timeObj);
+  getMinute(isDate: boolean = false): number {
+    return getMinute(this.timeObj, isDate);
   }
 
   /**
@@ -905,7 +906,7 @@ export const TimeUtils = {
    * @param timezone - 时区
    * @returns 时间工具实例
    */
-  now(timezone?: string): TimeInstance {
+  now(timezone: string = zoneConfig.timezone): TimeInstance {
     const timeObj: TimeObject = now(timezone);
     return new TimeInstance(timeObj);
   },

@@ -216,7 +216,10 @@ export class DayjsTimeLibrary extends ITimeLibrary {
   /**
    * 获取分钟（0-59）
    */
-  minute(timeObj: TimeObject): number {
+  minute(timeObj: TimeObject, timezone?: string): number {
+    if (timezone) {
+      return timeObj.tz(timezone).minute();
+    }
     return timeObj.minute();
   }
 
