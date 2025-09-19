@@ -13,7 +13,7 @@
     "start": "node dist/test.js"
   },
   "dependencies": {
-    "dayjs": "^1.11.10"
+    "dayjs": "^1.11.18"
   },
   "devDependencies": {
     "@types/jest": "^29.5.0",
