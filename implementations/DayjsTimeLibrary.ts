@@ -17,6 +17,35 @@ dayjs.extend(weekOfYear);
 dayjs.extend(quarterOfYear);
 dayjs.extend(customParseFormat);
 
+
+export function patchDate() {
+  // Fix for DayJS timezone issue:
+  // https://github.com/iamkun/dayjs/issues/1377#issuecomment-1912511660
+  // https://github.com/iamkun/dayjs/issues/1377#issuecomment-1191900686
+  (Date.prototype as any)._toLocaleString = Date.prototype.toLocaleString;
+  Date.prototype.toLocaleString = function toLocaleStringFix(
+      a?: Intl.LocalesArgument,
+      b?: Intl.DateTimeFormatOptions
+  ): string {
+    if (b && Object.keys(b).length === 1 && 'timeZone' in b && a === 'en-US') {
+      return Intl.DateTimeFormat('en-us', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+        timeZone: b.timeZone,
+      })
+          .format(this)
+          .replace(/(\d{2})\/(\d{2})\/(\d{4}),/g, '$3-$1-$2');
+    }
+
+    return this._toLocaleString(a, b);
+  };
+}
+
 /**
  * Dayjs 时间库实现
  */
