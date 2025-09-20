@@ -571,6 +571,10 @@ export class TimeInstance {
     return formatTime(this.timeObj, format, isDate, timezone);
   }
 
+  formalFormat(template?: string): string {
+    return timeLibraryFactory.getInstance().format(this.timeObj, template);
+  }
+
   /**
    * 加法
    */
