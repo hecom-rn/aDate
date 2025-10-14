@@ -94,6 +94,14 @@ describe('TimeUtils.locale 方法单元测试', () => {
       expect(TimeUtils.locale()).toBe('en');
     });
 
+    test('应该支持临时设置locale', () => {
+      TimeUtils.locale('en');
+      const zh = TimeUtils.create('2025-10-12').locale('zh-cn').format('ddd');
+      const en = TimeUtils.create('2025-10-12').format('ddd');
+      expect(zh).toContain('周日');
+      expect(en).toContain('Sun');
+    });
+
     test('应该支持日文 locale (ja)', () => {
       TimeUtils.locale('ja');
 

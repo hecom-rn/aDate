@@ -576,27 +576,32 @@ export class TimeInstance {
   }
 
   /**
-   * 加法
+   * 加法方法
+   * @param amount - 要增加的数量
+   * @param unit - 时间单位（如小时、分钟、秒等）
+   * @returns 返回一个新的TimeInstance实例或当前实例
    */
   add(amount: number, unit: TimeUnit): TimeInstance {
-    this.timeObj = addTime(this.timeObj, amount, unit);
-    return this;
+    // 调用addTime函数，传入当前时间对象、增加的数量和时间单位
+    const timeObj: TimeObject = addTime(this.timeObj, amount, unit);
+    // 创建并返回一个新的TimeInstance实例，使用更新后的timeObj
+    return new TimeInstance(timeObj);
   }
 
   /**
    * 减法
    */
   subtract(amount: number, unit: TimeUnit): TimeInstance {
-    this.timeObj = subtractTime(this.timeObj, amount, unit);
-    return this;
+    const timeObj: TimeObject = subtractTime(this.timeObj, amount, unit);
+    return new TimeInstance(timeObj);
   }
 
   /**
    * 转换时区
    */
   tz(timezone: string): TimeInstance {
-    this.timeObj = convertToTimezone(this.timeObj, timezone);
-    return this;
+    const timeObj: TimeObject = convertToTimezone(this.timeObj, timezone);
+    return new TimeInstance(timeObj);
   }
 
   /**
@@ -688,64 +693,64 @@ export class TimeInstance {
    * 设置年份
    */
   year(value: number): TimeInstance {
-    this.timeObj = setYear(this.timeObj, value);
-    return this;
+    const timeObj: TimeObject = setYear(this.timeObj, value);
+    return new TimeInstance(timeObj);
   }
 
   /**
    * 设置月份（0-11）
    */
   month(value: number): TimeInstance {
-    this.timeObj = setMonth(this.timeObj, value);
-    return this;
+    const timeObj: TimeObject = setMonth(this.timeObj, value);
+    return new TimeInstance(timeObj);
   }
 
   /**
    * 设置日期（1-31）
    */
   date(value: number): TimeInstance {
-    this.timeObj = setDate(this.timeObj, value);
-    return this;
+    const timeObj: TimeObject = setDate(this.timeObj, value);
+    return new TimeInstance(timeObj);
   }
 
   /**
    * 设置小时（0-23）
    */
   hour(value: number): TimeInstance {
-    this.timeObj = setHour(this.timeObj, value);
-    return this;
+    const timeObj: TimeObject = setHour(this.timeObj, value);
+    return new TimeInstance(timeObj);
   }
 
   /**
    * 设置分钟（0-59）
    */
   minute(value: number): TimeInstance {
-    this.timeObj = setMinute(this.timeObj, value);
-    return this;
+    const timeObj: TimeObject = setMinute(this.timeObj, value);
+    return new TimeInstance(timeObj);
   }
 
   /**
    * 设置秒（0-59）
    */
   second(value: number): TimeInstance {
-    this.timeObj = setSecond(this.timeObj, value);
-    return this;
+    const timeObj: TimeObject = setSecond(this.timeObj, value);
+    return new TimeInstance(timeObj);
   }
 
   /**
    * 设置毫秒（0-999）
    */
   millisecond(value: number): TimeInstance {
-    this.timeObj = setMillisecond(this.timeObj, value);
-    return this;
+    const timeObj: TimeObject = setMillisecond(this.timeObj, value);
+    return new TimeInstance(timeObj);
   }
 
   /**
    * 获取当前月的开始时间
    */
   startOfMonth(): TimeInstance {
-    this.timeObj = startOfMonth(this.timeObj);
-    return this;
+    const timeObj: TimeObject = startOfMonth(this.timeObj);
+    return new TimeInstance(timeObj);
   }
 
   /**
@@ -784,24 +789,24 @@ export class TimeInstance {
    * 获取当前月的结束时间
    */
   endOfMonth(): TimeInstance {
-    this.timeObj = endOfMonth(this.timeObj);
-    return this;
+    const timeObj: TimeObject = endOfMonth(this.timeObj);
+    return new TimeInstance(timeObj);
   }
 
   /**
    * 获取当前日的开始时间
    */
   startOfDay(): TimeInstance {
-    this.timeObj = startOfDay(this.timeObj);
-    return this;
+    const timeObj: TimeObject = startOfDay(this.timeObj);
+    return new TimeInstance(timeObj);
   }
 
   /**
    * 获取当前日的结束时间
    */
   endOfDay(): TimeInstance {
-    this.timeObj = endOfDay(this.timeObj);
-    return this;
+    const timeObj: TimeObject = endOfDay(this.timeObj);
+    return new TimeInstance(timeObj);
   }
 
   /**
@@ -894,8 +899,8 @@ export class TimeInstance {
    * @returns 传入参数时返回当前实例 (链式调用)，不传参数时返回实例当前 locale 字符串
    */
   locale(localeStr?: string): TimeInstance {
-    this.timeObj = locale(localeStr, this.timeObj);
-    return this;
+    const timeObj: TimeObject = locale(localeStr, this.timeObj);
+    return new TimeInstance(timeObj);
   }
 }
 
