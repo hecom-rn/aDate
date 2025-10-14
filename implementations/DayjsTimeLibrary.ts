@@ -487,7 +487,10 @@ export class DayjsTimeLibrary extends ITimeLibrary {
   /**
    * 设置全局本地化设置
    */
-  locale(localeStr?: string): string {
+  locale(localeStr?: string, timeObj?: TimeObject): string {
+    if (timeObj) {
+      return timeObj.locale(localeStr);
+    }
     return this.lib.locale(localeStr);
   }
 }

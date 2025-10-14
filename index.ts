@@ -70,8 +70,8 @@ export function createTime(input?: string | number | Date, formatOrOptions?: str
   return timeLibraryFactory.getInstance().create(input, formatOrOptions, timezone);
 }
 
-export function locale(localeStr?: string): string {
-    return timeLibraryFactory.getInstance().locale(localeStr);
+export function locale(localeStr?: string, timeObj?: TimeObject): string {
+    return timeLibraryFactory.getInstance().locale(localeStr, timeObj);
 }
 
 /**
@@ -886,6 +886,16 @@ export class TimeInstance {
   clone(): TimeInstance {
     const clonedTimeObj = timeLibraryFactory.getInstance().clone(this.timeObj);
     return new TimeInstance(clonedTimeObj);
+  }
+
+  /**
+   * 设置当前实例的 locale（本地化语言），不影响全局
+   * @param localeStr - 语言标识，如 'en', 'zh-cn'
+   * @returns 传入参数时返回当前实例 (链式调用)，不传参数时返回实例当前 locale 字符串
+   */
+  locale(localeStr?: string): TimeInstance {
+    this.timeObj = locale(localeStr, this.timeObj);
+    return this;
   }
 }
 

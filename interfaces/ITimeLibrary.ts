@@ -408,8 +408,8 @@ export abstract class ITimeLibrary {
 
   /**
    * 设置全局本地化设置
-   * @param localeStr - 本地化字符串（如 'zh-cn', 'en-us'）
+   * @param localeStr - 本地化字符串（如 'zh-cn', 'en'）
    * @returns 设置后的本地化字符串
    */
-  abstract locale(localeStr?: string): string;
+  abstract locale(localeStr?: string, timeObj?: TimeObject): string;
 }
