@@ -35,7 +35,7 @@ export abstract class ITimeLibrary {
    * @param input - 输入时间
    * @returns UTC时间对象
    */
-  abstract createUtc(input?: string | number | Date): TimeObject;
+  abstract createUtc(timeObj: TimeObject, input?: string | number | Date): TimeObject;
 
   /**
    * 格式化时间

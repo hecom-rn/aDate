@@ -80,7 +80,7 @@ export function locale(localeStr?: string, timeObj?: TimeObject): string {
  * @returns UTC时间对象
  */
 export function createUtcTime(input?: string | number | Date): TimeObject {
-  return timeLibraryFactory.getInstance().createUtc(input);
+  return timeLibraryFactory.getInstance().createUtc(undefined, input);
 }
 
 /**
@@ -565,12 +565,16 @@ export class TimeInstance {
   }
 
   /**
-   * 格式化
+   * 格式化, 如果传入 timezone 则使用指定时区，否则根据 isDate 决定使用系统时区或当前时区
    */
   format(format?: string, isDate: boolean = false, timezone?: string): string {
     return formatTime(this.timeObj, format, isDate, timezone);
   }
 
+  /**
+   * 格式化为字符串，适用于不指定时区的场景。
+   * @param template
+   */
   formalFormat(template?: string): string {
     return timeLibraryFactory.getInstance().format(this.timeObj, template);
   }
