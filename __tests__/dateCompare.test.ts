@@ -224,6 +224,14 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       });
     });
 
+    test('时间差计算应该与 dayjs 一致', () => {
+      const a = dayjs().utc().locale('en').format('ddd, DD MMM YYYY HH:mm:ss [GMT]');
+      const b = TimeUtils.create().utc().locale('en').formalFormat('ddd, DD MMM YYYY HH:mm:ss [GMT]')
+      const c = new Date().toUTCString();
+      expect(a).toEqual(b);
+      expect(c).toEqual(b);
+    });
+
     test('时间戳和格式化综合测试', () => {
       const desc1 = new Date(1721813445000).toISOString();
       const desc2 = TimeUtils.create(1721813445000).toISOString();

@@ -89,7 +89,10 @@ export class DayjsTimeLibrary extends ITimeLibrary {
   /**
    * 创建UTC时间对象
    */
-  createUtc(input?: string | number | Date): TimeObject {
+  createUtc(timeObj: TimeObject, input?: string | number | Date): TimeObject {
+    if (timeObj) {
+      return timeObj.utc();
+    }
     return this.lib.utc(input);
   }
 
