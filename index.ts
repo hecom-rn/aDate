@@ -123,7 +123,8 @@ export function parseTime(timeStr: string, format?: string, timezone?: string): 
  * @returns 新的时间对象
  */
 export function addTime(timeObj: TimeObject, amount: number, unit: TimeUnit): TimeObject {
-  return timeLibraryFactory.getInstance().add(timeObj, amount, unit);
+  const value = Number.isNaN(amount) ? 0 : amount;
+  return timeLibraryFactory.getInstance().add(timeObj, value, unit);
 }
 
 /**
@@ -134,7 +135,8 @@ export function addTime(timeObj: TimeObject, amount: number, unit: TimeUnit): Ti
  * @returns 新的时间对象
  */
 export function subtractTime(timeObj: TimeObject, amount: number, unit: TimeUnit): TimeObject {
-  return timeLibraryFactory.getInstance().subtract(timeObj, amount, unit);
+  const value = Number.isNaN(amount) ? 0 : amount;
+  return timeLibraryFactory.getInstance().subtract(timeObj, value, unit);
 }
 
 /**
