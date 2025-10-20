@@ -92,7 +92,7 @@ export class DayjsTimeLibrary extends ITimeLibrary {
           return this.lib(timeStamp);
         }
       }
-      return this.lib(input);
+      return this.lib(input).tz(timezone);
     }
     return this.lib(input, formatOrOptions);
   }
