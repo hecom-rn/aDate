@@ -86,7 +86,7 @@ export class DayjsTimeLibrary extends ITimeLibrary {
         if (deviceTZ && deviceTZ != timezone) {
           const timeObj: TimeObject = this.lib(input);
           const currentOffset: number = timeObj.tz(timezone).utcOffset();
-          const systemOffset: number = timeObj.tz('Asia/Shanghai').utcOffset();
+          const systemOffset: number = timeObj.tz(deviceTZ).utcOffset();
           const offsetDiff: number = currentOffset - systemOffset;
           const timeStamp = timeObj.valueOf() - offsetDiff * 60 * 1000;
           return this.lib(timeStamp);
