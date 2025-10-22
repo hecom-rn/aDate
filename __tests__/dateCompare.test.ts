@@ -30,6 +30,7 @@ import {
   diff,
   isValid
 } from '../index';
+import {zoneConfig} from '../config';
 
 // 启用 dayjs 插件
 dayjs.extend(utc);
@@ -377,7 +378,7 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const testDate = '2025-07-15 14:30:25';
       const timeUtilsStart = TimeUtils.create(testDate);
       const t1 = timeUtilsStart.valueOf(true);
-      const timeUtilsStart1 = TimeUtils.create(testDate, undefined, 'Asia/Seoul');
+      const timeUtilsStart1 = TimeUtils.create(testDate, undefined, zoneConfig.systemZone);
       const t2 = timeUtilsStart1.valueOf();
       expect(t1).toEqual(t2);
     });
