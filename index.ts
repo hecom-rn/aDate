@@ -16,6 +16,18 @@ export function setTimeLibrary(type: TimeLibraryTypeValue): void {
 }
 
 /**
+ * 获取指定时区今天 00:00:00 的时间戳（毫秒）
+ * @param timezone 指定时区，缺省使用当前默认时区
+ */
+export function today(timezone?: string): number {
+  const lib = timeLibraryFactory.getInstance();
+  const tz = timezone || zoneConfig.timezone;
+  const current = lib.create(undefined, undefined, tz);
+  const start = lib.startOfDay(current);
+  return lib.getTime(start);
+}
+
+/**
  * 获取当前使用的时间库类型
  * @returns 时间库类型
  */
@@ -934,6 +946,14 @@ export const TimeUtils = {
   now(timezone: string = zoneConfig.timezone): TimeInstance {
     const timeObj: TimeObject = now(timezone);
     return new TimeInstance(timeObj);
+  },
+
+  /**
+   * 获取指定时区今天 00:00:00 的时间戳（毫秒）
+   * @param timezone 指定时区，缺省使用当前默认时区
+   */
+  today(timezone: string = zoneConfig.timezone): number {
+    return today(timezone);
   },
 
   /**
