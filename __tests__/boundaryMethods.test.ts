@@ -457,29 +457,29 @@ describe('边界时间方法测试', () => {
 
         // startOfWeek
         expect(timeInstance.startOfWeek().valueOf()).toBe(
-          momentInstance.startOf('week').valueOf()
+          momentInstance.clone().startOf('week').valueOf()
         );
 
         // endOfWeek
         expect(timeInstance.endOfWeek().valueOf()).toBe(
-          momentInstance.endOf('week').valueOf()
+          momentInstance.clone().endOf('week').valueOf()
         );
 
         // startOfQuarter - 添加调试信息
         const timeUtilsQuarter = timeInstance.startOfQuarter().valueOf();
-        const momentQuarter = momentInstance.startOf('quarter').valueOf();
+        const momentQuarter = momentInstance.clone().startOf('quarter').valueOf();
 
         if (timeUtilsQuarter !== momentQuarter) {
           console.log(`Quarter mismatch for ${date}:`);
           console.log(`  TimeUtils: ${timeUtilsQuarter} (${timeInstance.startOfQuarter().format('YYYY-MM-DD HH:mm:ss')})`);
-          console.log(`  Moment: ${momentQuarter} (${momentInstance.startOf('quarter').format('YYYY-MM-DD HH:mm:ss')})`);
+          console.log(`  Moment: ${momentQuarter} (${momentInstance.clone().startOf('quarter').format('YYYY-MM-DD HH:mm:ss')})`);
         }
 
         expect(timeUtilsQuarter).toBe(momentQuarter);
 
         // startOfYear
         expect(timeInstance.startOfYear().valueOf()).toBe(
-          momentInstance.startOf('year').valueOf()
+          momentInstance.clone().startOf('year').valueOf()
         );
       });
     });

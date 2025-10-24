@@ -428,10 +428,10 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const timeUtilsEndDay = endOfDay(timeObj);
 
       const momentObj = moment(testDate);
-      const momentStartMonth = momentObj.startOf('month');
-      const momentEndMonth = momentObj.endOf('month');
-      const momentStartDay = momentObj.startOf('day');
-      const momentEndDay = momentObj.endOf('day');
+      const momentStartMonth = momentObj.clone().startOf('month');
+      const momentEndMonth = momentObj.clone().endOf('month');
+      const momentStartDay = momentObj.clone().startOf('day');
+      const momentEndDay = momentObj.clone().endOf('day');
 
       expect(formatTime(timeUtilsStartMonth, 'YYYY-MM-DD HH:mm:ss')).toBe(
           momentStartMonth.format('YYYY-MM-DD HH:mm:ss')
