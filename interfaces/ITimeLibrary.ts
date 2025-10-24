@@ -28,7 +28,7 @@ export abstract class ITimeLibrary {
    * @param timezone - 时区
    * @returns 时间对象
    */
-  abstract create(input?: string | number | Date, formatOrOptions?: string | object, timezone?: string): TimeObject;
+  abstract create(input?: string | number | Date | null, formatOrOptions?: string | object, timezone?: string): TimeObject;
 
   /**
    * 创建UTC时间对象

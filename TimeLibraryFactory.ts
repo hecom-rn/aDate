@@ -1,10 +1,12 @@
 import { DayjsTimeLibrary } from './implementations/DayjsTimeLibrary';
 import { ITimeLibrary } from './interfaces/ITimeLibrary';
+import { MomentTimeLibrary } from './implementations/MomentTimeLibrary';
 
 /**
  * 时间库类型枚举
  */
 export const TimeLibraryType = {
+  MOMENT: 'moment',
   DAYJS: 'dayjs',
   // XDATE: 'xdate',
   // 可以继续添加其他时间库
@@ -68,7 +70,10 @@ class TimeLibraryFactory {
   private _createInstance(): void {
     switch (this.currentType) {
       case TimeLibraryType.DAYJS:
-        this.instance = new DayjsTimeLibrary();
+        // this.instance = new DayjsTimeLibrary();
+        // break;
+      case TimeLibraryType.MOMENT:
+        this.instance = new MomentTimeLibrary();
         break;
       default:
         throw new Error(`Unsupported time library type: ${this.currentType}`);
