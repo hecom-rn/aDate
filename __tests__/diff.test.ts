@@ -10,7 +10,7 @@ dayjs.extend(timezone);
 describe('diff 时间差值计算测试', () => {
   beforeEach(() => {
     // 默认使用 Dayjs
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.DATE_FNS);
   });
 
   describe('基础时间差值计算', () => {
@@ -173,7 +173,7 @@ describe('diff 时间差值计算测试', () => {
       const time2 = createTime('2023-01-01 10:00:00');
 
       // 测试 Dayjs
-      setTimeLibrary(TimeLibraryType.DAYJS);
+      setTimeLibrary(TimeLibraryType.DATE_FNS);
       const dayjsResult = diff(time1, time2, 'hour');
       expect(dayjsResult).toBe(5);
     });
@@ -183,7 +183,7 @@ describe('diff 时间差值计算测试', () => {
       const time2 = createTime('2023-01-01 10:00:00');
 
       // 测试 Dayjs
-      setTimeLibrary(TimeLibraryType.DAYJS);
+      setTimeLibrary(TimeLibraryType.DATE_FNS);
       const dayjsResult = diff(time1, time2, 'hour', true);
       expect(dayjsResult).toBeCloseTo(0.5, 1);
     });
@@ -211,7 +211,7 @@ describe('diff 时间差值计算测试', () => {
 
   describe('与 Dayjs diff 方法的详细对比测试', () => {
     beforeEach(() => {
-      setTimeLibrary(TimeLibraryType.DAYJS);
+      setTimeLibrary(TimeLibraryType.DATE_FNS);
     });
 
     test('毫秒级差值对比', () => {

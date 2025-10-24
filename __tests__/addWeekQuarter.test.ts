@@ -16,7 +16,7 @@ dayjs.extend(quarterOfYear);
 
 describe('add 和 subtract 方法 week/quarter 参数测试', () => {
   beforeEach(() => {
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.DATE_FNS);
   });
 
   describe('add 方法 week 参数测试', () => {

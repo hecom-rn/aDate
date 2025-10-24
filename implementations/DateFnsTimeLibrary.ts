@@ -44,6 +44,34 @@ function ensureWrapper(timeObj: TimeObject): DateFnsWrapper {
   return timeObj as DateFnsWrapper;
 }
 
+function normalizeFormatTokens(fmt: string): string {
+  // 将 Dayjs/Moment 风格的 YYYY / DD 大写 token 转换为 date-fns 的小写；并将 [literal] 转成 'literal'
+  let result = '';
+  let i = 0;
+  while (i < fmt.length) {
+    const ch = fmt[i];
+    if (ch === '[') {
+      const end = fmt.indexOf(']', i + 1);
+      if (end !== -1) {
+        const literalContent = fmt.slice(i + 1, end).replace(/'/g, "''");
+        result += `'${literalContent}'`;
+        i = end + 1;
+        continue;
+      }
+      // 未闭合，按普通字符处理
+    }
+    if (ch === 'Y') {
+      result += 'y';
+    } else if (ch === 'D') {
+      result += 'd';
+    } else {
+      result += ch;
+    }
+    i++;
+  }
+  return result;
+}
+
 export class DateFnsTimeLibrary extends ITimeLibrary {
   constructor() { super(); }
 
@@ -87,7 +115,8 @@ export class DateFnsTimeLibrary extends ITimeLibrary {
 
   format(timeObj: TimeObject, format?: string, timezone?: string): string {
     const w = ensureWrapper(timeObj);
-    const fmt = format || 'yyyy-MM-dd HH:mm:ss';
+    const rawFmt = format || 'yyyy-MM-dd HH:mm:ss';
+    const fmt = normalizeFormatTokens(rawFmt);
     const tz = timezone || w._tz || zoneConfig.timezone;
     return formatInTimeZone(w._d, tz, fmt, { locale: w._locale });
   }

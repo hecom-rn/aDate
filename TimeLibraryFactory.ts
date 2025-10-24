@@ -6,11 +6,11 @@ import { DateFnsTimeLibrary } from './implementations/DateFnsTimeLibrary';
  * 时间库类型枚举
  */
 export const TimeLibraryType = {
+  DATE_FNS: 'date-fns-tz',
   DAYJS: 'dayjs',
   // XDATE: 'xdate',
   // 可以继续添加其他时间库
   // MOMENT: 'moment',
-  DATE_FNS: 'date-fns-tz'
 } as const;
 
 /**

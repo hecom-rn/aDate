@@ -30,7 +30,7 @@ import {
 describe('时间库抽象层基础功能测试', () => {
   beforeEach(() => {
     // 每个测试前重置为 dayjs
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.DATE_FNS);
     setDefaultTimezone('Asia/Shanghai');
   });
 
@@ -40,7 +40,7 @@ describe('时间库抽象层基础功能测试', () => {
     });
 
     test('应该能够切换时间库', () => {
-      setTimeLibrary(TimeLibraryType.DAYJS);
+      setTimeLibrary(TimeLibraryType.DATE_FNS);
       expect(getCurrentTimeLibrary()).toBe(TimeLibraryType.DAYJS);
     });
 
@@ -148,7 +148,7 @@ describe('时间库抽象层基础功能测试', () => {
 
 describe('时间获取方法测试', () => {
   beforeEach(() => {
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.DATE_FNS);
   });
 
   test('应该正确获取时间各部分', () => {
@@ -172,7 +172,7 @@ describe('时间获取方法测试', () => {
 
 describe('日期判断测试', () => {
   beforeEach(() => {
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.DATE_FNS);
   });
 
   test('应该正确判断闰年', () => {
@@ -206,7 +206,7 @@ describe('日期判断测试', () => {
 
 describe('TimeUtils 链式调用测试', () => {
   beforeEach(() => {
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.DATE_FNS);
   });
 
   test('应该支持链式调用', () => {
@@ -256,12 +256,12 @@ describe('TimeUtils 链式调用测试', () => {
 describe('时间库切换测试', () => {
   test('切换时间库后功能应该正常', () => {
     // 测试 dayjs
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.DATE_FNS);
     const dayjsTime = createTime('2025-07-24 15:30:00');
     const dayjsFormatted = formatTime(dayjsTime, 'YYYY-MM-DD HH:mm:ss');
 
     // 切换回 dayjs
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.DATE_FNS);
     expect(getCurrentTimeLibrary()).toBe(TimeLibraryType.DAYJS);
   });
 

@@ -12,7 +12,7 @@ dayjs.extend(weekOfYear);
 dayjs.extend(quarterOfYear);
 
 // 设置使用DAYJS
-setTimeLibrary(TimeLibraryType.DAYJS);
+setTimeLibrary(TimeLibraryType.DATE_FNS);
 
 console.log('当前使用的时间库:', getCurrentTimeLibrary());
 

@@ -23,7 +23,7 @@ dayjs.extend(quarterOfYear);
 
 describe('边界时间方法测试', () => {
   beforeEach(() => {
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.DATE_FNS);
   });
 
   describe('startOfWeek 方法测试', () => {

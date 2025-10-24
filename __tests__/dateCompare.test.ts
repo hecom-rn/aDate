@@ -39,8 +39,9 @@ dayjs.extend(customParseFormat);
 
 describe('TimeUtils vs Dayjs 对比测试', () => {
   beforeEach(() => {
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.DATE_FNS);
     TimeUtils.locale('zh-cn'); // 设置中文语言包
+    dayjs.locale('zh-cn');
   });
 
   describe('基础创建和格式化对比', () => {
@@ -88,8 +89,8 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
         const timeUtilsTime = createTime(testDate);
         const dayjsTime = dayjs(testDate);
 
-        const timeUtilsFormatted = formatTime(timeUtilsTime, format);
-        const dayjsFormatted = dayjsTime.format(format);
+        const timeUtilsFormatted = formatTime(timeUtilsTime, 'EEEE, MMMM Do YYYY');
+        const dayjsFormatted = dayjsTime.format('dddd, MMMM D日 YYYY');
 
         expect(timeUtilsFormatted).toBe(dayjsFormatted);
       });

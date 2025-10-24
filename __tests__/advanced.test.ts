@@ -13,7 +13,7 @@ import {
 
 describe('TimeInstance 链式调用深度测试', () => {
   beforeEach(() => {
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.DATE_FNS);
   });
 
   test('应该支持getTime方法（如果实现了）', () => {
@@ -76,7 +76,7 @@ describe('TimeInstance 链式调用深度测试', () => {
 
 describe('边界条件和异常情况测试', () => {
   beforeEach(() => {
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.DATE_FNS);
   });
 
   test('应该正确处理闰年边界', () => {
@@ -117,7 +117,7 @@ describe('边界条件和异常情况测试', () => {
 
 describe('时区和时间戳测试', () => {
   beforeEach(() => {
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.DATE_FNS);
   });
 
   test('getTime和getCurrentTimestamp应该工作正常', () => {
@@ -144,7 +144,7 @@ describe('时区和时间戳测试', () => {
 
 describe('格式化功能扩展测试', () => {
   beforeEach(() => {
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.DATE_FNS);
   });
 
   test('应该支持多种日期格式', () => {
@@ -171,7 +171,7 @@ describe('格式化功能扩展测试', () => {
 
 describe('性能和内存测试', () => {
   beforeEach(() => {
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.DATE_FNS);
   });
 
   test('批量创建时间对象不应该导致内存泄漏', () => {
