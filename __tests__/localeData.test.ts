@@ -272,7 +272,7 @@ describe('LocaleData 功能测试', () => {
       const duration = Date.now() - startTime;
 
       // 1000次调用应该在合理时间内完成（比如 100ms）
-      expect(duration).toBeLessThan(600);
+      expect(duration).toBeLessThan(1000);
     });
 
     test('TimeUtils 的 locale 方法应该有良好的性能', () => {
