@@ -257,15 +257,20 @@ export class DateFnsTimeLibrary extends ITimeLibrary {
   toISOString(timeObj: TimeObject): string { return ensureWrapper(timeObj)._d.toISOString(); }
   clone(timeObj: TimeObject): TimeObject { const w = ensureWrapper(timeObj); return buildWrapper(new Date(w._d.getTime()), w._tz, w._locale ? (w._locale as any).code : globalLocale); }
 
-  weekdays(): string[] {
+  getWeekdaysDesc(format: string): string[] {
     const base = dfStartOfWeek(new Date(2023,0,1));
-    return Array.from({ length: 7 }).map((_, i) => dfFormat(dfAdd(base,{ days: i }), 'EEEE', { locale: localeMap[globalLocale] }));
+    return Array.from({ length: 7 }).map((_, i) => dfFormat(dfAdd(base,{ days: i }), format, { locale: localeMap[globalLocale] }));
+  }
+
+  weekdays(): string[] {
+    return this.getWeekdaysDesc('EEEE');
   }
   weekdaysShort(): string[] {
-    const base = dfStartOfWeek(new Date(2023,0,1));
-    return Array.from({ length: 7 }).map((_, i) => dfFormat(dfAdd(base,{ days: i }), 'EEE', { locale: localeMap[globalLocale] }));
+    return this.getWeekdaysDesc('EEE');
   }
-  weekdaysMin(): string[] { return this.weekdaysShort().map(w => w.slice(0,2)); }
+  weekdaysMin(): string[] {
+    return this.getWeekdaysDesc('EEEEE');
+  }
   monthsShort(): string[] { return Array.from({ length: 12 }).map((_, i) => dfFormat(new Date(2023,i,1), 'MMM', { locale: localeMap[globalLocale] })); }
   months(): string[] { return Array.from({ length: 12 }).map((_, i) => dfFormat(new Date(2023,i,1), 'MMMM', { locale: localeMap[globalLocale] })); }
 
