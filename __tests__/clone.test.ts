@@ -28,7 +28,7 @@ describe('Clone Method Tests', () => {
     expect(clonedInstance.format('YYYY-MM-DD')).toBe(timeInstance.format('YYYY-MM-DD'));
   });
 
-  test('DayjsTimeLibrary clone method should work', () => {
+  test('MomentTimeLibrary clone method should work', () => {
     const timeObj = createTime('2023-01-01');
     const clonedTimeObj = timeLibraryFactory.getInstance().clone(timeObj);
 

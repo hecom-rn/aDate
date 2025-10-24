@@ -1,4 +1,3 @@
-import { DayjsTimeLibrary } from './implementations/DayjsTimeLibrary';
 import { ITimeLibrary } from './interfaces/ITimeLibrary';
 import { MomentTimeLibrary } from './implementations/MomentTimeLibrary';
 
@@ -28,7 +27,7 @@ class TimeLibraryFactory {
   private instance: ITimeLibrary | null;
 
   constructor() {
-    this.currentType = TimeLibraryType.DAYJS;
+    this.currentType = TimeLibraryType.MOMENT;
     this.instance = null;
     this._createInstance();
   }
@@ -69,9 +68,6 @@ class TimeLibraryFactory {
    */
   private _createInstance(): void {
     switch (this.currentType) {
-      case TimeLibraryType.DAYJS:
-        // this.instance = new DayjsTimeLibrary();
-        // break;
       case TimeLibraryType.MOMENT:
         this.instance = new MomentTimeLibrary();
         break;

@@ -1,6 +1,3 @@
-import dayjs from 'dayjs';
-import weekOfYear from 'dayjs/plugin/weekOfYear';
-import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 import {
   TimeUtils,
   createTime,
@@ -9,14 +6,12 @@ import {
   setTimeLibrary,
   TimeLibraryType
 } from '../index';
+import moment from 'moment-timezone';
 
-// 启用 dayjs 插件
-dayjs.extend(weekOfYear);
-dayjs.extend(quarterOfYear);
 
 describe('add 和 subtract 方法 week/quarter 参数测试', () => {
   beforeEach(() => {
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.MOMENT);
   });
 
   describe('add 方法 week 参数测试', () => {
@@ -57,12 +52,12 @@ describe('add 和 subtract 方法 week/quarter 参数测试', () => {
 
         // 测试函数式 API
         const functionalResult = addTime(createTime(baseDate), weeks, 'week');
-        expect(dayjs(functionalResult).format('YYYY-MM-DD')).toBe(expected);
+        expect(moment(functionalResult).format('YYYY-MM-DD')).toBe(expected);
 
-        // 与 dayjs 对比
-        const dayjsResult = dayjs(baseDate).add(weeks, 'week');
+        // 与 moment 对比
+        const momentResult = moment(baseDate).add(weeks, 'week');
         expect(timeInstanceResult.format('YYYY-MM-DD')).toBe(
-          dayjsResult.format('YYYY-MM-DD')
+            momentResult.format('YYYY-MM-DD')
         );
       });
     });
@@ -85,11 +80,11 @@ describe('add 和 subtract 方法 week/quarter 参数测试', () => {
 
       testCases.forEach(({ baseDate, weeks, expected, description }) => {
         const timeInstanceResult = TimeUtils.create(baseDate).add(weeks, 'week');
-        const dayjsResult = dayjs(baseDate).add(weeks, 'week');
+        const momentResult = moment(baseDate).add(weeks, 'week');
 
         expect(timeInstanceResult.format('YYYY-MM-DD')).toBe(expected);
         expect(timeInstanceResult.format('YYYY-MM-DD')).toBe(
-          dayjsResult.format('YYYY-MM-DD')
+            momentResult.format('YYYY-MM-DD')
         );
       });
     });
@@ -112,11 +107,11 @@ describe('add 和 subtract 方法 week/quarter 参数测试', () => {
 
       testCases.forEach(({ baseDate, weeks, expected, description }) => {
         const timeInstanceResult = TimeUtils.create(baseDate).add(weeks, 'week');
-        const dayjsResult = dayjs(baseDate).add(weeks, 'week');
+        const momentResult = moment(baseDate).add(weeks, 'week');
 
         expect(timeInstanceResult.format('YYYY-MM-DD')).toBe(expected);
         expect(timeInstanceResult.format('YYYY-MM-DD')).toBe(
-          dayjsResult.format('YYYY-MM-DD')
+            momentResult.format('YYYY-MM-DD')
         );
 
         // 验证年份变化
@@ -132,11 +127,11 @@ describe('add 和 subtract 方法 week/quarter 参数测试', () => {
 
       largeWeeks.forEach(weeks => {
         const timeInstanceResult = TimeUtils.create(baseDate).add(weeks, 'week');
-        const dayjsResult = dayjs(baseDate).add(weeks, 'week');
+        const result = moment(baseDate).add(weeks, 'week');
 
-        expect(timeInstanceResult.valueOf()).toBe(dayjsResult.valueOf());
+        expect(timeInstanceResult.valueOf()).toBe(result.valueOf());
         expect(timeInstanceResult.format('YYYY-MM-DD HH:mm:ss')).toBe(
-          dayjsResult.format('YYYY-MM-DD HH:mm:ss')
+            result.format('YYYY-MM-DD HH:mm:ss')
         );
       });
     });
@@ -146,11 +141,11 @@ describe('add 和 subtract 方法 week/quarter 参数测试', () => {
       const weeks = 3;
 
       const timeInstanceResult = TimeUtils.create(baseDate).add(weeks, 'week');
-      const dayjsResult = dayjs(baseDate).add(weeks, 'week');
+      const result = moment(baseDate).add(weeks, 'week');
 
       // 日期应该变化，但时间部分应该保持
       expect(timeInstanceResult.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe(
-        dayjsResult.format('YYYY-MM-DD HH:mm:ss.SSS')
+          result.format('YYYY-MM-DD HH:mm:ss.SSS')
       );
       expect(timeInstanceResult.format('HH:mm:ss.SSS')).toBe('15:30:45.123');
     });
@@ -200,12 +195,12 @@ describe('add 和 subtract 方法 week/quarter 参数测试', () => {
 
         // 测试函数式 API
         const functionalResult = addTime(createTime(baseDate), quarters, 'quarter');
-        expect(dayjs(functionalResult).format('YYYY-MM-DD')).toBe(expected);
+        expect(moment(functionalResult).format('YYYY-MM-DD')).toBe(expected);
 
-        // 与 dayjs 对比
-        const dayjsResult = dayjs(baseDate).add(quarters, 'quarter');
+        // 与 moment 对比
+        const momentResult = moment(baseDate).add(quarters, 'quarter');
         expect(timeInstanceResult.format('YYYY-MM-DD')).toBe(
-          dayjsResult.format('YYYY-MM-DD')
+          momentResult.format('YYYY-MM-DD')
         );
       });
     });
@@ -234,16 +229,16 @@ describe('add 和 subtract 方法 week/quarter 参数测试', () => {
 
       testCases.forEach(({ baseDate, quarters, expected, description }) => {
         const timeInstanceResult = TimeUtils.create(baseDate).add(quarters, 'quarter');
-        const dayjsResult = dayjs(baseDate).add(quarters, 'quarter');
+        const momentResult = moment(baseDate).add(quarters, 'quarter');
 
         expect(timeInstanceResult.format('YYYY-MM-DD')).toBe(expected);
         expect(timeInstanceResult.format('YYYY-MM-DD')).toBe(
-          dayjsResult.format('YYYY-MM-DD')
+          momentResult.format('YYYY-MM-DD')
         );
 
         // 验证季度计算
-        const resultQuarter = dayjs(timeInstanceResult.toObject()).quarter();
-        const expectedQuarter = dayjs(expected).quarter();
+        const resultQuarter = moment(timeInstanceResult.toObject()).quarter();
+        const expectedQuarter = moment(expected).quarter();
         expect(resultQuarter).toBe(expectedQuarter);
       });
     });
@@ -254,11 +249,11 @@ describe('add 和 subtract 方法 week/quarter 参数测试', () => {
 
       multipleQuarters.forEach(quarters => {
         const timeInstanceResult = TimeUtils.create(baseDate).add(quarters, 'quarter');
-        const dayjsResult = dayjs(baseDate).add(quarters, 'quarter');
+        const momentResult = moment(baseDate).add(quarters, 'quarter');
 
-        expect(timeInstanceResult.valueOf()).toBe(dayjsResult.valueOf());
+        expect(timeInstanceResult.valueOf()).toBe(momentResult.valueOf());
         expect(timeInstanceResult.format('YYYY-MM-DD HH:mm:ss')).toBe(
-          dayjsResult.format('YYYY-MM-DD HH:mm:ss')
+          momentResult.format('YYYY-MM-DD HH:mm:ss')
         );
       });
     });
@@ -287,11 +282,11 @@ describe('add 和 subtract 方法 week/quarter 参数测试', () => {
 
       testCases.forEach(({ baseDate, quarters, expected, description }) => {
         const timeInstanceResult = TimeUtils.create(baseDate).add(quarters, 'quarter');
-        const dayjsResult = dayjs(baseDate).add(quarters, 'quarter');
+        const momentResult = moment(baseDate).add(quarters, 'quarter');
 
-        // 与 dayjs 行为保持一致
+        // 与 moment 行为保持一致
         expect(timeInstanceResult.format('YYYY-MM-DD')).toBe(
-          dayjsResult.format('YYYY-MM-DD')
+          momentResult.format('YYYY-MM-DD')
         );
       });
     });
@@ -301,11 +296,11 @@ describe('add 和 subtract 方法 week/quarter 参数测试', () => {
       const quarters = 2;
 
       const timeInstanceResult = TimeUtils.create(baseDate).add(quarters, 'quarter');
-      const dayjsResult = dayjs(baseDate).add(quarters, 'quarter');
+      const momentResult = moment(baseDate).add(quarters, 'quarter');
 
       // 日期应该变化，但时间部分应该保持
       expect(timeInstanceResult.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe(
-        dayjsResult.format('YYYY-MM-DD HH:mm:ss.SSS')
+        momentResult.format('YYYY-MM-DD HH:mm:ss.SSS')
       );
       expect(timeInstanceResult.format('HH:mm:ss.SSS')).toBe('15:30:45.123');
     });
@@ -337,12 +332,12 @@ describe('add 和 subtract 方法 week/quarter 参数测试', () => {
       testCases.forEach(({ baseDate, weeks, expected, description }) => {
         const timeInstanceResult = TimeUtils.create(baseDate).subtract(weeks, 'week');
         const functionalResult = subtractTime(createTime(baseDate), weeks, 'week');
-        const dayjsResult = dayjs(baseDate).subtract(weeks, 'week');
+        const momentResult = moment(baseDate).subtract(weeks, 'week');
 
         expect(timeInstanceResult.format('YYYY-MM-DD')).toBe(expected);
-        expect(dayjs(functionalResult).format('YYYY-MM-DD')).toBe(expected);
+        expect(moment(functionalResult).format('YYYY-MM-DD')).toBe(expected);
         expect(timeInstanceResult.format('YYYY-MM-DD')).toBe(
-          dayjsResult.format('YYYY-MM-DD')
+          momentResult.format('YYYY-MM-DD')
         );
       });
     });
@@ -365,11 +360,11 @@ describe('add 和 subtract 方法 week/quarter 参数测试', () => {
 
       testCases.forEach(({ baseDate, weeks, expected, description }) => {
         const timeInstanceResult = TimeUtils.create(baseDate).subtract(weeks, 'week');
-        const dayjsResult = dayjs(baseDate).subtract(weeks, 'week');
+        const momentResult = moment(baseDate).subtract(weeks, 'week');
 
         expect(timeInstanceResult.format('YYYY-MM-DD')).toBe(expected);
         expect(timeInstanceResult.format('YYYY-MM-DD')).toBe(
-          dayjsResult.format('YYYY-MM-DD')
+          momentResult.format('YYYY-MM-DD')
         );
 
         // 验证年份变化
@@ -406,12 +401,12 @@ describe('add 和 subtract 方法 week/quarter 参数测试', () => {
       testCases.forEach(({ baseDate, quarters, expected, description }) => {
         const timeInstanceResult = TimeUtils.create(baseDate).subtract(quarters, 'quarter');
         const functionalResult = subtractTime(createTime(baseDate), quarters, 'quarter');
-        const dayjsResult = dayjs(baseDate).subtract(quarters, 'quarter');
+        const momentResult = moment(baseDate).subtract(quarters, 'quarter');
 
         expect(timeInstanceResult.format('YYYY-MM-DD')).toBe(expected);
-        expect(dayjs(functionalResult).format('YYYY-MM-DD')).toBe(expected);
+        expect(moment(functionalResult).format('YYYY-MM-DD')).toBe(expected);
         expect(timeInstanceResult.format('YYYY-MM-DD')).toBe(
-          dayjsResult.format('YYYY-MM-DD')
+          momentResult.format('YYYY-MM-DD')
         );
       });
     });
@@ -422,11 +417,11 @@ describe('add 和 subtract 方法 week/quarter 参数测试', () => {
 
       multipleQuarters.forEach(quarters => {
         const timeInstanceResult = TimeUtils.create(baseDate).subtract(quarters, 'quarter');
-        const dayjsResult = dayjs(baseDate).subtract(quarters, 'quarter');
+        const momentResult = moment(baseDate).subtract(quarters, 'quarter');
 
-        expect(timeInstanceResult.valueOf()).toBe(dayjsResult.valueOf());
+        expect(timeInstanceResult.valueOf()).toBe(momentResult.valueOf());
         expect(timeInstanceResult.format('YYYY-MM-DD HH:mm:ss')).toBe(
-          dayjsResult.format('YYYY-MM-DD HH:mm:ss')
+          momentResult.format('YYYY-MM-DD HH:mm:ss')
         );
       });
     });
@@ -441,12 +436,12 @@ describe('add 和 subtract 方法 week/quarter 参数测试', () => {
         .add(1, 'quarter')
         .add(2, 'week');
 
-      const dayjsResult1 = dayjs(baseDate)
+      const momentResult1 = moment(baseDate)
         .add(1, 'quarter')
         .add(2, 'week');
 
       expect(result1.format('YYYY-MM-DD HH:mm:ss')).toBe(
-        dayjsResult1.format('YYYY-MM-DD HH:mm:ss')
+        momentResult1.format('YYYY-MM-DD HH:mm:ss')
       );
 
       // 减去1季度，然后减去3周
@@ -454,12 +449,12 @@ describe('add 和 subtract 方法 week/quarter 参数测试', () => {
         .subtract(1, 'quarter')
         .subtract(3, 'week');
 
-      const dayjsResult2 = dayjs(baseDate)
+      const momentResult2 = moment(baseDate)
         .subtract(1, 'quarter')
         .subtract(3, 'week');
 
       expect(result2.format('YYYY-MM-DD HH:mm:ss')).toBe(
-        dayjsResult2.format('YYYY-MM-DD HH:mm:ss')
+        momentResult2.format('YYYY-MM-DD HH:mm:ss')
       );
     });
 
@@ -473,14 +468,14 @@ describe('add 和 subtract 方法 week/quarter 参数测试', () => {
         .add(1, 'quarter')    // 2025-09-03
         .add(3, 'week');      // 2025-09-24
 
-      const dayjsComplexResult = dayjs(baseDate)
+      const momentComplexResult = moment(baseDate)
         .add(2, 'quarter')
         .subtract(4, 'week')
         .add(1, 'quarter')
         .add(3, 'week');
 
       expect(complexResult.format('YYYY-MM-DD HH:mm:ss')).toBe(
-        dayjsComplexResult.format('YYYY-MM-DD HH:mm:ss')
+        momentComplexResult.format('YYYY-MM-DD HH:mm:ss')
       );
     });
   });

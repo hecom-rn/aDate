@@ -24,7 +24,7 @@ export abstract class ITimeLibrary {
   /**
    * 创建时间对象
    * @param input - 输入时间
-   * @param formatOrOptions - dayjs的第二个参数（格式字符串或配置对象）
+   * @param formatOrOptions - moment的第二个参数（格式字符串或配置对象）
    * @param timezone - 时区
    * @returns 时间对象
    */

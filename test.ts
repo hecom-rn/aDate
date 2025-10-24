@@ -42,8 +42,8 @@ import {
 
 console.log('=== 时间库抽象层完整功能测试 ===');
 
-// 测试1: 基本功能 - 使用 dayjs
-console.log('\n🔧 1. 基本功能测试 (dayjs)');
+// 测试1: 基本功能 - 使用
+console.log('\n🔧 1. 基本功能测试');
 console.log('当前时间库:', getCurrentTimeLibrary());
 
 // 设置时区

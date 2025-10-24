@@ -1,18 +1,8 @@
 import { TimeUtils, setTimeLibrary, TimeLibraryType, getCurrentTimeLibrary } from './index';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
-import weekOfYear from 'dayjs/plugin/weekOfYear';
-import quarterOfYear from 'dayjs/plugin/quarterOfYear';
+import moment from 'moment-timezone';
 
-// 启用所有插件，模拟测试环境
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.extend(weekOfYear);
-dayjs.extend(quarterOfYear);
-
-// 设置使用DAYJS
-setTimeLibrary(TimeLibraryType.DAYJS);
+// 设置使用MOMENT
+setTimeLibrary(TimeLibraryType.MOMENT);
 
 console.log('当前使用的时间库:', getCurrentTimeLibrary());
 
@@ -31,17 +21,17 @@ const testDates = [
 console.log('\n=== 详细测试所有日期 ===');
 testDates.forEach(date => {
   const timeInstance = TimeUtils.create(date);
-  const dayjsInstance = dayjs(date);
+  const momentInstance = moment(date);
 
   const timeUtilsQuarter = timeInstance.startOfQuarter().valueOf();
-  const dayjsQuarter = dayjsInstance.startOf('quarter').valueOf();
+  const momentQuarter = momentInstance.startOf('quarter').valueOf();
 
   console.log(`\n日期: ${date}`);
   console.log(`  TimeUtils: ${timeUtilsQuarter} (${timeInstance.startOfQuarter().format('YYYY-MM-DD HH:mm:ss')})`);
-  console.log(`  Dayjs: ${dayjsQuarter} (${dayjsInstance.startOf('quarter').format('YYYY-MM-DD HH:mm:ss')})`);
-  console.log(`  匹配: ${timeUtilsQuarter === dayjsQuarter ? '✓' : '✗'}`);
+  console.log(`  Moment: ${momentQuarter} (${momentInstance.startOf('quarter').format('YYYY-MM-DD HH:mm:ss')})`);
+  console.log(`  匹配: ${timeUtilsQuarter === momentQuarter ? '✓' : '✗'}`);
 
-  if (timeUtilsQuarter !== dayjsQuarter) {
-    console.log(`  *** 不匹配！差值: ${timeUtilsQuarter - dayjsQuarter}ms ***`);
+  if (timeUtilsQuarter !== momentQuarter) {
+    console.log(`  *** 不匹配！差值: ${timeUtilsQuarter - momentQuarter}ms ***`);
   }
 });
