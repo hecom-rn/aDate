@@ -1,6 +1,7 @@
 import moment, { Moment } from 'moment-timezone';
 import { ITimeLibrary, TimeUnit, TimeObject } from '../interfaces/ITimeLibrary';
 import { zoneConfig } from '../config';
+import 'moment/locale/zh-cn';
 
 /**
  * Moment 时间库实现
@@ -307,17 +308,17 @@ export class MomentTimeLibrary extends ITimeLibrary {
   }
 
   /** 获取星期几的名称数组 */
-  weekdays(localOrder?: boolean): string[] {
+  weekdays(localOrder: boolean = false): string[] {
     return this.lib.weekdays(localOrder);
   }
 
   /** 获取星期几的简短名称数组 */
-  weekdaysShort(localOrder?: boolean): string[] {
+  weekdaysShort(localOrder: boolean = false): string[] {
     return this.lib.weekdaysShort(localOrder);
   }
 
   /** 获取星期几的最短名称数组 */
-  weekdaysMin(localOrder?: boolean): string[] {
+  weekdaysMin(localOrder: boolean = false): string[] {
     return this.lib.weekdaysMin(localOrder);
   }
 
