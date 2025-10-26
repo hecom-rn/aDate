@@ -29,19 +29,7 @@ export class MomentTimeLibrary extends ITimeLibrary {
   /** 创建时间对象 */
   create(input?: string | number | Date, formatOrOptions?: string | object, timezone?: string): TimeObject {
     if (timezone) {
-      if (input !== null && input !== undefined) {
-        const deviceTZ = this.lib.tz.guess();
-        if (deviceTZ && deviceTZ !== timezone) {
-          const timeObj: Moment = this.lib(input as any, formatOrOptions as any);
-          const currentOffset: number = timeObj.clone().tz(timezone).utcOffset();
-            // systemOffset 这里使用 deviceTZ 作为设备当前时区
-          const systemOffset: number = timeObj.clone().tz(deviceTZ).utcOffset();
-          const offsetDiff: number = currentOffset - systemOffset;
-          const timeStamp = timeObj.valueOf() - offsetDiff * 60 * 1000;
-          return this.lib(timeStamp);
-        }
-      }
-      return this.lib.tz(input as any, timezone);
+        return this.lib.tz(input as any, timezone);
     }
     if (typeof formatOrOptions === 'string') {
       return this.lib(input as any, formatOrOptions);
