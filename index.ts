@@ -606,8 +606,11 @@ export class TimeInstance {
    * 转换时区
    */
   tz(timezone: string): TimeInstance {
-    const timeObj: TimeObject = convertToTimezone(this.timeObj, timezone);
-    return new TimeInstance(timeObj);
+      if (timezone?.length > 0) {
+          const timeObj: TimeObject = convertToTimezone(this.timeObj, timezone);
+          return new TimeInstance(timeObj);
+      }
+      return this;
   }
 
   /**
