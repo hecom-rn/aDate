@@ -29,7 +29,7 @@ export class MomentTimeLibrary extends ITimeLibrary {
   /** 创建时间对象 */
   create(input?: string | number | Date, formatOrOptions?: string | object, timezone?: string): TimeObject {
     if (timezone) {
-        return this.lib.tz(input as any, timezone);
+        return this.lib.tz(input as any, formatOrOptions as any, timezone);
     }
     if (typeof formatOrOptions === 'string') {
       return this.lib(input as any, formatOrOptions);
