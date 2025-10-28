@@ -1078,6 +1078,11 @@ cross-spawn@^7.0.3:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
+dayjs@^1.11.18:
+  version "1.11.18"
+  resolved "https://registry.npmjs.org/dayjs/-/dayjs-1.11.18.tgz#835fa712aac52ab9dec8b1494098774ed7070a11"
+  integrity sha512-zFBQ7WFRvVRhKcWoUh+ZA1g2HVgUbsZm9sbddh8EC5iv93sui8DVVz1Npvz+r6meo9VKfa8NyLWBsQK1VvIKPA==
+
 debug@^4.1.0, debug@^4.1.1, debug@^4.3.1:
   version "4.4.1"
   resolved "https://registry.npmmirror.com/debug/-/debug-4.4.1.tgz"
@@ -2395,11 +2400,6 @@ write-file-atomic@^4.0.2:
   dependencies:
     imurmurhash "^0.1.4"
     signal-exit "^3.0.7"
-
-xdate@^0.8.3:
-  version "0.8.3"
-  resolved "https://registry.npmjs.org/xdate/-/xdate-0.8.3.tgz#422068681eeac81f68acffa1a38cd287bb179b85"
-  integrity sha512-1NhJWPJwN+VjbkACT9XHbQK4o6exeSVtS2CxhMPwUE7xQakoEFTlwra9YcqV/uHQVyeEUYoYC46VGDJ+etnIiw==
 
 y18n@^5.0.5:
   version "5.0.8"
