@@ -1,11 +1,11 @@
-import { DayjsTimeLibrary } from '../implementations/DayjsTimeLibrary.js';
+import { MomentTimeLibrary } from '../implementations/MomentTimeLibrary';
 import type { TimeObject } from '../interfaces/ITimeLibrary.js';
 
-describe('DayjsTimeLibrary 实现测试', () => {
-  let library: DayjsTimeLibrary;
+describe('MomentTimeLibrary 实现测试', () => {
+  let library: MomentTimeLibrary;
 
   beforeEach(() => {
-    library = new DayjsTimeLibrary();
+    library = new MomentTimeLibrary();
   });
 
   test('应该正确创建时间对象', () => {

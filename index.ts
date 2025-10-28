@@ -62,7 +62,7 @@ export function getCurrentTimestamp(isDate: boolean = false): number {
 /**
  * 创建时间对象
  * @param input - 输入时间
- * @param formatOrOptions - dayjs的第二个参数（格式字符串或配置对象）
+ * @param formatOrOptions - moment的第二个参数（格式字符串或配置对象）
  * @param timezone - 时区
  * @returns 时间对象
  */
@@ -123,7 +123,8 @@ export function parseTime(timeStr: string, format?: string, timezone?: string): 
  * @returns 新的时间对象
  */
 export function addTime(timeObj: TimeObject, amount: number, unit: TimeUnit): TimeObject {
-  return timeLibraryFactory.getInstance().add(timeObj, amount, unit);
+  const value = Number.isNaN(amount) ? 0 : amount;
+  return timeLibraryFactory.getInstance().add(timeObj, value, unit);
 }
 
 /**
@@ -134,7 +135,8 @@ export function addTime(timeObj: TimeObject, amount: number, unit: TimeUnit): Ti
  * @returns 新的时间对象
  */
 export function subtractTime(timeObj: TimeObject, amount: number, unit: TimeUnit): TimeObject {
-  return timeLibraryFactory.getInstance().subtract(timeObj, amount, unit);
+  const value = Number.isNaN(amount) ? 0 : amount;
+  return timeLibraryFactory.getInstance().subtract(timeObj, value, unit);
 }
 
 /**
@@ -604,8 +606,11 @@ export class TimeInstance {
    * 转换时区
    */
   tz(timezone: string): TimeInstance {
-    const timeObj: TimeObject = convertToTimezone(this.timeObj, timezone);
-    return new TimeInstance(timeObj);
+      if (timezone?.length > 0) {
+          const timeObj: TimeObject = convertToTimezone(this.timeObj, timezone);
+          return new TimeInstance(timeObj);
+      }
+      return this;
   }
 
   /**

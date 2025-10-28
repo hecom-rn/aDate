@@ -11,5 +11,5 @@ export interface ZoneConfig {
  */
 export const zoneConfig: ZoneConfig = {
   timezone: 'Asia/Shanghai',    // 默认（个人）时区
-  systemZone: 'Asia/Seoul'      // 系统（租户）时区
+  systemZone: 'Asia/Shanghai'      // 系统（租户）时区
 };

@@ -13,7 +13,7 @@ import {
 
 describe('TimeInstance 链式调用深度测试', () => {
   beforeEach(() => {
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.MOMENT);
   });
 
   test('应该支持getTime方法（如果实现了）', () => {
@@ -76,7 +76,7 @@ describe('TimeInstance 链式调用深度测试', () => {
 
 describe('边界条件和异常情况测试', () => {
   beforeEach(() => {
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.MOMENT);
   });
 
   test('应该正确处理闰年边界', () => {
@@ -94,7 +94,7 @@ describe('边界条件和异常情况测试', () => {
       .add(1, 'month')
       .format('YYYY-MM-DD');
 
-    // dayjs的行为：1月31日+1个月 = 2月28日（因为2月没有31日）
+    // moment的行为：1月31日+1个月 = 2月28日（因为2月没有31日）
     expect(result).toMatch(/^2025-02-(28|29)$/);
   });
 
@@ -117,7 +117,7 @@ describe('边界条件和异常情况测试', () => {
 
 describe('时区和时间戳测试', () => {
   beforeEach(() => {
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.MOMENT);
   });
 
   test('getTime和getCurrentTimestamp应该工作正常', () => {
@@ -144,7 +144,7 @@ describe('时区和时间戳测试', () => {
 
 describe('格式化功能扩展测试', () => {
   beforeEach(() => {
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.MOMENT);
   });
 
   test('应该支持多种日期格式', () => {
@@ -160,7 +160,7 @@ describe('格式化功能扩展测试', () => {
     formats.forEach(({ format, expected }) => {
       const result = formatTime(time, format);
       if (format === 'MM/DD/YYYY') {
-        // dayjs可能不支持这个格式，所以只检查基本结构
+        // moment可能不支持这个格式，所以只检查基本结构
         expect(result).toMatch(/\d{2}\/\d{2}\/\d{4}|2025-07-24/);
       } else {
         expect(result).toBe(expected);
@@ -171,7 +171,7 @@ describe('格式化功能扩展测试', () => {
 
 describe('性能和内存测试', () => {
   beforeEach(() => {
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.MOMENT);
   });
 
   test('批量创建时间对象不应该导致内存泄漏', () => {

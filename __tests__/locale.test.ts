@@ -1,13 +1,5 @@
 import { TimeUtils } from '../index';
-import dayjs from 'dayjs';
-import localeData from 'dayjs/plugin/localeData';
-import 'dayjs/locale/zh-cn';
-import 'dayjs/locale/en';
-import 'dayjs/locale/ja';
-import 'dayjs/locale/es';
-
-// 启用 dayjs 插件
-dayjs.extend(localeData);
+import moment from 'moment-timezone';
 
 describe('TimeUtils.locale 方法单元测试', () => {
   // 保存原始 locale，用于测试后恢复
@@ -36,15 +28,15 @@ describe('TimeUtils.locale 方法单元测试', () => {
       expect(TimeUtils.locale()).toBe('zh-cn');
     });
 
-    test('TimeUtils.locale() 应该与 dayjs.locale() 行为一致', () => {
+    test('TimeUtils.locale() 应该与 moment.locale() 行为一致', () => {
       // 设置我们的库
       const ourResult = TimeUtils.locale('zh-cn');
 
-      // 设置 dayjs
-      const dayjsResult = dayjs.locale('zh-cn');
+      // 设置 moment
+      const momentResult = moment.locale('zh-cn');
 
-      expect(ourResult).toBe(dayjsResult);
-      expect(TimeUtils.locale()).toBe(dayjs.locale());
+      expect(ourResult).toBe(momentResult);
+      expect(TimeUtils.locale()).toBe(moment.locale());
     });
   });
 
@@ -131,10 +123,10 @@ describe('TimeUtils.locale 方法单元测试', () => {
       expect(weekdays[0]).toBe('星期日');
       expect(months[0]).toBe('一月');
 
-      // 与 dayjs 对比
-      expect(weekdays).toEqual(dayjs.weekdays());
-      expect(weekdaysShort).toEqual(dayjs.weekdaysShort());
-      expect(months).toEqual(dayjs.months());
+      // 与 moment 对比
+      expect(weekdays).toEqual(moment.weekdays());
+      expect(weekdaysShort).toEqual(moment.weekdaysShort());
+      expect(months).toEqual(moment.months());
     });
 
     test('英文 locale 应该影响 weekdays 输出', () => {
@@ -147,9 +139,9 @@ describe('TimeUtils.locale 方法单元测试', () => {
       expect(weekdays[0]).toBe('Sunday');
       expect(months[0]).toBe('January');
 
-      // 与 dayjs 对比
-      expect(weekdays).toEqual(dayjs.weekdays());
-      expect(months).toEqual(dayjs.months());
+      // 与 moment 对比
+      expect(weekdays).toEqual(moment.weekdays());
+      expect(months).toEqual(moment.months());
     });
 
     test('locale 切换应该立即生效', () => {
@@ -174,7 +166,7 @@ describe('TimeUtils.locale 方法单元测试', () => {
       // 设置一个不存在的 locale
       const result = TimeUtils.locale('invalid-locale');
 
-      // 根据 dayjs 的行为，不存在的 locale 通常会回退到默认值或保持当前值
+      // 根据 moment 的行为，不存在的 locale 通常会回退到默认值或保持当前值
       expect(typeof result).toBe('string');
     });
 
@@ -192,34 +184,34 @@ describe('TimeUtils.locale 方法单元测试', () => {
     });
   });
 
-  describe('与 dayjs.locale() 一致性测试', () => {
-    test('TimeUtils.locale 结果应该与 dayjs.locale() 一致', () => {
+  describe('与 moment.locale() 一致性测试', () => {
+    test('TimeUtils.locale 结果应该与 moment.locale() 一致', () => {
       const testLocales = ['zh-cn', 'en', 'ja', 'es'];
 
       testLocales.forEach(locale => {
         // 设置我们的库
         const ourResult = TimeUtils.locale(locale);
 
-        // 设置 dayjs（重新设置以确保同步）
-        const dayjsResult = dayjs.locale(locale);
+        // 设置 moment（重新设置以确保同步）
+        const momentResult = moment.locale(locale);
 
-        expect(ourResult).toBe(dayjsResult);
-        expect(TimeUtils.locale()).toBe(dayjs.locale());
+        expect(ourResult).toBe(momentResult);
+        expect(TimeUtils.locale()).toBe(moment.locale());
       });
     });
 
-    test('weekdays 等方法在不同 locale 下应该与 dayjs 一致', () => {
+    test('weekdays 等方法在不同 locale 下应该与 moment 一致', () => {
       const testLocales = ['zh-cn', 'en'];
 
       testLocales.forEach(locale => {
         TimeUtils.locale(locale);
-        dayjs.locale(locale);
+        moment.locale(locale);
 
-        expect(TimeUtils.weekdays()).toEqual(dayjs.weekdays());
-        expect(TimeUtils.weekdaysShort()).toEqual(dayjs.weekdaysShort());
-        expect(TimeUtils.weekdaysMin()).toEqual(dayjs.weekdaysMin());
-        expect(TimeUtils.months()).toEqual(dayjs.months());
-        expect(TimeUtils.monthsShort()).toEqual(dayjs.monthsShort());
+        expect(TimeUtils.weekdays()).toEqual(moment.weekdays());
+        expect(TimeUtils.weekdaysShort()).toEqual(moment.weekdaysShort());
+        expect(TimeUtils.weekdaysMin()).toEqual(moment.weekdaysMin());
+        expect(TimeUtils.months()).toEqual(moment.months());
+        expect(TimeUtils.monthsShort()).toEqual(moment.monthsShort());
       });
     });
   });

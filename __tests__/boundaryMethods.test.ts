@@ -1,8 +1,3 @@
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
-import weekOfYear from 'dayjs/plugin/weekOfYear';
-import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 import {
   TimeUtils,
   createTime,
@@ -14,16 +9,11 @@ import {
   setTimeLibrary,
   TimeLibraryType
 } from '../index';
-
-// 启用 dayjs 插件
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.extend(weekOfYear);
-dayjs.extend(quarterOfYear);
+import moment from 'moment-timezone';
 
 describe('边界时间方法测试', () => {
   beforeEach(() => {
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.MOMENT);
   });
 
   describe('startOfWeek 方法测试', () => {
@@ -60,10 +50,10 @@ describe('边界时间方法测试', () => {
         const instanceResult = TimeUtils.create(input).startOfWeek();
         expect(instanceResult.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe(expected);
 
-        // 与 dayjs 对比
-        const dayjsResult = dayjs(input).startOf('week');
+        // 与 moment 对比
+        const momentResult = moment(input).startOf('week');
         expect(instanceResult.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe(
-          dayjsResult.format('YYYY-MM-DD HH:mm:ss.SSS')
+            momentResult.format('YYYY-MM-DD HH:mm:ss.SSS')
         );
       });
     });
@@ -86,10 +76,10 @@ describe('边界时间方法测试', () => {
 
       testCases.forEach(({ input, description }) => {
         const timeUtilsResult = TimeUtils.create(input).startOfWeek();
-        const dayjsResult = dayjs(input).startOf('week');
+        const momentResult = moment(input).startOf('week');
 
         expect(timeUtilsResult.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe(
-          dayjsResult.format('YYYY-MM-DD HH:mm:ss.SSS')
+          momentResult.format('YYYY-MM-DD HH:mm:ss.SSS')
         );
 
         // 验证返回的是星期日
@@ -100,10 +90,10 @@ describe('边界时间方法测试', () => {
     test('带时间的日期应该返回当天00:00:00的周开始', () => {
       const input = '2025-07-24 15:30:45.123';
       const timeUtilsResult = TimeUtils.create(input).startOfWeek();
-      const dayjsResult = dayjs(input).startOf('week');
+      const momentResult = moment(input).startOf('week');
 
       expect(timeUtilsResult.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe(
-        dayjsResult.format('YYYY-MM-DD HH:mm:ss.SSS')
+        momentResult.format('YYYY-MM-DD HH:mm:ss.SSS')
       );
 
       // 应该是00:00:00.000
@@ -140,10 +130,10 @@ describe('边界时间方法测试', () => {
         const instanceResult = TimeUtils.create(input).endOfWeek();
         expect(instanceResult.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe(expected);
 
-        // 与 dayjs 对比
-        const dayjsResult = dayjs(input).endOf('week');
+        // 与 moment 对比
+        const momentResult = moment(input).endOf('week');
         expect(instanceResult.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe(
-          dayjsResult.format('YYYY-MM-DD HH:mm:ss.SSS')
+          momentResult.format('YYYY-MM-DD HH:mm:ss.SSS')
         );
 
         // 验证是星期六
@@ -165,10 +155,10 @@ describe('边界时间方法测试', () => {
 
       testCases.forEach(({ input, description }) => {
         const timeUtilsResult = TimeUtils.create(input).endOfWeek();
-        const dayjsResult = dayjs(input).endOf('week');
+        const momentResult = moment(input).endOf('week');
 
         expect(timeUtilsResult.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe(
-          dayjsResult.format('YYYY-MM-DD HH:mm:ss.SSS')
+          momentResult.format('YYYY-MM-DD HH:mm:ss.SSS')
         );
 
         // 验证返回的是星期六
@@ -235,14 +225,14 @@ describe('边界时间方法测试', () => {
         const instanceResult = TimeUtils.create(input).startOfQuarter();
         expect(instanceResult.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe(expected);
 
-        // 与 dayjs 对比
-        const dayjsResult = dayjs(input).startOf('quarter');
+        // 与 moment 对比
+        const momentResult = moment(input).startOf('quarter');
         expect(instanceResult.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe(
-          dayjsResult.format('YYYY-MM-DD HH:mm:ss.SSS')
+          momentResult.format('YYYY-MM-DD HH:mm:ss.SSS')
         );
 
         // 验证季度
-        expect(dayjs(instanceResult.toObject()).quarter()).toBe(quarter);
+        expect(moment(instanceResult.toObject()).quarter()).toBe(quarter);
       });
     });
 
@@ -262,11 +252,11 @@ describe('边界时间方法测试', () => {
 
       testCases.forEach(({ input, expected, description }) => {
         const timeUtilsResult = TimeUtils.create(input).startOfQuarter();
-        const dayjsResult = dayjs(input).startOf('quarter');
+        const momentResult = moment(input).startOf('quarter');
 
         expect(timeUtilsResult.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe(expected);
         expect(timeUtilsResult.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe(
-          dayjsResult.format('YYYY-MM-DD HH:mm:ss.SSS')
+          momentResult.format('YYYY-MM-DD HH:mm:ss.SSS')
         );
       });
     });
@@ -274,10 +264,10 @@ describe('边界时间方法测试', () => {
     test('带时间的日期应该返回季度开始的00:00:00', () => {
       const input = '2025-07-24 15:30:45.123'; // Q3
       const timeUtilsResult = TimeUtils.create(input).startOfQuarter();
-      const dayjsResult = dayjs(input).startOf('quarter');
+      const momentResult = moment(input).startOf('quarter');
 
       expect(timeUtilsResult.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe(
-        dayjsResult.format('YYYY-MM-DD HH:mm:ss.SSS')
+        momentResult.format('YYYY-MM-DD HH:mm:ss.SSS')
       );
 
       // 应该是07-01 00:00:00.000
@@ -319,10 +309,10 @@ describe('边界时间方法测试', () => {
         const instanceResult = TimeUtils.create(input).startOfYear();
         expect(instanceResult.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe(expected);
 
-        // 与 dayjs 对比
-        const dayjsResult = dayjs(input).startOf('year');
+        // 与 moment 对比
+        const momentResult = moment(input).startOf('year');
         expect(instanceResult.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe(
-          dayjsResult.format('YYYY-MM-DD HH:mm:ss.SSS')
+          momentResult.format('YYYY-MM-DD HH:mm:ss.SSS')
         );
 
         // 验证是1月1日
@@ -344,11 +334,11 @@ describe('边界时间方法测试', () => {
         const expected = `${year}-01-01 00:00:00.000`;
 
         const timeUtilsResult = TimeUtils.create(input).startOfYear();
-        const dayjsResult = dayjs(input).startOf('year');
+        const momentResult = moment(input).startOf('year');
 
         expect(timeUtilsResult.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe(expected);
         expect(timeUtilsResult.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe(
-          dayjsResult.format('YYYY-MM-DD HH:mm:ss.SSS')
+          momentResult.format('YYYY-MM-DD HH:mm:ss.SSS')
         );
 
         // 验证年份
@@ -359,10 +349,10 @@ describe('边界时间方法测试', () => {
     test('带时间的日期应该返回年开始的00:00:00', () => {
       const input = '2025-07-24 15:30:45.123';
       const timeUtilsResult = TimeUtils.create(input).startOfYear();
-      const dayjsResult = dayjs(input).startOf('year');
+      const momentResult = moment(input).startOf('year');
 
       expect(timeUtilsResult.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe(
-        dayjsResult.format('YYYY-MM-DD HH:mm:ss.SSS')
+        momentResult.format('YYYY-MM-DD HH:mm:ss.SSS')
       );
 
       // 应该是01-01 00:00:00.000
@@ -379,12 +369,12 @@ describe('边界时间方法测试', () => {
         .startOfWeek()
         .startOfYear();
 
-      const dayjsWeekToYear = dayjs(baseDate)
+      const momentWeekToYear = moment(baseDate)
         .startOf('week')
         .startOf('year');
 
       expect(weekToYear.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe(
-        dayjsWeekToYear.format('YYYY-MM-DD HH:mm:ss.SSS')
+        momentWeekToYear.format('YYYY-MM-DD HH:mm:ss.SSS')
       );
 
       // 测试季度开始 -> 周结束
@@ -392,12 +382,12 @@ describe('边界时间方法测试', () => {
         .startOfQuarter()
         .endOfWeek();
 
-      const dayjsQuarterToWeekEnd = dayjs(baseDate)
+      const momentQuarterToWeekEnd = moment(baseDate)
         .startOf('quarter')
         .endOf('week');
 
       expect(quarterToWeekEnd.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe(
-        dayjsQuarterToWeekEnd.format('YYYY-MM-DD HH:mm:ss.SSS')
+        momentQuarterToWeekEnd.format('YYYY-MM-DD HH:mm:ss.SSS')
       );
     });
 
@@ -411,14 +401,14 @@ describe('边界时间方法测试', () => {
         .startOfQuarter()   // 2025-10-01 (Q4开始)
         .endOfWeek();       // 该周的星期六结束
 
-      const dayjsChain = dayjs(baseDate)
+      const momentChain = moment(baseDate)
         .startOf('year')
         .add(3, 'quarter')
         .startOf('quarter')
         .endOf('week');
 
       expect(complexChain.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe(
-        dayjsChain.format('YYYY-MM-DD HH:mm:ss.SSS')
+        momentChain.format('YYYY-MM-DD HH:mm:ss.SSS')
       );
     });
   });
@@ -448,8 +438,8 @@ describe('边界时间方法测试', () => {
     });
   });
 
-  describe('边界方法与 dayjs 一致性验证', () => {
-    test('所有边界方法都应与 dayjs 保持一致', () => {
+  describe('边界方法与 moment 一致性验证', () => {
+    test('所有边界方法都应与 moment 保持一致', () => {
       const testDates = [
         '2025-01-01', // 年初
         '2025-03-31', // Q1末
@@ -463,33 +453,33 @@ describe('边界时间方法测试', () => {
 
       testDates.forEach(date => {
         const timeInstance = TimeUtils.create(date);
-        const dayjsInstance = dayjs(date);
+        const momentInstance = moment(date);
 
         // startOfWeek
         expect(timeInstance.startOfWeek().valueOf()).toBe(
-          dayjsInstance.startOf('week').valueOf()
+          momentInstance.clone().startOf('week').valueOf()
         );
 
         // endOfWeek
         expect(timeInstance.endOfWeek().valueOf()).toBe(
-          dayjsInstance.endOf('week').valueOf()
+          momentInstance.clone().endOf('week').valueOf()
         );
 
         // startOfQuarter - 添加调试信息
         const timeUtilsQuarter = timeInstance.startOfQuarter().valueOf();
-        const dayjsQuarter = dayjsInstance.startOf('quarter').valueOf();
+        const momentQuarter = momentInstance.clone().startOf('quarter').valueOf();
 
-        if (timeUtilsQuarter !== dayjsQuarter) {
+        if (timeUtilsQuarter !== momentQuarter) {
           console.log(`Quarter mismatch for ${date}:`);
           console.log(`  TimeUtils: ${timeUtilsQuarter} (${timeInstance.startOfQuarter().format('YYYY-MM-DD HH:mm:ss')})`);
-          console.log(`  Dayjs: ${dayjsQuarter} (${dayjsInstance.startOf('quarter').format('YYYY-MM-DD HH:mm:ss')})`);
+          console.log(`  Moment: ${momentQuarter} (${momentInstance.clone().startOf('quarter').format('YYYY-MM-DD HH:mm:ss')})`);
         }
 
-        expect(timeUtilsQuarter).toBe(dayjsQuarter);
+        expect(timeUtilsQuarter).toBe(momentQuarter);
 
         // startOfYear
         expect(timeInstance.startOfYear().valueOf()).toBe(
-          dayjsInstance.startOf('year').valueOf()
+          momentInstance.clone().startOf('year').valueOf()
         );
       });
     });

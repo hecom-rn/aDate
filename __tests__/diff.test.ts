@@ -1,16 +1,10 @@
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
 import { setTimeLibrary, TimeLibraryType, createTime, diff, TimeUtils } from '../index';
-
-// 启用 dayjs 插件
-dayjs.extend(utc);
-dayjs.extend(timezone);
+import moment from 'moment-timezone';
 
 describe('diff 时间差值计算测试', () => {
   beforeEach(() => {
-    // 默认使用 Dayjs
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    // 默认使用 Moment
+    setTimeLibrary(TimeLibraryType.MOMENT);
   });
 
   describe('基础时间差值计算', () => {
@@ -168,24 +162,24 @@ describe('diff 时间差值计算测试', () => {
   });
 
   describe('不同时间库实现对比', () => {
-    test('Dayjs vs XDateTime 实现对比', () => {
+    test('Moment vs XDateTime 实现对比', () => {
       const time1 = createTime('2023-01-01 15:00:00');
       const time2 = createTime('2023-01-01 10:00:00');
 
-      // 测试 Dayjs
-      setTimeLibrary(TimeLibraryType.DAYJS);
-      const dayjsResult = diff(time1, time2, 'hour');
-      expect(dayjsResult).toBe(5);
+      // 测试 Moment
+      setTimeLibrary(TimeLibraryType.MOMENT);
+      const momentResult = diff(time1, time2, 'hour');
+      expect(momentResult).toBe(5);
     });
 
     test('精确计算在不同实现中的一致性', () => {
       const time1 = createTime('2023-01-01 10:30:00');
       const time2 = createTime('2023-01-01 10:00:00');
 
-      // 测试 Dayjs
-      setTimeLibrary(TimeLibraryType.DAYJS);
-      const dayjsResult = diff(time1, time2, 'hour', true);
-      expect(dayjsResult).toBeCloseTo(0.5, 1);
+      // 测试 Moment
+      setTimeLibrary(TimeLibraryType.MOMENT);
+      const momentResult = diff(time1, time2, 'hour', true);
+      expect(momentResult).toBeCloseTo(0.5, 1);
     });
   });
 
@@ -209,9 +203,9 @@ describe('diff 时间差值计算测试', () => {
     });
   });
 
-  describe('与 Dayjs diff 方法的详细对比测试', () => {
+  describe('与 Moment diff 方法的详细对比测试', () => {
     beforeEach(() => {
-      setTimeLibrary(TimeLibraryType.DAYJS);
+      setTimeLibrary(TimeLibraryType.MOMENT);
     });
 
     test('毫秒级差值对比', () => {
@@ -220,12 +214,12 @@ describe('diff 时间差值计算测试', () => {
 
       const timeObj1 = createTime(date1);
       const timeObj2 = createTime(date2);
-      const dayjsTime1 = dayjs(date1);
-      const dayjsTime2 = dayjs(date2);
+      const momentTime1 = moment(date1);
+      const momentTime2 = moment(date2);
 
       // 毫秒差值对比
-      expect(diff(timeObj1, timeObj2, 'millisecond')).toBe(dayjsTime1.diff(dayjsTime2, 'millisecond'));
-      expect(diff(timeObj1, timeObj2)).toBe(dayjsTime1.diff(dayjsTime2)); // 默认毫秒
+      expect(diff(timeObj1, timeObj2, 'millisecond')).toBe(momentTime1.diff(momentTime2, 'millisecond'));
+      expect(diff(timeObj1, timeObj2)).toBe(momentTime1.diff(momentTime2)); // 默认毫秒
     });
 
     test('秒级差值对比', () => {
@@ -234,10 +228,10 @@ describe('diff 时间差值计算测试', () => {
 
       const timeObj1 = createTime(date1);
       const timeObj2 = createTime(date2);
-      const dayjsTime1 = dayjs(date1);
-      const dayjsTime2 = dayjs(date2);
+      const momentTime1 = moment(date1);
+      const momentTime2 = moment(date2);
 
-      expect(diff(timeObj1, timeObj2, 'second')).toBe(dayjsTime1.diff(dayjsTime2, 'second'));
+      expect(diff(timeObj1, timeObj2, 'second')).toBe(momentTime1.diff(momentTime2, 'second'));
     });
 
     test('分钟级差值对比', () => {
@@ -246,10 +240,10 @@ describe('diff 时间差值计算测试', () => {
 
       const timeObj1 = createTime(date1);
       const timeObj2 = createTime(date2);
-      const dayjsTime1 = dayjs(date1);
-      const dayjsTime2 = dayjs(date2);
+      const momentTime1 = moment(date1);
+      const momentTime2 = moment(date2);
 
-      expect(diff(timeObj1, timeObj2, 'minute')).toBe(dayjsTime1.diff(dayjsTime2, 'minute'));
+      expect(diff(timeObj1, timeObj2, 'minute')).toBe(momentTime1.diff(momentTime2, 'minute'));
     });
 
     test('小时级差值对比', () => {
@@ -258,10 +252,10 @@ describe('diff 时间差值计算测试', () => {
 
       const timeObj1 = createTime(date1);
       const timeObj2 = createTime(date2);
-      const dayjsTime1 = dayjs(date1);
-      const dayjsTime2 = dayjs(date2);
+      const momentTime1 = moment(date1);
+      const momentTime2 = moment(date2);
 
-      expect(diff(timeObj1, timeObj2, 'hour')).toBe(dayjsTime1.diff(dayjsTime2, 'hour'));
+      expect(diff(timeObj1, timeObj2, 'hour')).toBe(momentTime1.diff(momentTime2, 'hour'));
     });
 
     test('天数差值对比', () => {
@@ -275,10 +269,10 @@ describe('diff 时间差值计算测试', () => {
       testCases.forEach(([date1, date2]) => {
         const timeObj1 = createTime(date1);
         const timeObj2 = createTime(date2);
-        const dayjsTime1 = dayjs(date1);
-        const dayjsTime2 = dayjs(date2);
+        const momentTime1 = moment(date1);
+        const momentTime2 = moment(date2);
 
-        expect(diff(timeObj1, timeObj2, 'day')).toBe(dayjsTime1.diff(dayjsTime2, 'day'));
+        expect(diff(timeObj1, timeObj2, 'day')).toBe(momentTime1.diff(momentTime2, 'day'));
       });
     });
 
@@ -292,10 +286,10 @@ describe('diff 时间差值计算测试', () => {
       testCases.forEach(([date1, date2]) => {
         const timeObj1 = createTime(date1);
         const timeObj2 = createTime(date2);
-        const dayjsTime1 = dayjs(date1);
-        const dayjsTime2 = dayjs(date2);
+        const momentTime1 = moment(date1);
+        const momentTime2 = moment(date2);
 
-        expect(diff(timeObj1, timeObj2, 'week')).toBe(dayjsTime1.diff(dayjsTime2, 'week'));
+        expect(diff(timeObj1, timeObj2, 'week')).toBe(momentTime1.diff(momentTime2, 'week'));
       });
     });
 
@@ -310,10 +304,10 @@ describe('diff 时间差值计算测试', () => {
       testCases.forEach(([date1, date2]) => {
         const timeObj1 = createTime(date1);
         const timeObj2 = createTime(date2);
-        const dayjsTime1 = dayjs(date1);
-        const dayjsTime2 = dayjs(date2);
+        const momentTime1 = moment(date1);
+        const momentTime2 = moment(date2);
 
-        expect(diff(timeObj1, timeObj2, 'month')).toBe(dayjsTime1.diff(dayjsTime2, 'month'));
+        expect(diff(timeObj1, timeObj2, 'month')).toBe(momentTime1.diff(momentTime2, 'month'));
       });
     });
 
@@ -328,10 +322,10 @@ describe('diff 时间差值计算测试', () => {
       testCases.forEach(([date1, date2]) => {
         const timeObj1 = createTime(date1);
         const timeObj2 = createTime(date2);
-        const dayjsTime1 = dayjs(date1);
-        const dayjsTime2 = dayjs(date2);
+        const momentTime1 = moment(date1);
+        const momentTime2 = moment(date2);
 
-        expect(diff(timeObj1, timeObj2, 'year')).toBe(dayjsTime1.diff(dayjsTime2, 'year'));
+        expect(diff(timeObj1, timeObj2, 'year')).toBe(momentTime1.diff(momentTime2, 'year'));
       });
     });
 
@@ -360,13 +354,13 @@ describe('diff 时间差值计算测试', () => {
       testCases.forEach(({ date1, date2, unit, expected }) => {
         const timeObj1 = createTime(date1);
         const timeObj2 = createTime(date2);
-        const dayjsTime1 = dayjs(date1);
-        const dayjsTime2 = dayjs(date2);
+        const momentTime1 = moment(date1);
+        const momentTime2 = moment(date2);
 
         const ourResult = diff(timeObj1, timeObj2, unit, true);
-        const dayjsResult = dayjsTime1.diff(dayjsTime2, unit, true);
+        const momentResult = momentTime1.diff(momentTime2, unit, true);
 
-        expect(ourResult).toBeCloseTo(dayjsResult, 6);
+        expect(ourResult).toBeCloseTo(momentResult, 6);
         expect(ourResult).toBeCloseTo(expected, 6);
       });
     });
@@ -396,13 +390,13 @@ describe('diff 时间差值计算测试', () => {
       testCases.forEach(({ date1, date2, unit, expected }) => {
         const timeObj1 = createTime(date1);
         const timeObj2 = createTime(date2);
-        const dayjsTime1 = dayjs(date1);
-        const dayjsTime2 = dayjs(date2);
+        const momentTime1 = moment(date1);
+        const momentTime2 = moment(date2);
 
         const ourResult = diff(timeObj1, timeObj2, unit);
-        const dayjsResult = dayjsTime1.diff(dayjsTime2, unit);
+        const momentResult = momentTime1.diff(momentTime2, unit);
 
-        expect(ourResult).toBe(dayjsResult);
+        expect(ourResult).toBe(momentResult);
         expect(ourResult).toBe(expected);
       });
     });
@@ -422,13 +416,13 @@ describe('diff 时间差值计算测试', () => {
       testCases.forEach(([date1, date2]) => {
         const timeObj1 = createTime(date1);
         const timeObj2 = createTime(date2);
-        const dayjsTime1 = dayjs(date1);
-        const dayjsTime2 = dayjs(date2);
+        const momentTime1 = moment(date1);
+        const momentTime2 = moment(date2);
 
         // 测试多个单位
         ['millisecond', 'second', 'minute', 'hour', 'day'].forEach(unit => {
           expect(diff(timeObj1, timeObj2, unit as any)).toBe(
-            dayjsTime1.diff(dayjsTime2, unit as any)
+            momentTime1.diff(momentTime2, unit as any)
           );
         });
       });
@@ -440,20 +434,20 @@ describe('diff 时间差值计算测试', () => {
 
       const timeInstance1 = TimeUtils.create(date1);
       const timeInstance2 = TimeUtils.create(date2);
-      const dayjsTime1 = dayjs(date1);
-      const dayjsTime2 = dayjs(date2);
+      const momentTime1 = moment(date1);
+      const momentTime2 = moment(date2);
 
       // 测试实例方法
       expect(timeInstance1.diff(timeInstance2, 'hour')).toBe(
-        dayjsTime1.diff(dayjsTime2, 'hour')
+        momentTime1.diff(momentTime2, 'hour')
       );
 
       expect(timeInstance1.diff(timeInstance2.toObject(), 'minute')).toBe(
-        dayjsTime1.diff(dayjsTime2, 'minute')
+        momentTime1.diff(momentTime2, 'minute')
       );
 
       expect(timeInstance1.diff(timeInstance2, 'second', true)).toBeCloseTo(
-        dayjsTime1.diff(dayjsTime2, 'second', true),
+        momentTime1.diff(momentTime2, 'second', true),
         6
       );
     });
@@ -471,23 +465,23 @@ describe('diff 时间差值计算测试', () => {
         .add(2, 'week')
         .minute(30);
 
-      // dayjs 实现
-      const dayjsTime1 = dayjs(baseDate)
+      // moment 实现
+      const momentTime1 = moment(baseDate)
         .add(1, 'month')
         .subtract(5, 'day')
         .hour(10);
 
-      const dayjsTime2 = dayjs(baseDate)
+      const momentTime2 = moment(baseDate)
         .add(2, 'week')
         .minute(30);
 
       // 比较结果
       expect(timeInstance1.diff(timeInstance2, 'day')).toBe(
-        dayjsTime1.diff(dayjsTime2, 'day')
+        momentTime1.diff(momentTime2, 'day')
       );
 
       expect(timeInstance1.diff(timeInstance2, 'hour')).toBe(
-        dayjsTime1.diff(dayjsTime2, 'hour')
+        momentTime1.diff(momentTime2, 'hour')
       );
     });
 
@@ -499,14 +493,14 @@ describe('diff 时间差值计算测试', () => {
       const timeUtc1 = TimeUtils.create(date1).utc();
       const timeUtc2 = TimeUtils.create(date2).utc();
 
-      // dayjs UTC实现
-      const dayjsUtc1 = dayjs(date1).utc();
-      const dayjsUtc2 = dayjs(date2).utc();
+      // moment UTC实现
+      const momentUtc1 = moment(date1).utc();
+      const momentUtc2 = moment(date2).utc();
 
       // 比较各种单位的差值
       ['millisecond', 'second', 'minute', 'hour', 'day'].forEach(unit => {
         expect(timeUtc1.diff(timeUtc2, unit as any)).toBe(
-          dayjsUtc1.diff(dayjsUtc2, unit as any)
+          momentUtc1.diff(momentUtc2, unit as any)
         );
       });
     });
@@ -524,18 +518,18 @@ describe('diff 时间差值计算测试', () => {
       testCases.forEach(([date1, date2]) => {
         const timeObj1 = createTime(date1);
         const timeObj2 = createTime(date2);
-        const dayjsTime1 = dayjs(date1);
-        const dayjsTime2 = dayjs(date2);
+        const momentTime1 = moment(date1);
+        const momentTime2 = moment(date2);
 
         // 测试年、月、日差值
         expect(diff(timeObj1, timeObj2, 'year')).toBe(
-          dayjsTime1.diff(dayjsTime2, 'year')
+          momentTime1.diff(momentTime2, 'year')
         );
         expect(diff(timeObj1, timeObj2, 'month')).toBe(
-          dayjsTime1.diff(dayjsTime2, 'month')
+          momentTime1.diff(momentTime2, 'month')
         );
         expect(diff(timeObj1, timeObj2, 'day')).toBe(
-          dayjsTime1.diff(dayjsTime2, 'day')
+          momentTime1.diff(momentTime2, 'day')
         );
       });
     });
@@ -543,8 +537,8 @@ describe('diff 时间差值计算测试', () => {
     test('diff计算性能对比', () => {
       const time1 = createTime('2023-07-24 15:30:45');
       const time2 = createTime('2023-01-01 00:00:00');
-      const dayjsTime1 = dayjs('2023-07-24 15:30:45');
-      const dayjsTime2 = dayjs('2023-01-01 00:00:00');
+      const momentTime1 = moment('2023-07-24 15:30:45');
+      const momentTime2 = moment('2023-01-01 00:00:00');
 
       const iterations = 1000;
 
@@ -557,23 +551,23 @@ describe('diff 时间差值计算测试', () => {
       }
       const ourDuration = Date.now() - ourStart;
 
-      // dayjs性能测试
-      const dayjsStart = Date.now();
+      // moment性能测试
+      const momentStart = Date.now();
       for (let i = 0; i < iterations; i++) {
-        dayjsTime1.diff(dayjsTime2, 'day');
-        dayjsTime1.diff(dayjsTime2, 'hour');
-        dayjsTime1.diff(dayjsTime2, 'minute');
+        momentTime1.diff(momentTime2, 'day');
+        momentTime1.diff(momentTime2, 'hour');
+        momentTime1.diff(momentTime2, 'minute');
       }
-      const dayjsDuration = Date.now() - dayjsStart;
+      const momentDuration = Date.now() - momentStart;
 
-      // 性能应该在合理范围内（允许我们的实现比dayjs慢3倍）
-      expect(ourDuration).toBeLessThan(dayjsDuration * 3);
+      // 性能应该在合理范围内（允许我们的实现比moment慢3倍）
+      expect(ourDuration).toBeLessThan(momentDuration * 3);
 
-      console.log(`diff性能对比 - 我们的实现: ${ourDuration}ms, Dayjs: ${dayjsDuration}ms`);
+      console.log(`diff性能对比 - 我们的实现: ${ourDuration}ms, Moment: ${momentDuration}ms`);
     });
   });
 
-  describe('与 dayjs 原生 diff 方法对比测试', () => {
+  describe('与 moment 原生 diff 方法对比测试', () => {
     test('毫秒差值对比', () => {
       const testCases = [
         ['2023-01-01 10:00:00.500', '2023-01-01 10:00:00.000'],
@@ -584,13 +578,13 @@ describe('diff 时间差值计算测试', () => {
       testCases.forEach(([time1Str, time2Str]) => {
         const timeUtilsTime1 = createTime(time1Str);
         const timeUtilsTime2 = createTime(time2Str);
-        const dayjsTime1 = dayjs(time1Str);
-        const dayjsTime2 = dayjs(time2Str);
+        const momentTime1 = moment(time1Str);
+        const momentTime2 = moment(time2Str);
 
         const timeUtilsDiff = diff(timeUtilsTime1, timeUtilsTime2, 'millisecond');
-        const dayjsDiff = dayjsTime1.diff(dayjsTime2, 'millisecond');
+        const momentDiff = momentTime1.diff(momentTime2, 'millisecond');
 
-        expect(timeUtilsDiff).toBe(dayjsDiff);
+        expect(timeUtilsDiff).toBe(momentDiff);
       });
     });
 
@@ -604,13 +598,13 @@ describe('diff 时间差值计算测试', () => {
       testCases.forEach(([time1Str, time2Str]) => {
         const timeUtilsTime1 = createTime(time1Str);
         const timeUtilsTime2 = createTime(time2Str);
-        const dayjsTime1 = dayjs(time1Str);
-        const dayjsTime2 = dayjs(time2Str);
+        const momentTime1 = moment(time1Str);
+        const momentTime2 = moment(time2Str);
 
         const timeUtilsDiff = diff(timeUtilsTime1, timeUtilsTime2, 'second');
-        const dayjsDiff = dayjsTime1.diff(dayjsTime2, 'second');
+        const momentDiff = momentTime1.diff(momentTime2, 'second');
 
-        expect(timeUtilsDiff).toBe(dayjsDiff);
+        expect(timeUtilsDiff).toBe(momentDiff);
       });
     });
 
@@ -624,13 +618,13 @@ describe('diff 时间差值计算测试', () => {
       testCases.forEach(([time1Str, time2Str]) => {
         const timeUtilsTime1 = createTime(time1Str);
         const timeUtilsTime2 = createTime(time2Str);
-        const dayjsTime1 = dayjs(time1Str);
-        const dayjsTime2 = dayjs(time2Str);
+        const momentTime1 = moment(time1Str);
+        const momentTime2 = moment(time2Str);
 
         const timeUtilsDiff = diff(timeUtilsTime1, timeUtilsTime2, 'minute');
-        const dayjsDiff = dayjsTime1.diff(dayjsTime2, 'minute');
+        const momentDiff = momentTime1.diff(momentTime2, 'minute');
 
-        expect(timeUtilsDiff).toBe(dayjsDiff);
+        expect(timeUtilsDiff).toBe(momentDiff);
       });
     });
 
@@ -644,13 +638,13 @@ describe('diff 时间差值计算测试', () => {
       testCases.forEach(([time1Str, time2Str]) => {
         const timeUtilsTime1 = createTime(time1Str);
         const timeUtilsTime2 = createTime(time2Str);
-        const dayjsTime1 = dayjs(time1Str);
-        const dayjsTime2 = dayjs(time2Str);
+        const momentTime1 = moment(time1Str);
+        const momentTime2 = moment(time2Str);
 
         const timeUtilsDiff = diff(timeUtilsTime1, timeUtilsTime2, 'hour');
-        const dayjsDiff = dayjsTime1.diff(dayjsTime2, 'hour');
+        const momentDiff = momentTime1.diff(momentTime2, 'hour');
 
-        expect(timeUtilsDiff).toBe(dayjsDiff);
+        expect(timeUtilsDiff).toBe(momentDiff);
       });
     });
 
@@ -665,13 +659,13 @@ describe('diff 时间差值计算测试', () => {
       testCases.forEach(([time1Str, time2Str]) => {
         const timeUtilsTime1 = createTime(time1Str);
         const timeUtilsTime2 = createTime(time2Str);
-        const dayjsTime1 = dayjs(time1Str);
-        const dayjsTime2 = dayjs(time2Str);
+        const momentTime1 = moment(time1Str);
+        const momentTime2 = moment(time2Str);
 
         const timeUtilsDiff = diff(timeUtilsTime1, timeUtilsTime2, 'day');
-        const dayjsDiff = dayjsTime1.diff(dayjsTime2, 'day');
+        const momentDiff = momentTime1.diff(momentTime2, 'day');
 
-        expect(timeUtilsDiff).toBe(dayjsDiff);
+        expect(timeUtilsDiff).toBe(momentDiff);
       });
     });
 
@@ -685,13 +679,13 @@ describe('diff 时间差值计算测试', () => {
       testCases.forEach(([time1Str, time2Str]) => {
         const timeUtilsTime1 = createTime(time1Str);
         const timeUtilsTime2 = createTime(time2Str);
-        const dayjsTime1 = dayjs(time1Str);
-        const dayjsTime2 = dayjs(time2Str);
+        const momentTime1 = moment(time1Str);
+        const momentTime2 = moment(time2Str);
 
         const timeUtilsDiff = diff(timeUtilsTime1, timeUtilsTime2, 'week');
-        const dayjsDiff = dayjsTime1.diff(dayjsTime2, 'week');
+        const momentDiff = momentTime1.diff(momentTime2, 'week');
 
-        expect(timeUtilsDiff).toBe(dayjsDiff);
+        expect(timeUtilsDiff).toBe(momentDiff);
       });
     });
 
@@ -705,13 +699,13 @@ describe('diff 时间差值计算测试', () => {
       testCases.forEach(([time1Str, time2Str]) => {
         const timeUtilsTime1 = createTime(time1Str);
         const timeUtilsTime2 = createTime(time2Str);
-        const dayjsTime1 = dayjs(time1Str);
-        const dayjsTime2 = dayjs(time2Str);
+        const momentTime1 = moment(time1Str);
+        const momentTime2 = moment(time2Str);
 
         const timeUtilsDiff = diff(timeUtilsTime1, timeUtilsTime2, 'month');
-        const dayjsDiff = dayjsTime1.diff(dayjsTime2, 'month');
+        const momentDiff = momentTime1.diff(momentTime2, 'month');
 
-        expect(timeUtilsDiff).toBe(dayjsDiff);
+        expect(timeUtilsDiff).toBe(momentDiff);
       });
     });
 
@@ -725,13 +719,13 @@ describe('diff 时间差值计算测试', () => {
       testCases.forEach(([time1Str, time2Str]) => {
         const timeUtilsTime1 = createTime(time1Str);
         const timeUtilsTime2 = createTime(time2Str);
-        const dayjsTime1 = dayjs(time1Str);
-        const dayjsTime2 = dayjs(time2Str);
+        const momentTime1 = moment(time1Str);
+        const momentTime2 = moment(time2Str);
 
         const timeUtilsDiff = diff(timeUtilsTime1, timeUtilsTime2, 'year');
-        const dayjsDiff = dayjsTime1.diff(dayjsTime2, 'year');
+        const momentDiff = momentTime1.diff(momentTime2, 'year');
 
-        expect(timeUtilsDiff).toBe(dayjsDiff);
+        expect(timeUtilsDiff).toBe(momentDiff);
       });
     });
 
@@ -757,13 +751,13 @@ describe('diff 时间差值计算测试', () => {
       testCases.forEach(({ times: [time1Str, time2Str], unit, precise }) => {
         const timeUtilsTime1 = createTime(time1Str);
         const timeUtilsTime2 = createTime(time2Str);
-        const dayjsTime1 = dayjs(time1Str);
-        const dayjsTime2 = dayjs(time2Str);
+        const momentTime1 = moment(time1Str);
+        const momentTime2 = moment(time2Str);
 
         const timeUtilsDiff = diff(timeUtilsTime1, timeUtilsTime2, unit, precise);
-        const dayjsDiff = dayjsTime1.diff(dayjsTime2, unit, precise);
+        const momentDiff = momentTime1.diff(momentTime2, unit, precise);
 
-        expect(timeUtilsDiff).toBe(dayjsDiff);
+        expect(timeUtilsDiff).toBe(momentDiff);
       });
     });
 
@@ -777,17 +771,17 @@ describe('diff 时间差值计算测试', () => {
       testCases.forEach(([time1Str, time2Str]) => {
         const timeUtilsTime1 = createTime(time1Str);
         const timeUtilsTime2 = createTime(time2Str);
-        const dayjsTime1 = dayjs(time1Str);
-        const dayjsTime2 = dayjs(time2Str);
+        const momentTime1 = moment(time1Str);
+        const momentTime2 = moment(time2Str);
 
         // 测试多个单位
         const units = ['day', 'hour', 'minute', 'second'] as const;
 
         units.forEach(unit => {
           const timeUtilsDiff = diff(timeUtilsTime1, timeUtilsTime2, unit);
-          const dayjsDiff = dayjsTime1.diff(dayjsTime2, unit);
+          const momentDiff = momentTime1.diff(momentTime2, unit);
 
-          expect(timeUtilsDiff).toBe(dayjsDiff);
+          expect(timeUtilsDiff).toBe(momentDiff);
         });
       });
     });
@@ -806,16 +800,16 @@ describe('diff 时间差值计算测试', () => {
       testCases.forEach(([time1Str, time2Str]) => {
         const timeUtilsTime1 = createTime(time1Str);
         const timeUtilsTime2 = createTime(time2Str);
-        const dayjsTime1 = dayjs(time1Str);
-        const dayjsTime2 = dayjs(time2Str);
+        const momentTime1 = moment(time1Str);
+        const momentTime2 = moment(time2Str);
 
         const units = ['millisecond', 'second', 'minute', 'hour', 'day'] as const;
 
         units.forEach(unit => {
           const timeUtilsDiff = diff(timeUtilsTime1, timeUtilsTime2, unit);
-          const dayjsDiff = dayjsTime1.diff(dayjsTime2, unit);
+          const momentDiff = momentTime1.diff(momentTime2, unit);
 
-          expect(timeUtilsDiff).toBe(dayjsDiff);
+          expect(timeUtilsDiff).toBe(momentDiff);
         });
       });
     });
@@ -830,12 +824,12 @@ describe('diff 时间差值计算测试', () => {
       testCases.forEach(([time1Str, time2Str]) => {
         const timeUtilsTime1 = createTime(time1Str);
         const timeUtilsTime2 = createTime(time2Str);
-        const dayjsTime1 = dayjs(time1Str);
-        const dayjsTime2 = dayjs(time2Str);
+        const momentTime1 = moment(time1Str);
+        const momentTime2 = moment(time2Str);
 
         const timeUtilsDiff = diff(timeUtilsTime1, timeUtilsTime2);
-        const dayjsDiff = dayjsTime1.diff(dayjsTime2);
-        expect(timeUtilsDiff).toBe(dayjsDiff);
+        const momentDiff = momentTime1.diff(momentTime2);
+        expect(timeUtilsDiff).toBe(momentDiff);
       });
     });
   });

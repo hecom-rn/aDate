@@ -1,8 +1,3 @@
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-
 import {
   TimeUtils,
   createTime,
@@ -30,15 +25,13 @@ import {
   diff,
   isValid
 } from '../index';
+import {zoneConfig} from '../config';
+import moment from 'moment-timezone';
 
-// 启用 dayjs 插件
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.extend(customParseFormat);
 
 describe('TimeUtils vs Dayjs 对比测试', () => {
   beforeEach(() => {
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.MOMENT);
     TimeUtils.locale('zh-cn'); // 设置中文语言包
   });
 
@@ -47,11 +40,11 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const testDate = '2025-07-24 15:30:45';
 
       const timeUtilsTime = TimeUtils.create(testDate);
-      const dayjsTime = dayjs(testDate);
+      const momentTime = moment(testDate);
 
       // 格式化后应该相同
       expect(timeUtilsTime.format('YYYY-MM-DD HH:mm:ss')).toBe(
-          dayjsTime.format('YYYY-MM-DD HH:mm:ss')
+          momentTime.format('YYYY-MM-DD HH:mm:ss')
       );
     });
 
@@ -65,10 +58,10 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
 
       testCases.forEach(input => {
         const timeUtilsTime = TimeUtils.create(input);
-        const dayjsTime = dayjs(input);
+        const momentTime = moment(input);
 
         expect(timeUtilsTime.format('YYYY-MM-DD')).toBe(
-            dayjsTime.format('YYYY-MM-DD')
+            momentTime.format('YYYY-MM-DD')
         );
       });
     });
@@ -85,12 +78,12 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
 
       formats.forEach(format => {
         const timeUtilsTime = createTime(testDate);
-        const dayjsTime = dayjs(testDate);
+        const momentTime = moment(testDate);
 
         const timeUtilsFormatted = formatTime(timeUtilsTime, format);
-        const dayjsFormatted = dayjsTime.format(format);
+        const momentFormatted = momentTime.format(format);
 
-        expect(timeUtilsFormatted).toBe(dayjsFormatted);
+        expect(timeUtilsFormatted).toBe(momentFormatted);
       });
     });
   });
@@ -100,30 +93,30 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const testDate = '2025-07-24 15:30:45';
 
       const timeUtilsTime = createTime(testDate);
-      const dayjsTime = dayjs(testDate);
+      const momentTime = moment(testDate);
 
-      expect(getYear(timeUtilsTime)).toBe(dayjsTime.year());
-      expect(getMonth(timeUtilsTime)).toBe(dayjsTime.month()); // 现在都返回 0-11
-      expect(getDate(timeUtilsTime)).toBe(dayjsTime.date());
-      expect(getHour(timeUtilsTime)).toBe(dayjsTime.hour());
-      expect(getMinute(timeUtilsTime)).toBe(dayjsTime.minute());
-      expect(getSecond(timeUtilsTime)).toBe(dayjsTime.second());
-      expect(getMillisecond(timeUtilsTime)).toBe(dayjsTime.millisecond());
+      expect(getYear(timeUtilsTime)).toBe(momentTime.year());
+      expect(getMonth(timeUtilsTime)).toBe(momentTime.month()); // 现在都返回 0-11
+      expect(getDate(timeUtilsTime)).toBe(momentTime.date());
+      expect(getHour(timeUtilsTime)).toBe(momentTime.hour());
+      expect(getMinute(timeUtilsTime)).toBe(momentTime.minute());
+      expect(getSecond(timeUtilsTime)).toBe(momentTime.second());
+      expect(getMillisecond(timeUtilsTime)).toBe(momentTime.millisecond());
     });
 
-    test('TimeInstance 获取方法应该与 dayjs 一致', () => {
+    test('TimeInstance 获取方法应该与 moment 一致', () => {
       const testDate = '2025-07-24 15:30:45';
 
       const timeInstance = TimeUtils.create(testDate);
-      const dayjsTime = dayjs(testDate);
+      const momentTime = moment(testDate);
 
-      expect(timeInstance.getYear()).toBe(dayjsTime.year());
-      expect(timeInstance.getMonth()).toBe(dayjsTime.month()); // 现在都返回 0-11
-      expect(timeInstance.getDate()).toBe(dayjsTime.date());
-      expect(timeInstance.getHour()).toBe(dayjsTime.hour());
-      expect(timeInstance.getMinute()).toBe(dayjsTime.minute());
-      expect(timeInstance.getSecond()).toBe(dayjsTime.second());
-      expect(timeInstance.getMillisecond()).toBe(dayjsTime.millisecond());
+      expect(timeInstance.getYear()).toBe(momentTime.year());
+      expect(timeInstance.getMonth()).toBe(momentTime.month()); // 现在都返回 0-11
+      expect(timeInstance.getDate()).toBe(momentTime.date());
+      expect(timeInstance.getHour()).toBe(momentTime.hour());
+      expect(timeInstance.getMinute()).toBe(momentTime.minute());
+      expect(timeInstance.getSecond()).toBe(momentTime.second());
+      expect(timeInstance.getMillisecond()).toBe(momentTime.millisecond());
     });
   });
 
@@ -133,48 +126,48 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
 
       // 测试设置年份
       const timeUtilsYear = TimeUtils.create(baseDate).year(2026);
-      const dayjsYear = dayjs(baseDate).year(2026);
+      const momentYear = moment(baseDate).year(2026);
       expect(timeUtilsYear.format('YYYY-MM-DD HH:mm:ss')).toBe(
-          dayjsYear.format('YYYY-MM-DD HH:mm:ss')
+          momentYear.format('YYYY-MM-DD HH:mm:ss')
       );
 
       // 测试设置月份
       const timeUtilsMonth = TimeUtils.create(baseDate).month(11);  // 使用0-11的月份标准
-      const dayjsMonth = dayjs(baseDate).month(11); // dayjs 月份是 0-11
+      const momentMonth = moment(baseDate).month(11); // moment 月份是 0-11
       expect(timeUtilsMonth.format('YYYY-MM-DD HH:mm:ss')).toBe(
-          dayjsMonth.format('YYYY-MM-DD HH:mm:ss')
+          momentMonth.format('YYYY-MM-DD HH:mm:ss')
       );
 
       // 测试设置日期
       const timeUtilsDate = TimeUtils.create(baseDate).date(1);
-      const dayjsDate = dayjs(baseDate).date(1);
+      const momentDate = moment(baseDate).date(1);
       expect(timeUtilsDate.format('YYYY-MM-DD HH:mm:ss')).toBe(
-          dayjsDate.format('YYYY-MM-DD HH:mm:ss')
+          momentDate.format('YYYY-MM-DD HH:mm:ss')
       );
 
       // 测试设置小时
       const timeUtilsHour = TimeUtils.create(baseDate).hour(0);
-      const dayjsHour = dayjs(baseDate).hour(0);
+      const momentHour = moment(baseDate).hour(0);
       expect(timeUtilsHour.format('YYYY-MM-DD HH:mm:ss')).toBe(
-          dayjsHour.format('YYYY-MM-DD HH:mm:ss')
+          momentHour.format('YYYY-MM-DD HH:mm:ss')
       );
 
       // 测试设置分钟
       const timeUtilsMinute = TimeUtils.create(baseDate).minute(0);
-      const dayjsMinute = dayjs(baseDate).minute(0);
+      const momentMinute = moment(baseDate).minute(0);
       expect(timeUtilsMinute.format('YYYY-MM-DD HH:mm:ss')).toBe(
-          dayjsMinute.format('YYYY-MM-DD HH:mm:ss')
+          momentMinute.format('YYYY-MM-DD HH:mm:ss')
       );
 
       // 测试设置秒
       const timeUtilsSecond = TimeUtils.create(baseDate).second(0);
-      const dayjsSecond = dayjs(baseDate).second(0);
+      const momentSecond = moment(baseDate).second(0);
       expect(timeUtilsSecond.format('YYYY-MM-DD HH:mm:ss')).toBe(
-          dayjsSecond.format('YYYY-MM-DD HH:mm:ss')
+          momentSecond.format('YYYY-MM-DD HH:mm:ss')
       );
     });
 
-    test('链式设置应该与 dayjs 链式调用一致', () => {
+    test('链式设置应该与 moment 链式调用一致', () => {
       const baseDate = '2025-07-24 15:30:45';
 
       const timeUtilsResult = TimeUtils.create(baseDate)
@@ -186,21 +179,21 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
           .second(0)
           .format('YYYY-MM-DD HH:mm:ss');
 
-      const dayjsResult = dayjs(baseDate)
+      const momentResult = moment(baseDate)
           .year(2026)
-          .month(11) // dayjs 月份是 0-11
+          .month(11) // moment 月份是 0-11
           .date(25)
           .hour(0)
           .minute(0)
           .second(0)
           .format('YYYY-MM-DD HH:mm:ss');
 
-      expect(timeUtilsResult).toBe(dayjsResult);
+      expect(timeUtilsResult).toBe(momentResult);
     });
   });
 
   describe('时间计算对比', () => {
-    test('时间加法应该与 dayjs 一致', () => {
+    test('时间加法应该与 moment 一致', () => {
       const baseDate = '2025-07-24 15:30:45';
       const units: Array<{ unit: any, amount: number }> = [
         { unit: 'year', amount: 1 },
@@ -216,16 +209,16 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
             .add(amount, unit)
             .format('YYYY-MM-DD HH:mm:ss');
 
-        const dayjsResult = dayjs(baseDate)
+        const momentResult = moment(baseDate)
             .add(amount, unit)
             .format('YYYY-MM-DD HH:mm:ss');
 
-        expect(timeUtilsResult).toBe(dayjsResult);
+        expect(timeUtilsResult).toBe(momentResult);
       });
     });
 
-    test('时间差计算应该与 dayjs 一致', () => {
-      const a = dayjs().utc().locale('en').format('ddd, DD MMM YYYY HH:mm:ss [GMT]');
+    test('时间差计算应该与 moment 一致', () => {
+      const a = moment().utc().locale('en').format('ddd, DD MMM YYYY HH:mm:ss [GMT]');
       const b = TimeUtils.create().utc().locale('en').formalFormat('ddd, DD MMM YYYY HH:mm:ss [GMT]')
       const c = new Date().toUTCString();
       expect(a).toEqual(b);
@@ -278,8 +271,8 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
 
       const dt = '2025-07-24 15:30:45';
       const firstWeekEnd = '2025-07-24 16:30:45';
-      const end1 = dayjs(dt);
-      const start1 = dayjs(firstWeekEnd);
+      const end1 = moment(dt);
+      const start1 = moment(firstWeekEnd);
       const difTime1 = end1 - start1;
 
       const end2 = new Date(dt);
@@ -294,16 +287,16 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
 
       console.log(TimeUtils.create().valueOf(), '************TimeUtils.create().valueOf()************');
       console.log(TimeUtils.now().valueOf(), '************TimeUtils.now().valueOf()************');
-      console.log(dayjs().valueOf(), '************TimeUtils.create().valueOf()************');
+      console.log(moment().valueOf(), '************TimeUtils.create().valueOf()************');
 
-      const aaa = dayjs().utc().format('ddd, DD MMM YYYY HH:mm:ss [GMT]');
-      const bbb = dayjs.utc().format('ddd, DD MMM YYYY HH:mm:ss [GMT]');
+      const aaa = moment().utc().format('ddd, DD MMM YYYY HH:mm:ss [GMT]');
+      const bbb = moment.utc().format('ddd, DD MMM YYYY HH:mm:ss [GMT]');
       const ccc = TimeUtils.create().utc().formalFormat('ddd, DD MMM YYYY HH:mm:ss [GMT]')
       expect(aaa).toBe(bbb);
       expect(aaa).toBe(ccc);
     });
 
-    test('时间减法应该与 dayjs 一致', () => {
+    test('时间减法应该与 moment 一致', () => {
       const baseDate = '2025-07-24 15:30:45';
       const units: Array<{ unit: any, amount: number }> = [
         { unit: 'year', amount: 1 },
@@ -319,17 +312,17 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
             .subtract(amount, unit)
             .format('YYYY-MM-DD HH:mm:ss');
 
-        const dayjsResult = dayjs(baseDate)
+        const momentResult = moment(baseDate)
             .subtract(amount, unit)
             .format('YYYY-MM-DD HH:mm:ss');
 
-        expect(timeUtilsResult).toBe(dayjsResult);
+        expect(timeUtilsResult).toBe(momentResult);
       });
     });
   });
 
   describe('时间比较对比', () => {
-    test('时间比较方法应该与 dayjs 一致', () => {
+    test('时间比较方法应该与 moment 一致', () => {
       const date1 = '2025-07-24 10:00:00';
       const date2 = '2025-07-24 15:00:00';
       const date3 = '2025-07-24 10:00:00';
@@ -338,36 +331,36 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const timeUtils2 = createTime(date2);
       const timeUtils3 = createTime(date3);
 
-      const dayjs1 = dayjs(date1);
-      const dayjs2 = dayjs(date2);
-      const dayjs3 = dayjs(date3);
+      const moment1 = moment(date1);
+      const moment2 = moment(date2);
+      const moment3 = moment(date3);
 
       // isBefore 比较
-      expect(isBefore(timeUtils1, timeUtils2)).toBe(dayjs1.isBefore(dayjs2));
-      expect(isBefore(timeUtils2, timeUtils1)).toBe(dayjs2.isBefore(dayjs1));
+      expect(isBefore(timeUtils1, timeUtils2)).toBe(moment1.isBefore(moment2));
+      expect(isBefore(timeUtils2, timeUtils1)).toBe(moment2.isBefore(moment1));
 
       // isAfter 比较
-      expect(isAfter(timeUtils2, timeUtils1)).toBe(dayjs2.isAfter(dayjs1));
-      expect(isAfter(timeUtils1, timeUtils2)).toBe(dayjs1.isAfter(dayjs2));
+      expect(isAfter(timeUtils2, timeUtils1)).toBe(moment2.isAfter(moment1));
+      expect(isAfter(timeUtils1, timeUtils2)).toBe(moment1.isAfter(moment2));
 
       // isSame 比较
-      expect(isSame(timeUtils1, timeUtils3)).toBe(dayjs1.isSame(dayjs3));
-      expect(isSame(timeUtils1, timeUtils2)).toBe(dayjs1.isSame(dayjs2));
+      expect(isSame(timeUtils1, timeUtils3)).toBe(moment1.isSame(moment3));
+      expect(isSame(timeUtils1, timeUtils2)).toBe(moment1.isSame(moment2));
     });
 
-    test('TimeInstance 比较方法应该与 dayjs 一致', () => {
+    test('TimeInstance 比较方法应该与 moment 一致', () => {
       const date1 = '2025-07-24 10:00:00';
       const date2 = '2025-07-24 15:00:00';
 
       const timeInstance1 = TimeUtils.create(date1);
       const timeInstance2 = TimeUtils.create(date2);
 
-      const dayjs1 = dayjs(date1);
-      const dayjs2 = dayjs(date2);
+      const moment1 = moment(date1);
+      const moment2 = moment(date2);
 
-      expect(timeInstance1.isBefore(timeInstance2.toObject())).toBe(dayjs1.isBefore(dayjs2));
-      expect(timeInstance2.isAfter(timeInstance1.toObject())).toBe(dayjs2.isAfter(dayjs1));
-      expect(timeInstance1.isSame(timeInstance1.toObject())).toBe(dayjs1.isSame(dayjs1));
+      expect(timeInstance1.isBefore(timeInstance2.toObject())).toBe(moment1.isBefore(moment2));
+      expect(timeInstance2.isAfter(timeInstance1.toObject())).toBe(moment2.isAfter(moment1));
+      expect(timeInstance1.isSame(timeInstance1.toObject())).toBe(moment1.isSame(moment1));
     });
   });
 
@@ -377,54 +370,54 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const testDate = '2025-07-15 14:30:25';
       const timeUtilsStart = TimeUtils.create(testDate);
       const t1 = timeUtilsStart.valueOf(true);
-      const timeUtilsStart1 = TimeUtils.create(testDate, undefined, 'Asia/Seoul');
+      const timeUtilsStart1 = TimeUtils.create(testDate, undefined, zoneConfig.systemZone);
       const t2 = timeUtilsStart1.valueOf();
       expect(t1).toEqual(t2);
     });
 
-    test('月初月末操作应该与 dayjs 一致', () => {
+    test('月初月末操作应该与 moment 一致', () => {
       const testDate = '2025-07-15 14:30:25';
 
       const timeUtilsStart = TimeUtils.create(testDate)
           .startOfMonth()
           .format('YYYY-MM-DD HH:mm:ss');
-      const dayjsStart = dayjs(testDate)
+      const momentStart = moment(testDate)
           .startOf('month')
           .format('YYYY-MM-DD HH:mm:ss');
 
       const timeUtilsEnd = TimeUtils.create(testDate)
           .endOfMonth()
           .format('YYYY-MM-DD HH:mm:ss');
-      const dayjsEnd = dayjs(testDate)
+      const momentEnd = moment(testDate)
           .endOf('month')
           .format('YYYY-MM-DD HH:mm:ss');
 
-      expect(timeUtilsStart).toBe(dayjsStart);
-      expect(timeUtilsEnd).toBe(dayjsEnd);
+      expect(timeUtilsStart).toBe(momentStart);
+      expect(timeUtilsEnd).toBe(momentEnd);
     });
 
-    test('日初日末操作应该与 dayjs 一致', () => {
+    test('日初日末操作应该与 moment 一致', () => {
       const testDate = '2025-07-15 14:30:25';
 
       const timeUtilsStart = TimeUtils.create(testDate)
           .startOfDay()
           .format('YYYY-MM-DD HH:mm:ss');
-      const dayjsStart = dayjs(testDate)
+      const momentStart = moment(testDate)
           .startOf('day')
           .format('YYYY-MM-DD HH:mm:ss');
 
       const timeUtilsEnd = TimeUtils.create(testDate)
           .endOfDay()
           .format('YYYY-MM-DD HH:mm:ss');
-      const dayjsEnd = dayjs(testDate)
+      const momentEnd = moment(testDate)
           .endOf('day')
           .format('YYYY-MM-DD HH:mm:ss');
 
-      expect(timeUtilsStart).toBe(dayjsStart);
-      expect(timeUtilsEnd).toBe(dayjsEnd);
+      expect(timeUtilsStart).toBe(momentStart);
+      expect(timeUtilsEnd).toBe(momentEnd);
     });
 
-    test('函数式边界时间操作应该与 dayjs 一致', () => {
+    test('函数式边界时间操作应该与 moment 一致', () => {
       const testDate = '2025-07-15 14:30:25';
       const timeObj = createTime(testDate);
 
@@ -434,23 +427,23 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const timeUtilsStartDay = startOfDay(timeObj);
       const timeUtilsEndDay = endOfDay(timeObj);
 
-      const dayjsObj = dayjs(testDate);
-      const dayjsStartMonth = dayjsObj.startOf('month');
-      const dayjsEndMonth = dayjsObj.endOf('month');
-      const dayjsStartDay = dayjsObj.startOf('day');
-      const dayjsEndDay = dayjsObj.endOf('day');
+      const momentObj = moment(testDate);
+      const momentStartMonth = momentObj.clone().startOf('month');
+      const momentEndMonth = momentObj.clone().endOf('month');
+      const momentStartDay = momentObj.clone().startOf('day');
+      const momentEndDay = momentObj.clone().endOf('day');
 
       expect(formatTime(timeUtilsStartMonth, 'YYYY-MM-DD HH:mm:ss')).toBe(
-          dayjsStartMonth.format('YYYY-MM-DD HH:mm:ss')
+          momentStartMonth.format('YYYY-MM-DD HH:mm:ss')
       );
       expect(formatTime(timeUtilsEndMonth, 'YYYY-MM-DD HH:mm:ss')).toBe(
-          dayjsEndMonth.format('YYYY-MM-DD HH:mm:ss')
+          momentEndMonth.format('YYYY-MM-DD HH:mm:ss')
       );
       expect(formatTime(timeUtilsStartDay, 'YYYY-MM-DD HH:mm:ss')).toBe(
-          dayjsStartDay.format('YYYY-MM-DD HH:mm:ss')
+          momentStartDay.format('YYYY-MM-DD HH:mm:ss')
       );
       expect(formatTime(timeUtilsEndDay, 'YYYY-MM-DD HH:mm:ss')).toBe(
-          dayjsEndDay.format('YYYY-MM-DD HH:mm:ss')
+          momentEndDay.format('YYYY-MM-DD HH:mm:ss')
       );
     });
 
@@ -467,14 +460,14 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
         const timeUtilsStartMonth = TimeUtils.create(testDate).startOfMonth();
         const timeUtilsEndMonth = TimeUtils.create(testDate).endOfMonth();
 
-        const dayjsStartMonth = dayjs(testDate).startOf('month');
-        const dayjsEndMonth = dayjs(testDate).endOf('month');
+        const momentStartMonth = moment(testDate).startOf('month');
+        const momentEndMonth = moment(testDate).endOf('month');
 
         expect(timeUtilsStartMonth.format('YYYY-MM-DD HH:mm:ss')).toBe(
-            dayjsStartMonth.format('YYYY-MM-DD HH:mm:ss')
+            momentStartMonth.format('YYYY-MM-DD HH:mm:ss')
         );
         expect(timeUtilsEndMonth.format('YYYY-MM-DD HH:mm:ss')).toBe(
-            dayjsEndMonth.format('YYYY-MM-DD HH:mm:ss')
+            momentEndMonth.format('YYYY-MM-DD HH:mm:ss')
         );
       });
     });
@@ -491,14 +484,14 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
         const timeUtilsStartDay = TimeUtils.create(testDate).startOfDay();
         const timeUtilsEndDay = TimeUtils.create(testDate).endOfDay();
 
-        const dayjsStartDay = dayjs(testDate).startOf('day');
-        const dayjsEndDay = dayjs(testDate).endOf('day');
+        const momentStartDay = moment(testDate).startOf('day');
+        const momentEndDay = moment(testDate).endOf('day');
 
         expect(timeUtilsStartDay.format('YYYY-MM-DD HH:mm:ss')).toBe(
-            dayjsStartDay.format('YYYY-MM-DD HH:mm:ss')
+            momentStartDay.format('YYYY-MM-DD HH:mm:ss')
         );
         expect(timeUtilsEndDay.format('YYYY-MM-DD HH:mm:ss')).toBe(
-            dayjsEndDay.format('YYYY-MM-DD HH:mm:ss')
+            momentEndDay.format('YYYY-MM-DD HH:mm:ss')
         );
       });
     });
@@ -511,19 +504,19 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const timeUtilsStartDay = TimeUtils.create(testDate).startOfDay();
       const timeUtilsEndDay = TimeUtils.create(testDate).endOfDay();
 
-      const dayjsStartMonth = dayjs(testDate).startOf('month');
-      const dayjsEndMonth = dayjs(testDate).endOf('month');
-      const dayjsStartDay = dayjs(testDate).startOf('day');
-      const dayjsEndDay = dayjs(testDate).endOf('day');
+      const momentStartMonth = moment(testDate).startOf('month');
+      const momentEndMonth = moment(testDate).endOf('month');
+      const momentStartDay = moment(testDate).startOf('day');
+      const momentEndDay = moment(testDate).endOf('day');
 
       // 比较时间戳
-      expect(timeUtilsStartMonth.valueOf()).toBe(dayjsStartMonth.valueOf());
-      expect(timeUtilsEndMonth.valueOf()).toBe(dayjsEndMonth.valueOf());
-      expect(timeUtilsStartDay.valueOf()).toBe(dayjsStartDay.valueOf());
-      expect(timeUtilsEndDay.valueOf()).toBe(dayjsEndDay.valueOf());
+      expect(timeUtilsStartMonth.valueOf()).toBe(momentStartMonth.valueOf());
+      expect(timeUtilsEndMonth.valueOf()).toBe(momentEndMonth.valueOf());
+      expect(timeUtilsStartDay.valueOf()).toBe(momentStartDay.valueOf());
+      expect(timeUtilsEndDay.valueOf()).toBe(momentEndDay.valueOf());
     });
 
-    test('边界时间操作链式调用应该与 dayjs 一致', () => {
+    test('边界时间操作链式调用应该与 moment 一致', () => {
       const testDate = '2025-07-15 14:30:25';
 
       // 测试复杂的链式调用
@@ -533,13 +526,13 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
           .endOfDay()
           .format('YYYY-MM-DD HH:mm:ss');
 
-      const dayjsChain = dayjs(testDate)
+      const momentChain = moment(testDate)
           .startOf('month')
           .add(15, 'day')
           .endOf('day')
           .format('YYYY-MM-DD HH:mm:ss');
 
-      expect(timeUtilsChain).toBe(dayjsChain);
+      expect(timeUtilsChain).toBe(momentChain);
 
       // 测试另一个链式调用
       const timeUtilsChain2 = TimeUtils.create(testDate)
@@ -548,13 +541,13 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
           .subtract(1, 'month')
           .format('YYYY-MM-DD HH:mm:ss');
 
-      const dayjsChain2 = dayjs(testDate)
+      const momentChain2 = moment(testDate)
           .endOf('month')
           .startOf('day')
           .subtract(1, 'month')
           .format('YYYY-MM-DD HH:mm:ss');
 
-      expect(timeUtilsChain2).toBe(dayjsChain2);
+      expect(timeUtilsChain2).toBe(momentChain2);
     });
 
     test('边界时间操作精确度测试', () => {
@@ -564,45 +557,45 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const timeUtilsStart = TimeUtils.create(testDate).startOfDay();
       const timeUtilsEnd = TimeUtils.create(testDate).endOfDay();
 
-      const dayjsStart = dayjs(testDate).startOf('day');
-      const dayjsEnd = dayjs(testDate).endOf('day');
+      const momentStart = moment(testDate).startOf('day');
+      const momentEnd = moment(testDate).endOf('day');
 
       // 开始时间应该是 00:00:00.000
       expect(timeUtilsStart.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe('2025-07-15 00:00:00.000');
-      expect(dayjsStart.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe('2025-07-15 00:00:00.000');
+      expect(momentStart.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe('2025-07-15 00:00:00.000');
 
       // 结束时间应该是 23:59:59.999
       expect(timeUtilsEnd.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe('2025-07-15 23:59:59.999');
-      expect(dayjsEnd.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe('2025-07-15 23:59:59.999');
+      expect(momentEnd.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe('2025-07-15 23:59:59.999');
     });
   });
 
   describe('特殊日期判断对比', () => {
-    test('闰年判断应该与 dayjs 一致', () => {
+    test('闰年判断应该与 moment 一致', () => {
       const leapYears = ['2024-02-15', '2020-02-15', '2000-02-15'];
       const normalYears = ['2025-02-15', '2021-02-15', '1900-02-15'];
 
       leapYears.forEach(date => {
         const timeUtilsResult = isLeapYear(createTime(date));
-        // dayjs 没有直接的闰年判断，我们用我们的逻辑验证
-        const year = dayjs(date).year();
-        const dayjsResult = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+        // moment 没有直接的闰年判断，我们用我们的逻辑验证
+        const year = moment(date).year();
+        const momentResult = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
 
-        expect(timeUtilsResult).toBe(dayjsResult);
+        expect(timeUtilsResult).toBe(momentResult);
         expect(timeUtilsResult).toBe(true);
       });
 
       normalYears.forEach(date => {
         const timeUtilsResult = isLeapYear(createTime(date));
-        const year = dayjs(date).year();
-        const dayjsResult = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+        const year = moment(date).year();
+        const momentResult = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
 
-        expect(timeUtilsResult).toBe(dayjsResult);
+        expect(timeUtilsResult).toBe(momentResult);
         expect(timeUtilsResult).toBe(false);
       });
     });
 
-    test('月份天数应该与 dayjs 一致', () => {
+    test('月份天数应该与 moment 一致', () => {
       const testDates = [
         '2024-02-15', // 闰年2月
         '2025-02-15', // 平年2月
@@ -613,9 +606,9 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
 
       testDates.forEach(date => {
         const timeUtilsResult = daysInMonth(createTime(date));
-        const dayjsResult = dayjs(date).daysInMonth();
+        const momentResult = moment(date).daysInMonth();
 
-        expect(timeUtilsResult).toBe(dayjsResult);
+        expect(timeUtilsResult).toBe(momentResult);
       });
     });
   });
@@ -625,9 +618,9 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const testDate = '2025-07-24 15:30:45';
 
       const timeInstance = TimeUtils.create(testDate);
-      const dayjsTime = dayjs(testDate);
+      const momentTime = moment(testDate);
 
-      expect(timeInstance.valueOf()).toBe(dayjsTime.valueOf());
+      expect(timeInstance.valueOf()).toBe(momentTime.valueOf());
     });
 
     test('不同输入格式的时间戳应该一致', () => {
@@ -639,9 +632,9 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
 
       inputs.forEach(input => {
         const timeInstance = TimeUtils.create(input);
-        const dayjsTime = dayjs(input);
+        const momentTime = moment(input);
 
-        expect(timeInstance.valueOf()).toBe(dayjsTime.valueOf());
+        expect(timeInstance.valueOf()).toBe(momentTime.valueOf());
       });
     });
   });
@@ -655,11 +648,11 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
           .add(1, 'month')
           .format('YYYY-MM-DD');
 
-      const dayjsResult = dayjs(jan31)
+      const momentResult = moment(jan31)
           .add(1, 'month')
           .format('YYYY-MM-DD');
 
-      expect(timeUtilsResult).toBe(dayjsResult);
+      expect(timeUtilsResult).toBe(momentResult);
     });
 
     test('年份边界处理应该一致', () => {
@@ -669,11 +662,11 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
           .subtract(1, 'day')
           .format('YYYY-MM-DD');
 
-      const dayjsResult = dayjs(newYear)
+      const momentResult = moment(newYear)
           .subtract(1, 'day')
           .format('YYYY-MM-DD');
 
-      expect(timeUtilsResult).toBe(dayjsResult);
+      expect(timeUtilsResult).toBe(momentResult);
     });
 
     test('闰年2月29日处理应该一致', () => {
@@ -683,11 +676,11 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const timeUtilsMonth = getMonth(createTime(leapDay));
       const timeUtilsDate = getDate(createTime(leapDay));
 
-      const dayjsTime = dayjs(leapDay);
+      const momentTime = moment(leapDay);
 
-      expect(timeUtilsYear).toBe(dayjsTime.year());
-      expect(timeUtilsMonth).toBe(dayjsTime.month());
-      expect(timeUtilsDate).toBe(dayjsTime.date());
+      expect(timeUtilsYear).toBe(momentTime.year());
+      expect(timeUtilsMonth).toBe(momentTime.month());
+      expect(timeUtilsDate).toBe(momentTime.date());
     });
   });
 
@@ -706,24 +699,24 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       const timeUtilsDuration = Date.now() - timeUtilsStart;
 
       // Dayjs 性能测试
-      const dayjsStart = Date.now();
+      const momentStart = Date.now();
       for (let i = 0; i < iterations; i++) {
-        dayjs('2025-07-24 15:30:45')
+        moment('2025-07-24 15:30:45')
             .add(i, 'day')
             .hour(12)
             .format('YYYY-MM-DD HH:mm:ss');
       }
-      const dayjsDuration = Date.now() - dayjsStart;
+      const momentDuration = Date.now() - momentStart;
 
-      // TimeUtils 性能不应该比 dayjs 慢太多（允许2倍的差距）
-      expect(timeUtilsDuration).toBeLessThan(dayjsDuration * 3);
+      // TimeUtils 性能不应该比 moment 慢太多（允许2倍的差距）
+      expect(timeUtilsDuration).toBeLessThan(momentDuration * 3);
 
-      console.log(`性能对比 - TimeUtils: ${timeUtilsDuration}ms, Dayjs: ${dayjsDuration}ms`);
+      console.log(`性能对比 - TimeUtils: ${timeUtilsDuration}ms, Dayjs: ${momentDuration}ms`);
     });
   });
 
   describe('星期相关功能对比', () => {
-    test('获取星期几应该与 dayjs 一致', () => {
+    test('获取星期几应该与 moment 一致', () => {
       const testDates = [
         '2025-07-20', // 星期日
         '2025-07-21', // 星期一
@@ -736,58 +729,58 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
 
       testDates.forEach(date => {
         const timeUtils = createTime(date);
-        const dayjsTime = dayjs(date);
+        const momentTime = moment(date);
 
-        expect(getDay(timeUtils)).toBe(dayjsTime.day());
+        expect(getDay(timeUtils)).toBe(momentTime.day());
       });
     });
 
-    test('TimeInstance 获取星期几应该与 dayjs 一致', () => {
+    test('TimeInstance 获取星期几应该与 moment 一致', () => {
       const testDate = '2025-07-24 15:30:45';
       const timeInstance = TimeUtils.create(testDate);
-      const dayjsTime = dayjs(testDate);
+      const momentTime = moment(testDate);
 
-      expect(timeInstance.getDay()).toBe(dayjsTime.day());
+      expect(timeInstance.getDay()).toBe(momentTime.day());
     });
   });
 
   describe('毫秒设置对比', () => {
-    test('设置毫秒应该与 dayjs 一致', () => {
+    test('设置毫秒应该与 moment 一致', () => {
       const baseDate = '2025-07-24 15:30:45.123';
 
       const timeUtilsMs = TimeUtils.create(baseDate).millisecond(999);
-      const dayjsMs = dayjs(baseDate).millisecond(999);
+      const momentMs = moment(baseDate).millisecond(999);
 
       expect(timeUtilsMs.format('YYYY-MM-DD HH:mm:ss.SSS')).toBe(
-          dayjsMs.format('YYYY-MM-DD HH:mm:ss.SSS')
+          momentMs.format('YYYY-MM-DD HH:mm:ss.SSS')
       );
     });
   });
 
   describe('时区相关对比', () => {
-    test('UTC时间应该与 dayjs 一致', () => {
+    test('UTC时间应该与 moment 一致', () => {
       const testDate = '2025-07-24 15:30:45';
 
       const timeInstance = TimeUtils.create(testDate);
-      const dayjsTime = dayjs(testDate);
+      const momentTime = moment(testDate);
 
       // 比较时间戳
-      expect(timeInstance.valueOf()).toBe(dayjsTime.valueOf());
+      expect(timeInstance.valueOf()).toBe(momentTime.valueOf());
     });
 
-    test('格式化不同时区应该与 dayjs 保持一致的时间戳', () => {
+    test('格式化不同时区应该与 moment 保持一致的时间戳', () => {
       const testDate = '2025-07-24 15:30:45';
 
       const timeInstance = TimeUtils.create(testDate);
-      const dayjsTime = dayjs(testDate);
+      const momentTime = moment(testDate);
 
       // 即使格式化不同，时间戳应该一致
-      expect(timeInstance.valueOf()).toBe(dayjsTime.valueOf());
+      expect(timeInstance.valueOf()).toBe(momentTime.valueOf());
     });
   });
 
   describe('解析和格式化增强测试', () => {
-    test('更多格式化模式应该与 dayjs 一致', () => {
+    test('更多格式化模式应该与 moment 一致', () => {
       const testDate = '2025-07-24 15:30:45';
       const additionalFormats = [
         'YYYY',
@@ -805,8 +798,8 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       additionalFormats.forEach(format => {
         try {
           const timeUtilsFormatted = formatTime(createTime(testDate), format);
-          const dayjsFormatted = dayjs(testDate).format(format);
-          expect(timeUtilsFormatted).toBe(dayjsFormatted);
+          const momentFormatted = moment(testDate).format(format);
+          expect(timeUtilsFormatted).toBe(momentFormatted);
         } catch (error) {
           // 某些格式可能不被支持，记录但不失败
           console.warn(`格式 ${format} 可能不被完全支持:`, error);
@@ -821,23 +814,23 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
 
       // 使用Date对象
       const timeUtilsFromDate = TimeUtils.create(now);
-      const dayjsFromDate = dayjs(now);
-      expect(timeUtilsFromDate.valueOf()).toBe(dayjsFromDate.valueOf());
+      const momentFromDate = moment(now);
+      expect(timeUtilsFromDate.valueOf()).toBe(momentFromDate.valueOf());
 
       // 使用时间戳
       const timeUtilsFromTimestamp = TimeUtils.create(timestamp);
-      const dayjsFromTimestamp = dayjs(timestamp);
-      expect(timeUtilsFromTimestamp.valueOf()).toBe(dayjsFromTimestamp.valueOf());
+      const momentFromTimestamp = moment(timestamp);
+      expect(timeUtilsFromTimestamp.valueOf()).toBe(momentFromTimestamp.valueOf());
 
       // 使用ISO字符串
       const timeUtilsFromISO = TimeUtils.create(isoString);
-      const dayjsFromISO = dayjs(isoString);
-      expect(timeUtilsFromISO.valueOf()).toBe(dayjsFromISO.valueOf());
+      const momentFromISO = moment(isoString);
+      expect(timeUtilsFromISO.valueOf()).toBe(momentFromISO.valueOf());
     });
   });
 
   describe('链式调用复杂场景', () => {
-    test('复杂链式操作应该与 dayjs 一致', () => {
+    test('复杂链式操作应该与 moment 一致', () => {
       const baseDate = '2025-07-24 15:30:45';
 
       const timeUtilsComplex = TimeUtils.create(baseDate)
@@ -850,7 +843,7 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
           .add(5, 'day')
           .format('YYYY-MM-DD HH:mm:ss');
 
-      const dayjsComplex = dayjs(baseDate)
+      const momentComplex = moment(baseDate)
           .add(1, 'year')
           .subtract(2, 'month')
           .date(15)
@@ -860,10 +853,10 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
           .add(5, 'day')
           .format('YYYY-MM-DD HH:mm:ss');
 
-      expect(timeUtilsComplex).toBe(dayjsComplex);
+      expect(timeUtilsComplex).toBe(momentComplex);
     });
 
-    test('月末日期调整应该与 dayjs 一致', () => {
+    test('月末日期调整应该与 moment 一致', () => {
       // 测试特殊情况：3月31日减1个月
       const mar31 = '2025-03-31';
 
@@ -871,16 +864,16 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
           .subtract(1, 'month')
           .format('YYYY-MM-DD');
 
-      const dayjsResult = dayjs(mar31)
+      const momentResult = moment(mar31)
           .subtract(1, 'month')
           .format('YYYY-MM-DD');
 
-      expect(timeUtilsResult).toBe(dayjsResult);
+      expect(timeUtilsResult).toBe(momentResult);
     });
   });
 
   describe('错误处理和边界值测试', () => {
-    test('无效日期应该与 dayjs 行为一致', () => {
+    test('无效日期应该与 moment 行为一致', () => {
       const invalidDates = [
         '2025-02-30', // 2月没有30日
         '2025-13-01', // 没有13月
@@ -890,15 +883,15 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       invalidDates.forEach(invalidDate => {
         try {
           const timeUtils = TimeUtils.create(invalidDate);
-          const dayjsTime = dayjs(invalidDate);
+          const momentTime = moment(invalidDate);
 
           // 检查是否都认为无效
           const timeUtilsValid = !isNaN(timeUtils.valueOf());
-          const dayjsValid = dayjsTime.isValid();
+          const momentValid = momentTime.isValid();
 
-          if (timeUtilsValid && dayjsValid) {
+          if (timeUtilsValid && momentValid) {
             // 如果都认为有效，则比较结果
-            expect(timeUtils.valueOf()).toBe(dayjsTime.valueOf());
+            expect(timeUtils.valueOf()).toBe(momentTime.valueOf());
           }
         } catch (error) {
           // 记录错误但不失败测试
@@ -918,10 +911,10 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       extremeDates.forEach(date => {
         try {
           const timeUtils = TimeUtils.create(date);
-          const dayjsTime = dayjs(date);
+          const momentTime = moment(date);
 
           expect(timeUtils.format('YYYY-MM-DD HH:mm:ss')).toBe(
-              dayjsTime.format('YYYY-MM-DD HH:mm:ss')
+              momentTime.format('YYYY-MM-DD HH:mm:ss')
           );
         } catch (error) {
           console.warn(`处理极值日期 ${date} 时出错:`, error);
@@ -931,7 +924,7 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
   });
 
   describe('时间有效性验证对比 (isValid)', () => {
-    test('有效时间应该与 dayjs.isValid() 一致', () => {
+    test('有效时间应该与 moment.isValid() 一致', () => {
       const validDates = [
         '2025-07-24 15:30:45',
         '2025/07/24 15:30:45',
@@ -946,20 +939,20 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
 
       validDates.forEach(validDate => {
         const timeObj = createTime(validDate);
-        const dayjsTime = dayjs(validDate);
+        const momentTime = moment(validDate);
 
         // 测试函数式API
-        expect(isValid(timeObj)).toBe(dayjsTime.isValid());
+        expect(isValid(timeObj)).toBe(momentTime.isValid());
         expect(isValid(timeObj)).toBe(true);
 
         // 测试TimeInstance的isValid方法
         const timeInstance = TimeUtils.create(validDate);
-        expect(timeInstance.isValid()).toBe(dayjsTime.isValid());
+        expect(timeInstance.isValid()).toBe(momentTime.isValid());
         expect(timeInstance.isValid()).toBe(true);
       });
     });
 
-    test('无效时间应该与 dayjs.isValid() 一致', () => {
+    test('无效时间应该与 moment.isValid() 一致', () => {
       const invalidDates = [
         '2025-02-30', // 2月没有30日
         '2025-13-01', // 没有13月
@@ -981,29 +974,29 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       invalidDates.forEach(invalidDate => {
         try {
           const timeObj = TimeUtils.create(invalidDate);
-          const dayjsTime = dayjs(invalidDate);
+          const momentTime = moment(invalidDate);
 
           // 测试函数式API
-          expect(isValid(timeObj)).toBe(dayjsTime.isValid());
+          expect(isValid(timeObj)).toBe(momentTime.isValid());
 
           // 测试TimeInstance的isValid方法
           const timeInstance = TimeUtils.create(invalidDate);
-          expect(timeInstance.isValid()).toBe(dayjsTime.isValid());
+          expect(timeInstance.isValid()).toBe(momentTime.isValid());
 
           // 无效日期应该返回false
-          if (!dayjsTime.isValid()) {
+          if (!momentTime.isValid()) {
             expect(isValid(timeObj)).toBe(false);
             expect(timeInstance.isValid()).toBe(false);
           }
         } catch (error) {
           // 某些输入可能会抛出异常，这也是预期的行为
-          const dayjsTime = dayjs(invalidDate);
-          expect(dayjsTime.isValid()).toBe(false);
+          const momentTime = moment(invalidDate);
+          expect(momentTime.isValid()).toBe(false);
         }
       });
     });
 
-    test('边界日期的有效性验证应该与 dayjs 一致', () => {
+    test('边界日期的有效性验证应该与 moment 一致', () => {
       const boundaryDates = [
         '1970-01-01 00:00:00', // Unix时间戳起始
         '2038-01-19 03:14:07', // 32位系统时间戳上限附近
@@ -1017,16 +1010,16 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
 
       boundaryDates.forEach(boundaryDate => {
         const timeObj = createTime(boundaryDate);
-        const dayjsTime = dayjs(boundaryDate);
+        const momentTime = moment(boundaryDate);
 
-        expect(isValid(timeObj)).toBe(dayjsTime.isValid());
+        expect(isValid(timeObj)).toBe(momentTime.isValid());
 
         const timeInstance = TimeUtils.create(boundaryDate);
-        expect(timeInstance.isValid()).toBe(dayjsTime.isValid());
+        expect(timeInstance.isValid()).toBe(momentTime.isValid());
       });
     });
 
-    test('操作后的时间有效性应该与 dayjs 一致', () => {
+    test('操作后的时间有效性应该与 moment 一致', () => {
       const baseDate = '2025-07-24 15:30:45';
 
       // 测试正常操作后的有效性
@@ -1036,13 +1029,13 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
           .hour(10)
           .minute(30);
 
-      const dayjsAfterOps = dayjs(baseDate)
+      const momentAfterOps = moment(baseDate)
           .add(1, 'month')
           .subtract(5, 'day')
           .hour(10)
           .minute(30);
 
-      expect(timeUtilsAfterOps.isValid()).toBe(dayjsAfterOps.isValid());
+      expect(timeUtilsAfterOps.isValid()).toBe(momentAfterOps.isValid());
       expect(timeUtilsAfterOps.isValid()).toBe(true);
 
       // 测试边界操作后的有效性
@@ -1051,54 +1044,54 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
           .endOfDay()
           .utc();
 
-      const dayjsBoundary = dayjs(baseDate)
+      const momentBoundary = moment(baseDate)
           .startOf('month')
           .endOf('day')
           .utc();
 
-      expect(timeUtilsBoundary.isValid()).toBe(dayjsBoundary.isValid());
+      expect(timeUtilsBoundary.isValid()).toBe(momentBoundary.isValid());
       expect(timeUtilsBoundary.isValid()).toBe(true);
     });
 
-    test('不同时区下的时间有效性应该与 dayjs 一致', () => {
+    test('不同时区下的时间有效性应该与 moment 一致', () => {
       const testDate = '2025-07-24 15:30:45';
 
       // 测试本地时间
       const localTimeInstance = TimeUtils.create(testDate);
-      const localDayjsTime = dayjs(testDate);
+      const localDayjsTime = moment(testDate);
 
       expect(localTimeInstance.isValid()).toBe(localDayjsTime.isValid());
 
       // 测试UTC时间
       const utcTimeInstance = TimeUtils.create(testDate).utc();
-      const utcDayjsTime = dayjs(testDate).utc();
+      const utcDayjsTime = moment(testDate).utc();
 
       expect(utcTimeInstance.isValid()).toBe(utcDayjsTime.isValid());
       expect(utcTimeInstance.isValid()).toBe(true);
     });
 
-    test('时间计算可能导致的无效日期应该与 dayjs 行为一致', () => {
+    test('时间计算可能导致的无效日期应该与 moment 行为一致', () => {
       // 测试可能导致无效日期的操作
       const testCases = [
-        { base: '2025-01-31', operation: () => dayjs('2025-01-31').add(1, 'month') },
-        { base: '2025-03-31', operation: () => dayjs('2025-03-31').subtract(1, 'month') },
-        { base: '2024-02-29', operation: () => dayjs('2024-02-29').add(1, 'year') },
+        { base: '2025-01-31', operation: () => moment('2025-01-31').add(1, 'month') },
+        { base: '2025-03-31', operation: () => moment('2025-03-31').subtract(1, 'month') },
+        { base: '2024-02-29', operation: () => moment('2024-02-29').add(1, 'year') },
       ];
 
       testCases.forEach(({ base, operation }) => {
         const timeUtilsResult = TimeUtils.create(base).add(1, 'month');
-        const dayjsResult = operation();
+        const momentResult = operation();
 
-        expect(timeUtilsResult.isValid()).toBe(dayjsResult.isValid());
+        expect(timeUtilsResult.isValid()).toBe(momentResult.isValid());
 
-        // 如果dayjs认为结果有效，我们的实现也应该认为有效
-        if (dayjsResult.isValid()) {
+        // 如果moment认为结果有效，我们的实现也应该认为有效
+        if (momentResult.isValid()) {
           expect(timeUtilsResult.isValid()).toBe(true);
         }
       });
     });
 
-    test('极端值的时间有效性应该与 dayjs 一致', () => {
+    test('极端值的时间有效性应该与 moment 一致', () => {
       const extremeValues = [
         0, // Unix时间戳0
         -1, // 负时间戳
@@ -1111,21 +1104,21 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       extremeValues.forEach(extremeValue => {
         try {
           const timeObj = createTime(extremeValue);
-          const dayjsTime = dayjs(extremeValue);
+          const momentTime = moment(extremeValue);
 
-          expect(isValid(timeObj)).toBe(dayjsTime.isValid());
+          expect(isValid(timeObj)).toBe(momentTime.isValid());
 
           const timeInstance = TimeUtils.create(extremeValue);
-          expect(timeInstance.isValid()).toBe(dayjsTime.isValid());
+          expect(timeInstance.isValid()).toBe(momentTime.isValid());
         } catch (error) {
           // 某些极端值可能会抛出异常
-          const dayjsTime = dayjs(extremeValue);
-          expect(dayjsTime.isValid()).toBe(false);
+          const momentTime = moment(extremeValue);
+          expect(momentTime.isValid()).toBe(false);
         }
       });
     });
 
-    test('字符串格式的边界情况有效性应该与 dayjs 一致', () => {
+    test('字符串格式的边界情况有效性应该与 moment 一致', () => {
       const edgeCases = [
         '2025-7-24', // 单数字月份
         '2025-07-4', // 单数字日期
@@ -1145,22 +1138,22 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       edgeCases.forEach(edgeCase => {
         try {
           const timeObj = createTime(edgeCase);
-          const dayjsTime = dayjs(edgeCase);
+          const momentTime = moment(edgeCase);
 
-          expect(isValid(timeObj)).toBe(dayjsTime.isValid());
+          expect(isValid(timeObj)).toBe(momentTime.isValid());
 
           const timeInstance = TimeUtils.create(edgeCase);
-          expect(timeInstance.isValid()).toBe(dayjsTime.isValid());
+          expect(timeInstance.isValid()).toBe(momentTime.isValid());
         } catch (error) {
           // 某些格式可能不被支持
-          const dayjsTime = dayjs(edgeCase);
-          // 如果我们的实现抛出异常，dayjs应该认为它无效
-          expect(dayjsTime.isValid()).toBe(false);
+          const momentTime = moment(edgeCase);
+          // 如果我们的实现抛出异常，moment应该认为它无效
+          expect(momentTime.isValid()).toBe(false);
         }
       });
     });
 
-    test('链式操作中isValid应该在每一步都与 dayjs 一致', () => {
+    test('链式操作中isValid应该在每一步都与 moment 一致', () => {
       const baseDate = '2025-07-31'; // 选择可能产生边界问题的日期
 
       // 创建可能导致日期调整的链式操作
@@ -1168,11 +1161,11 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
           .add(1, 'month') // 可能导致日期调整
           .subtract(1, 'day');
 
-      const dayjsChain = dayjs(baseDate)
+      const momentChain = moment(baseDate)
           .add(1, 'month')
           .subtract(1, 'day');
 
-      expect(timeUtilsChain.isValid()).toBe(dayjsChain.isValid());
+      expect(timeUtilsChain.isValid()).toBe(momentChain.isValid());
 
       // 测试更复杂的链式操作
       const complexChain = TimeUtils.create(baseDate)
@@ -1181,7 +1174,7 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
           .startOfDay()
           .add(1, 'year');
 
-      const complexDayjsChain = dayjs(baseDate)
+      const complexDayjsChain = moment(baseDate)
           .add(1, 'month')
           .endOf('month')
           .startOf('day')
@@ -1215,62 +1208,62 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
       }
       const ourDuration = Date.now() - startTime;
 
-      // 测试dayjs的isValid性能
-      const dayjsStartTime = Date.now();
+      // 测试moment的isValid性能
+      const momentStartTime = Date.now();
       for (let i = 0; i < iterations; i++) {
         testDates.forEach(testDate => {
-          dayjs(testDate).isValid();
+          moment(testDate).isValid();
         });
       }
-      const dayjsDuration = Date.now() - dayjsStartTime;
+      const momentDuration = Date.now() - momentStartTime;
 
-      // 我们的性能不应该比dayjs慢太多（允许3倍的差距）
-      expect(ourDuration).toBeLessThan(dayjsDuration * 3);
+      // 我们的性能不应该比moment慢太多（允许3倍的差距）
+      expect(ourDuration).toBeLessThan(momentDuration * 3);
 
-      console.log(`isValid性能对比 - 我们的实现: ${ourDuration}ms, Dayjs: ${dayjsDuration}ms`);
+      console.log(`isValid性能对比 - 我们的实现: ${ourDuration}ms, Dayjs: ${momentDuration}ms`);
     });
   });
 
   describe('UTC功能对比', () => {
-    test('UTC转换应该与 dayjs.utc() 一致', () => {
+    test('UTC转换应该与 moment.utc() 一致', () => {
       const testDate = '2025-07-24 15:30:45';
 
       // 测试TimeInstance的utc方法
       const timeUtilsUtc = TimeUtils.create(testDate).utc();
-      const dayjsUtc = dayjs(testDate).utc();
+      const momentUtc = moment(testDate).utc();
 
       // 比较格式化结果
       expect(timeUtilsUtc.formalFormat('YYYY-MM-DD HH:mm:ss')).toBe(
-          dayjsUtc.format('YYYY-MM-DD HH:mm:ss')
+          momentUtc.format('YYYY-MM-DD HH:mm:ss')
       );
 
       // 比较时间戳
-      expect(timeUtilsUtc.valueOf()).toBe(dayjsUtc.valueOf());
+      expect(timeUtilsUtc.valueOf()).toBe(momentUtc.valueOf());
     });
 
-    // test('UTC时间的各个部分应该与 dayjs 一致', () => {
+    // test('UTC时间的各个部分应该与 moment 一致', () => {
     //   const testDate = '2025-07-24 15:30:45';
     //
     //   const timeUtilsUtc = TimeUtils.create(testDate).utc();
-    //   const dayjsUtc = dayjs(testDate).utc();
+    //   const momentUtc = moment(testDate).utc();
     //
-    //   expect(timeUtilsUtc.getYear()).toBe(dayjsUtc.year());
-    //   expect(timeUtilsUtc.getMonth()).toBe(dayjsUtc.month());
-    //   expect(timeUtilsUtc.getDate()).toBe(dayjsUtc.date());
-    //   expect(timeUtilsUtc.getHour()).toBe(dayjsUtc.hour());
-    //   expect(timeUtilsUtc.getMinute()).toBe(dayjsUtc.minute());
-    //   expect(timeUtilsUtc.getSecond()).toBe(dayjsUtc.second());
-    //   expect(timeUtilsUtc.getMillisecond()).toBe(dayjsUtc.millisecond());
+    //   expect(timeUtilsUtc.getYear()).toBe(momentUtc.year());
+    //   expect(timeUtilsUtc.getMonth()).toBe(momentUtc.month());
+    //   expect(timeUtilsUtc.getDate()).toBe(momentUtc.date());
+    //   expect(timeUtilsUtc.getHour()).toBe(momentUtc.hour());
+    //   expect(timeUtilsUtc.getMinute()).toBe(momentUtc.minute());
+    //   expect(timeUtilsUtc.getSecond()).toBe(momentUtc.second());
+    //   expect(timeUtilsUtc.getMillisecond()).toBe(momentUtc.millisecond());
     // });
 
-    test('UTC偏移量应该与 dayjs.utcOffset() 一致', () => {
+    test('UTC偏移量应该与 moment.utcOffset() 一致', () => {
       const testDate = '2025-07-24 15:30:45';
 
       const timeInstance = TimeUtils.create(testDate);
-      const dayjsTime = dayjs(testDate);
+      const momentTime = moment(testDate);
 
       // 比较UTC偏移量
-      expect(timeInstance.utcOffset()).toBe(dayjsTime.utcOffset());
+      expect(timeInstance.utcOffset()).toBe(momentTime.utcOffset());
     });
 
     test('不同时区的UTC偏移量应该正确', () => {
@@ -1278,19 +1271,19 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
 
       // 测试本地时间的UTC偏移量
       const localTimeInstance = TimeUtils.create(testDate);
-      const localDayjsTime = dayjs(testDate);
+      const localDayjsTime = moment(testDate);
 
       expect(localTimeInstance.utcOffset()).toBe(localDayjsTime.utcOffset());
 
       // 测试UTC时间的偏移量应该是0
       const utcTimeInstance = TimeUtils.create(testDate).utc();
-      const utcDayjsTime = dayjs(testDate).utc();
+      const utcDayjsTime = moment(testDate).utc();
 
       expect(utcTimeInstance.utcOffset()).toBe(utcDayjsTime.utcOffset());
       expect(utcTimeInstance.utcOffset()).toBe(0);
     });
 
-    test('UTC时间链式操作应该与 dayjs 一致', () => {
+    test('UTC时间链式操作应该与 moment 一致', () => {
       const testDate = '2025-07-24 15:30:45';
 
       // 测试UTC后的链式操作
@@ -1299,12 +1292,12 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
           .add(1, 'hour')
           .formalFormat('YYYY-MM-DD HH:mm:ss');
 
-      const dayjsChain = dayjs(testDate)
+      const momentChain = moment(testDate)
           .utc()
           .add(1, 'hour')
           .format('YYYY-MM-DD HH:mm:ss');
 
-      expect(timeUtilsChain).toBe(dayjsChain);
+      expect(timeUtilsChain).toBe(momentChain);
     });
 
     test('UTC时间操作后的UTC偏移量应该保持为0', () => {
@@ -1317,15 +1310,15 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
           .hour(12)
           .minute(30);
 
-      const dayjsAfterOps = dayjs(testDate)
+      const momentAfterOps = moment(testDate)
           .utc()
           .add(1, 'day')
           .hour(12)
           .minute(30);
 
       expect(timeUtilsAfterOps.utcOffset()).toBe(0);
-      expect(dayjsAfterOps.utcOffset()).toBe(0);
-      expect(timeUtilsAfterOps.utcOffset()).toBe(dayjsAfterOps.utcOffset());
+      expect(momentAfterOps.utcOffset()).toBe(0);
+      expect(timeUtilsAfterOps.utcOffset()).toBe(momentAfterOps.utcOffset());
     });
 
     test('多种日期格式的UTC转换应该一致', () => {
@@ -1339,66 +1332,66 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
 
       testDates.forEach(testDate => {
         const timeUtilsUtc = TimeUtils.create(testDate).utc();
-        const dayjsUtc = dayjs(testDate).utc();
+        const momentUtc = moment(testDate).utc();
 
-        expect(timeUtilsUtc.valueOf()).toBe(dayjsUtc.valueOf());
+        expect(timeUtilsUtc.valueOf()).toBe(momentUtc.valueOf());
         expect(timeUtilsUtc.formalFormat('YYYY-MM-DD HH:mm:ss')).toBe(
-            dayjsUtc.format('YYYY-MM-DD HH:mm:ss')
+            momentUtc.format('YYYY-MM-DD HH:mm:ss')
         );
       });
     });
 
-    test('UTC时间的边界操作应该与 dayjs 一致', () => {
+    test('UTC时间的边界操作应该与 moment 一致', () => {
       const testDate = '2025-07-24 15:30:45';
 
       // 测试UTC时间的日开始和结束
       const timeUtilsStartOfDay = TimeUtils.create(testDate).utc().startOfDay();
-      const dayjsStartOfDay = dayjs(testDate).utc().startOf('day');
+      const momentStartOfDay = moment(testDate).utc().startOf('day');
 
       const timeUtilsEndOfDay = TimeUtils.create(testDate).utc().endOfDay();
-      const dayjsEndOfDay = dayjs(testDate).utc().endOf('day');
+      const momentEndOfDay = moment(testDate).utc().endOf('day');
 
       expect(timeUtilsStartOfDay.formalFormat('YYYY-MM-DD HH:mm:ss')).toBe(
-          dayjsStartOfDay.format('YYYY-MM-DD HH:mm:ss')
+          momentStartOfDay.format('YYYY-MM-DD HH:mm:ss')
       );
       expect(timeUtilsEndOfDay.formalFormat('YYYY-MM-DD HH:mm:ss')).toBe(
-          dayjsEndOfDay.format('YYYY-MM-DD HH:mm:ss')
+          momentEndOfDay.format('YYYY-MM-DD HH:mm:ss')
       );
 
       // 测试UTC时间的月开始和结束
       const timeUtilsStartOfMonth = TimeUtils.create(testDate).utc().startOfMonth();
-      const dayjsStartOfMonth = dayjs(testDate).utc().startOf('month');
+      const momentStartOfMonth = moment(testDate).utc().startOf('month');
 
       const timeUtilsEndOfMonth = TimeUtils.create(testDate).utc().endOfMonth();
-      const dayjsEndOfMonth = dayjs(testDate).utc().endOf('month');
+      const momentEndOfMonth = moment(testDate).utc().endOf('month');
 
       expect(timeUtilsStartOfMonth.formalFormat('YYYY-MM-DD HH:mm:ss')).toBe(
-          dayjsStartOfMonth.format('YYYY-MM-DD HH:mm:ss')
+          momentStartOfMonth.format('YYYY-MM-DD HH:mm:ss')
       );
       expect(timeUtilsEndOfMonth.formalFormat('YYYY-MM-DD HH:mm:ss')).toBe(
-          dayjsEndOfMonth.format('YYYY-MM-DD HH:mm:ss')
+          momentEndOfMonth.format('YYYY-MM-DD HH:mm:ss')
       );
     });
 
-    test('UTC时间比较应该与 dayjs 一致', () => {
+    test('UTC时间比较应该与 moment 一致', () => {
       const date1 = '2025-07-24 10:00:00';
       const date2 = '2025-07-24 15:00:00';
 
       const timeUtils1Utc = TimeUtils.create(date1).utc();
       const timeUtils2Utc = TimeUtils.create(date2).utc();
 
-      const dayjs1Utc = dayjs(date1).utc();
-      const dayjs2Utc = dayjs(date2).utc();
+      const moment1Utc = moment(date1).utc();
+      const moment2Utc = moment(date2).utc();
 
       expect(timeUtils1Utc.isBefore(timeUtils2Utc.toObject())).toBe(
-          dayjs1Utc.isBefore(dayjs2Utc)
+          moment1Utc.isBefore(moment2Utc)
       );
       expect(timeUtils2Utc.isAfter(timeUtils1Utc.toObject())).toBe(
-          dayjs2Utc.isAfter(dayjs1Utc)
+          moment2Utc.isAfter(moment1Utc)
       );
     });
 
-    test('utcOffset方法应该与 dayjs.utcOffset() 完全一致', () => {
+    test('utcOffset方法应该与 moment.utcOffset() 完全一致', () => {
       const testDates = [
         '2025-07-24 15:30:45',
         '2025-01-01 00:00:00',
@@ -1409,10 +1402,10 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
 
       testDates.forEach(testDate => {
         const timeInstance = TimeUtils.create(testDate);
-        const dayjsTime = dayjs(testDate);
+        const momentTime = moment(testDate);
 
         // 本地时间的UTC偏移量应该一致
-        expect(timeInstance.utcOffset()).toBe(dayjsTime.utcOffset());
+        expect(timeInstance.utcOffset()).toBe(momentTime.utcOffset());
       });
     });
 
@@ -1426,12 +1419,12 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
 
       testDates.forEach(testDate => {
         const timeUtilsUtc = TimeUtils.create(testDate).utc();
-        const dayjsUtc = dayjs(testDate).utc();
+        const momentUtc = moment(testDate).utc();
 
         // UTC时间的偏移量都应该是0
         expect(timeUtilsUtc.utcOffset()).toBe(0);
-        expect(dayjsUtc.utcOffset()).toBe(0);
-        expect(timeUtilsUtc.utcOffset()).toBe(dayjsUtc.utcOffset());
+        expect(momentUtc.utcOffset()).toBe(0);
+        expect(timeUtilsUtc.utcOffset()).toBe(momentUtc.utcOffset());
       });
     });
 
@@ -1440,21 +1433,21 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
 
       // 进行各种操作后的utcOffset应该保持不变
       const originalOffset = TimeUtils.create(testDate).utcOffset();
-      const originalDayjsOffset = dayjs(testDate).utcOffset();
+      const originalDayjsOffset = moment(testDate).utcOffset();
 
       const timeUtilsAfterOps = TimeUtils.create(testDate)
           .add(1, 'day')
           .hour(10)
           .minute(30);
 
-      const dayjsAfterOps = dayjs(testDate)
+      const momentAfterOps = moment(testDate)
           .add(1, 'day')
           .hour(10)
           .minute(30);
 
       expect(timeUtilsAfterOps.utcOffset()).toBe(originalOffset);
-      expect(dayjsAfterOps.utcOffset()).toBe(originalDayjsOffset);
-      expect(timeUtilsAfterOps.utcOffset()).toBe(dayjsAfterOps.utcOffset());
+      expect(momentAfterOps.utcOffset()).toBe(originalDayjsOffset);
+      expect(timeUtilsAfterOps.utcOffset()).toBe(momentAfterOps.utcOffset());
 
       // UTC时间进行操作后，utcOffset应该保持为0
       const timeUtilsUtcAfterOps = TimeUtils.create(testDate)
@@ -1463,39 +1456,39 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
           .hour(10)
           .minute(30);
 
-      const dayjsUtcAfterOps = dayjs(testDate)
+      const momentUtcAfterOps = moment(testDate)
           .utc()
           .add(1, 'day')
           .hour(10)
           .minute(30);
 
       expect(timeUtilsUtcAfterOps.utcOffset()).toBe(0);
-      expect(dayjsUtcAfterOps.utcOffset()).toBe(0);
-      expect(timeUtilsUtcAfterOps.utcOffset()).toBe(dayjsUtcAfterOps.utcOffset());
+      expect(momentUtcAfterOps.utcOffset()).toBe(0);
+      expect(timeUtilsUtcAfterOps.utcOffset()).toBe(momentUtcAfterOps.utcOffset());
     });
 
-    test('边界时间的utcOffset应该与 dayjs 一致', () => {
+    test('边界时间的utcOffset应该与 moment 一致', () => {
       const testDate = '2025-07-24 15:30:45';
 
       // 测试startOfDay的utcOffset
       const timeUtilsStartDay = TimeUtils.create(testDate).startOfDay();
-      const dayjsStartDay = dayjs(testDate).startOf('day');
+      const momentStartDay = moment(testDate).startOf('day');
 
-      expect(timeUtilsStartDay.utcOffset()).toBe(dayjsStartDay.utcOffset());
+      expect(timeUtilsStartDay.utcOffset()).toBe(momentStartDay.utcOffset());
 
       // 测试endOfDay的utcOffset
       const timeUtilsEndDay = TimeUtils.create(testDate).endOfDay();
-      const dayjsEndDay = dayjs(testDate).endOf('day');
+      const momentEndDay = moment(testDate).endOf('day');
 
-      expect(timeUtilsEndDay.utcOffset()).toBe(dayjsEndDay.utcOffset());
+      expect(timeUtilsEndDay.utcOffset()).toBe(momentEndDay.utcOffset());
 
       // 测试UTC边界时间的utcOffset
       const timeUtilsUtcStartDay = TimeUtils.create(testDate).utc().startOfDay();
-      const dayjsUtcStartDay = dayjs(testDate).utc().startOf('day');
+      const momentUtcStartDay = moment(testDate).utc().startOf('day');
 
       expect(timeUtilsUtcStartDay.utcOffset()).toBe(0);
-      expect(dayjsUtcStartDay.utcOffset()).toBe(0);
-      expect(timeUtilsUtcStartDay.utcOffset()).toBe(dayjsUtcStartDay.utcOffset());
+      expect(momentUtcStartDay.utcOffset()).toBe(0);
+      expect(timeUtilsUtcStartDay.utcOffset()).toBe(momentUtcStartDay.utcOffset());
     });
 
     test('不同类型输入的utcOffset应该一致', () => {
@@ -1513,17 +1506,17 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
 
       inputs.forEach(({ type, value }) => {
         const timeInstance = TimeUtils.create(value);
-        const dayjsTime = dayjs(value);
+        const momentTime = moment(value);
 
-        expect(timeInstance.utcOffset()).toBe(dayjsTime.utcOffset());
+        expect(timeInstance.utcOffset()).toBe(momentTime.utcOffset());
 
         // 测试UTC转换后的utcOffset
         const timeInstanceUtc = TimeUtils.create(value).utc();
-        const dayjsTimeUtc = dayjs(value).utc();
+        const momentTimeUtc = moment(value).utc();
 
         expect(timeInstanceUtc.utcOffset()).toBe(0);
-        expect(dayjsTimeUtc.utcOffset()).toBe(0);
-        expect(timeInstanceUtc.utcOffset()).toBe(dayjsTimeUtc.utcOffset());
+        expect(momentTimeUtc.utcOffset()).toBe(0);
+        expect(timeInstanceUtc.utcOffset()).toBe(momentTimeUtc.utcOffset());
       });
     });
 
@@ -1539,7 +1532,7 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
           .minute(30)
           .second(45);
 
-      const complexDayjsLocalChain = dayjs(testDate)
+      const complexDayjsLocalChain = moment(testDate)
           .add(1, 'month')
           .startOf('month')
           .add(15, 'day')
@@ -1559,7 +1552,7 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
           .minute(30)
           .second(45);
 
-      const complexDayjsUtcChain = dayjs(testDate)
+      const complexDayjsUtcChain = moment(testDate)
           .utc()
           .add(1, 'month')
           .startOf('month')
@@ -1580,44 +1573,44 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
 
       [yearEnd, yearStart].forEach(testDate => {
         const timeInstance = TimeUtils.create(testDate);
-        const dayjsTime = dayjs(testDate);
+        const momentTime = moment(testDate);
 
-        expect(timeInstance.utcOffset()).toBe(dayjsTime.utcOffset());
+        expect(timeInstance.utcOffset()).toBe(momentTime.utcOffset());
 
         const timeInstanceUtc = TimeUtils.create(testDate).utc();
-        const dayjsTimeUtc = dayjs(testDate).utc();
+        const momentTimeUtc = moment(testDate).utc();
 
         expect(timeInstanceUtc.utcOffset()).toBe(0);
-        expect(dayjsTimeUtc.utcOffset()).toBe(0);
+        expect(momentTimeUtc.utcOffset()).toBe(0);
       });
 
       // 测试闰年边界
       const leapYear = '2024-02-29 12:00:00';
       const timeInstance = TimeUtils.create(leapYear);
-      const dayjsTime = dayjs(leapYear);
+      const momentTime = moment(leapYear);
 
-      expect(timeInstance.utcOffset()).toBe(dayjsTime.utcOffset());
+      expect(timeInstance.utcOffset()).toBe(momentTime.utcOffset());
 
       const timeInstanceUtc = TimeUtils.create(leapYear).utc();
-      const dayjsTimeUtc = dayjs(leapYear).utc();
+      const momentTimeUtc = moment(leapYear).utc();
 
       expect(timeInstanceUtc.utcOffset()).toBe(0);
-      expect(dayjsTimeUtc.utcOffset()).toBe(0);
+      expect(momentTimeUtc.utcOffset()).toBe(0);
     });
 
-    test('utcOffset与时间戳的关系应该与 dayjs 一致', () => {
+    test('utcOffset与时间戳的关系应该与 moment 一致', () => {
       const testDate = '2025-07-24 15:30:45';
 
       const timeInstance = TimeUtils.create(testDate);
-      const dayjsTime = dayjs(testDate);
+      const momentTime = moment(testDate);
 
       // 同一时刻的本地时间和UTC时间应该有相同的时间戳但不同的utcOffset
       const timeInstanceUtc = TimeUtils.create(testDate).utc();
-      const dayjsTimeUtc = dayjs(testDate).utc();
+      const momentTimeUtc = moment(testDate).utc();
 
       // 时间戳应该相同
-      expect(timeInstance.valueOf()).toBe(dayjsTime.valueOf());
-      expect(timeInstanceUtc.valueOf()).toBe(dayjsTimeUtc.valueOf());
+      expect(timeInstance.valueOf()).toBe(momentTime.valueOf());
+      expect(timeInstanceUtc.valueOf()).toBe(momentTimeUtc.valueOf());
       expect(timeInstance.valueOf()).toBe(timeInstanceUtc.valueOf());
 
       // 但是utcOffset应该不同（除非本地时间就是UTC）
@@ -1625,36 +1618,36 @@ describe('TimeUtils vs Dayjs 对比测试', () => {
         expect(timeInstance.utcOffset()).not.toBe(timeInstanceUtc.utcOffset());
       }
       expect(timeInstanceUtc.utcOffset()).toBe(0);
-      expect(dayjsTimeUtc.utcOffset()).toBe(0);
+      expect(momentTimeUtc.utcOffset()).toBe(0);
     });
   });
 
-  test('unix和toISOString方法对比dayjs', () => {
+  test('unix和toISOString方法对比moment', () => {
     const date = new Date(2025, 7, 1, 12, 34, 56, 789);
     const timeInstance = TimeUtils.create(date);
-    const dayjsInstance = dayjs(date);
-    expect(timeInstance.unix()).toBe(dayjsInstance.unix());
-    expect(timeInstance.toISOString()).toBe(dayjsInstance.toISOString());
+    const momentInstance = moment(date);
+    expect(timeInstance.unix()).toBe(momentInstance.unix());
+    expect(timeInstance.toISOString()).toBe(momentInstance.toISOString());
   });
   test('weekdays等方法验证', () => {
-    const dayjsMonths = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];// monthNames、monthNamesShort
-    const dayjsMonthsShort = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
-    const dayjsWeekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']; // dayNames
-    const dayjsWeekdaysShort = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-    const dayjsWeekdaysMin = ['日', '一', '二', '三', '四', '五', '六']; // dayNamesShort
+    const momentMonths = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];// monthNames、monthNamesShort
+    const momentMonthsShort = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+    const momentWeekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']; // dayNames
+    const momentWeekdaysShort = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+    const momentWeekdaysMin = ['日', '一', '二', '三', '四', '五', '六']; // dayNamesShort
 
     const timeInstanceWeekdays = TimeUtils.weekdays();
-    expect(timeInstanceWeekdays).toEqual(dayjsWeekdays);
+    expect(timeInstanceWeekdays).toEqual(momentWeekdays);
 
     const timeInstanceShort = TimeUtils.weekdaysShort(); // 修正：调用正确的方法
-    expect(timeInstanceShort).toEqual(dayjsWeekdaysShort);
+    expect(timeInstanceShort).toEqual(momentWeekdaysShort);
 
     const timeInstanceMonth = TimeUtils.months();
-    expect(timeInstanceMonth).toEqual(dayjsMonths);
+    expect(timeInstanceMonth).toEqual(momentMonths);
 
     const timeInstanceMonthShort = TimeUtils.monthsShort();
-    expect(timeInstanceMonthShort).toEqual(dayjsMonthsShort);
+    expect(timeInstanceMonthShort).toEqual(momentMonthsShort);
     const weekdaysMin = TimeUtils.weekdaysMin();
-    expect(weekdaysMin).toEqual(dayjsWeekdaysMin);
+    expect(weekdaysMin).toEqual(momentWeekdaysMin);
   });
 });

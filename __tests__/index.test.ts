@@ -29,19 +29,19 @@ import {
 
 describe('时间库抽象层基础功能测试', () => {
   beforeEach(() => {
-    // 每个测试前重置为 dayjs
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    // 每个测试前重置为 moment
+    setTimeLibrary(TimeLibraryType.MOMENT);
     setDefaultTimezone('Asia/Shanghai');
   });
 
   describe('基础 API 测试', () => {
     test('应该正确获取当前时间库类型', () => {
-      expect(getCurrentTimeLibrary()).toBe(TimeLibraryType.DAYJS);
+      expect(getCurrentTimeLibrary()).toBe(TimeLibraryType.MOMENT);
     });
 
     test('应该能够切换时间库', () => {
-      setTimeLibrary(TimeLibraryType.DAYJS);
-      expect(getCurrentTimeLibrary()).toBe(TimeLibraryType.DAYJS);
+      setTimeLibrary(TimeLibraryType.MOMENT);
+      expect(getCurrentTimeLibrary()).toBe(TimeLibraryType.MOMENT);
     });
 
     test('应该能够创建时间对象', () => {
@@ -148,7 +148,7 @@ describe('时间库抽象层基础功能测试', () => {
 
 describe('时间获取方法测试', () => {
   beforeEach(() => {
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.MOMENT);
   });
 
   test('应该正确获取时间各部分', () => {
@@ -172,7 +172,7 @@ describe('时间获取方法测试', () => {
 
 describe('日期判断测试', () => {
   beforeEach(() => {
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.MOMENT);
   });
 
   test('应该正确判断闰年', () => {
@@ -206,7 +206,7 @@ describe('日期判断测试', () => {
 
 describe('TimeUtils 链式调用测试', () => {
   beforeEach(() => {
-    setTimeLibrary(TimeLibraryType.DAYJS);
+    setTimeLibrary(TimeLibraryType.MOMENT);
   });
 
   test('应该支持链式调用', () => {
@@ -255,14 +255,14 @@ describe('TimeUtils 链式调用测试', () => {
 
 describe('时间库切换测试', () => {
   test('切换时间库后功能应该正常', () => {
-    // 测试 dayjs
-    setTimeLibrary(TimeLibraryType.DAYJS);
-    const dayjsTime = createTime('2025-07-24 15:30:00');
-    const dayjsFormatted = formatTime(dayjsTime, 'YYYY-MM-DD HH:mm:ss');
+    // 测试 moment
+    setTimeLibrary(TimeLibraryType.MOMENT);
+    const momentTime = createTime('2025-07-24 15:30:00');
+    const momentFormatted = formatTime(momentTime, 'YYYY-MM-DD HH:mm:ss');
 
-    // 切换回 dayjs
-    setTimeLibrary(TimeLibraryType.DAYJS);
-    expect(getCurrentTimeLibrary()).toBe(TimeLibraryType.DAYJS);
+    // 切换回 moment
+    setTimeLibrary(TimeLibraryType.MOMENT);
+    expect(getCurrentTimeLibrary()).toBe(TimeLibraryType.MOMENT);
   });
 
   test('不同时间库的基础功能应该一致', () => {
@@ -271,7 +271,7 @@ describe('时间库切换测试', () => {
       { input: '2024-02-29 12:00:00', expected: { year: 2024, month: 1, date: 29 } }   // 2月对应索引1
     ];
 
-    [TimeLibraryType.DAYJS].forEach(libraryType => {
+    [TimeLibraryType.MOMENT].forEach(libraryType => {
       setTimeLibrary(libraryType);
 
       testCases.forEach(({ input, expected }) => {
