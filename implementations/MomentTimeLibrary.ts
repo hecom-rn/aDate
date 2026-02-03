@@ -2,6 +2,7 @@ import moment, { Moment } from 'moment-timezone';
 import { ITimeLibrary, TimeUnit, TimeObject } from '../interfaces/ITimeLibrary';
 import { zoneConfig } from '../config';
 import 'moment/locale/zh-cn';
+import 'moment/locale/th'; // 引入泰文语言包
 
 /**
  * Moment 时间库实现
