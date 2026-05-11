@@ -48,10 +48,14 @@ export class MomentTimeLibrary extends ITimeLibrary {
 
   /** 格式化时间 */
   format(timeObj: TimeObject, format?: string, timezone?: string): string {
-    if (timezone) {
-      return timeObj.clone().tz(timezone).format(format);
+    let nextFormat;
+    if (this.formatTransformer) {
+      nextFormat = this.formatTransformer(format);
     }
-    return timeObj.format(format);
+    if (timezone) {
+      return timeObj.clone().tz(timezone).format(nextFormat);
+    }
+    return timeObj.format(nextFormat);
   }
 
   /** 解析时间字符串 */

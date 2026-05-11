@@ -1,6 +1,8 @@
 import { timeLibraryFactory, TimeLibraryType, TimeLibraryTypeValue } from './TimeLibraryFactory';
-import { TimeUnit, TimeObject } from './interfaces/ITimeLibrary';
+import { TimeUnit, TimeObject, FormatTransformer } from './interfaces/ITimeLibrary';
 import { zoneConfig } from './config';
+
+export type { FormatTransformer };
 
 /**
  * 时间库统一API
@@ -13,6 +15,14 @@ import { zoneConfig } from './config';
  */
 export function setTimeLibrary(type: TimeLibraryTypeValue): void {
   timeLibraryFactory.setLibraryType(type);
+}
+
+/**
+ * 注入格式化转换函数，用于多地区适配
+ * @param fn - 转换函数，或传入 undefined 以移除
+ */
+export function setFormatTransformer(fn: FormatTransformer | undefined): void {
+  timeLibraryFactory.getInstance().setFormatTransformer(fn);
 }
 
 /**

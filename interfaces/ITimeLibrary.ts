@@ -12,7 +12,28 @@ export type TimeObject = any;
  * 时间库抽象接口
  * 定义了所有时间库实现必须遵循的统一接口
  */
+/**
+ * 格式化转换函数类型，用于多地区适配
+ * @param result - 已格式化的时间字符串
+ * @param timeObj - 原始时间对象
+ * @param format - 格式字符串
+ * @param timezone - 时区
+ * @returns 转换后的时间字符串
+ */
+export type FormatTransformer = (format: string) => string;
+
 export abstract class ITimeLibrary {
+  /** 可注入的格式化后转换函数，用于多地区适配 */
+  protected formatTransformer?: FormatTransformer;
+
+  /**
+   * 注入格式化转换函数
+   * @param fn - 转换函数，或传入 undefined 以移除
+   */
+  setFormatTransformer(fn: FormatTransformer | undefined): void {
+    this.formatTransformer = fn;
+  }
+
   /**
    * 获取当前时间戳（毫秒）
    * @param timeObj - 时间对象
