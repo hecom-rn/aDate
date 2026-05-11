@@ -48,7 +48,7 @@ export class MomentTimeLibrary extends ITimeLibrary {
 
   /** 格式化时间 */
   format(timeObj: TimeObject, format?: string, timezone?: string): string {
-    let nextFormat;
+    let nextFormat = format;
     if (this.formatTransformer) {
       nextFormat = this.formatTransformer(format);
     }
