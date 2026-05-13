@@ -47,9 +47,9 @@ export class MomentTimeLibrary extends ITimeLibrary {
   }
 
   /** 格式化时间 */
-  format(timeObj: TimeObject, format?: string, timezone?: string): string {
+  format(timeObj: TimeObject, format?: string, timezone?: string, disableRegional?: boolean): string {
     let nextFormat = format;
-    if (this.formatTransformer) {
+    if (this.formatTransformer && format && !disableRegional) {
       nextFormat = this.formatTransformer(format);
     }
     if (timezone) {
