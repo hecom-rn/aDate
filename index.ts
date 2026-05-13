@@ -579,16 +579,16 @@ export class TimeInstance {
   /**
    * 格式化, 如果传入 timezone 则使用指定时区，否则根据 isDate 决定使用系统时区或当前时区
    */
-  format(format?: string, isDate: boolean = false, timezone?: string): string {
-    return formatTime(this.timeObj, format, isDate, timezone);
+  format(format?: string, isDate: boolean = false, timezone?: string, disableRegional?: boolean): string {
+    return formatTime(this.timeObj, format, isDate, timezone, disableRegional);
   }
 
   /**
    * 格式化为字符串，适用于不指定时区的场景。
    * @param template
    */
-  formalFormat(template?: string): string {
-    return timeLibraryFactory.getInstance().format(this.timeObj, template);
+  formalFormat(template?: string, disableRegional?: boolean): string {
+    return timeLibraryFactory.getInstance().format(this.timeObj, template, undefined, disableRegional);
   }
 
   /**
